@@ -1,0 +1,22 @@
+{
+  "name": "Muzic Player",
+  "short_name": "Muzic",
+  "description": "High-fidelity Material 3 music player.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1C1B1F",
+  "theme_color": "#D0BCFF",
+  "icons": [
+    {
+      "src": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=192&h=192&fit=crop",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=512&h=512&fit=crop",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
