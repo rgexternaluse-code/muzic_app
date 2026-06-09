@@ -295,6 +295,197 @@ export default function App() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
 
+  const [permissionStatus, setPermissionStatus] = useState<'undetermined' | 'granted' | 'denied'>('undetermined');
+
+  // --- Check Capacitor Storage Permissions (supports Android 13+ READ_MEDIA_AUDIO & older versions) ---
+  const checkPermission = async () => {
+    if ((window as any).Capacitor) {
+      try {
+        const { Filesystem } = (window as any).Capacitor.Plugins || {};
+        if (Filesystem) {
+          const result = await Filesystem.checkPermissions();
+          // Map publicStorage or storage permissions
+          if (result.publicStorage === 'granted') {
+            setPermissionStatus('granted');
+          } else {
+            setPermissionStatus('undetermined');
+          }
+        } else {
+          const localPerm = localStorage.getItem('muzic_perm_granted');
+          setPermissionStatus(localPerm === 'true' ? 'granted' : 'undetermined');
+        }
+      } catch (e) {
+        console.error("Capacitor check permission error", e);
+        setPermissionStatus('granted'); // Graceful fallback
+      }
+    } else {
+      const localPerm = localStorage.getItem('muzic_perm_granted');
+      setPermissionStatus(localPerm === 'true' ? 'granted' : 'undetermined');
+    }
+  };
+
+  const requestPermission = async () => {
+    if ((window as any).Capacitor) {
+      try {
+        const { Filesystem } = (window as any).Capacitor.Plugins || {};
+        if (Filesystem) {
+          const result = await Filesystem.requestPermissions();
+          if (result.publicStorage === 'granted') {
+            setPermissionStatus('granted');
+          } else {
+            setPermissionStatus('denied');
+          }
+        } else {
+          localStorage.setItem('muzic_perm_granted', 'true');
+          setPermissionStatus('granted');
+        }
+      } catch (e) {
+        console.error("Capacitor request permission error", e);
+        setPermissionStatus('granted');
+      }
+    } else {
+      localStorage.setItem('muzic_perm_granted', 'true');
+      setPermissionStatus('granted');
+    }
+  };
+
+  const handleDenyPermission = () => {
+    localStorage.setItem('muzic_perm_granted', 'false');
+    setPermissionStatus('denied');
+  };
+
+  useEffect(() => {
+    checkPermission();
+  }, []);
+
+  // --- Media Session & Lockscreen Controls Integration ---
+  const callbacksRef = useRef({
+    isPlaying: player.isPlaying,
+    setIsPlaying: player.setIsPlaying,
+    prevTrack: player.prevTrack,
+    nextTrack: player.nextTrack,
+    seek: player.seek,
+    currentTime: player.currentTime,
+    duration: player.duration
+  });
+
+  // Keep callback values up-to-date
+  useEffect(() => {
+    callbacksRef.current = {
+      isPlaying: player.isPlaying,
+      setIsPlaying: player.setIsPlaying,
+      prevTrack: player.prevTrack,
+      nextTrack: player.nextTrack,
+      seek: player.seek,
+      currentTime: player.currentTime,
+      duration: player.duration
+    };
+  }, [
+    player.isPlaying,
+    player.setIsPlaying,
+    player.prevTrack,
+    player.nextTrack,
+    player.seek,
+    player.currentTime,
+    player.duration
+  ]);
+
+  // Set action handlers once on mount
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) return;
+
+    try {
+      navigator.mediaSession.setActionHandler('play', () => {
+        callbacksRef.current.setIsPlaying(true);
+      });
+      navigator.mediaSession.setActionHandler('pause', () => {
+        callbacksRef.current.setIsPlaying(false);
+      });
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        callbacksRef.current.prevTrack();
+      });
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        callbacksRef.current.nextTrack();
+      });
+
+      // Seek actions for full control accuracy
+      navigator.mediaSession.setActionHandler('seekto', (details) => {
+        if (details.seekTime !== undefined) {
+          callbacksRef.current.seek(details.seekTime);
+        }
+      });
+      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+        const offset = details.seekOffset || 10;
+        callbacksRef.current.seek(Math.max(0, callbacksRef.current.currentTime - offset));
+      });
+      navigator.mediaSession.setActionHandler('seekforward', (details) => {
+        const offset = details.seekOffset || 10;
+        callbacksRef.current.seek(Math.min(callbacksRef.current.duration, callbacksRef.current.currentTime + offset));
+      });
+    } catch (e) {
+      console.warn("Failed to set advanced MediaSession action handlers:", e);
+    }
+
+    return () => {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.setActionHandler('play', null);
+        navigator.mediaSession.setActionHandler('pause', null);
+        navigator.mediaSession.setActionHandler('previoustrack', null);
+        navigator.mediaSession.setActionHandler('nexttrack', null);
+        navigator.mediaSession.setActionHandler('seekto', null);
+        navigator.mediaSession.setActionHandler('seekbackward', null);
+        navigator.mediaSession.setActionHandler('seekforward', null);
+      }
+    };
+  }, []);
+
+  // Sync track metadata & playState
+  useEffect(() => {
+    const track = player.currentTrack;
+    if (!track || !('mediaSession' in navigator)) return;
+
+    try {
+      // Set Metadata for notification, lock screen, bluetooth device, Android Auto
+      navigator.mediaSession.metadata = new (window as any).MediaMetadata({
+        title: track.title,
+        artist: track.artist,
+        album: track.album || 'Muzic',
+        artwork: [
+          { src: track.cover || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=192&h=192&fit=crop', sizes: '192x192', type: 'image/jpeg' },
+          { src: track.cover || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=512&h=512&fit=crop', sizes: '512x512', type: 'image/jpeg' }
+        ]
+      });
+    } catch (e) {
+      console.error("Setting MediaSession metadata failed:", e);
+    }
+  }, [player.currentTrack]);
+
+  // Sync playback state
+  useEffect(() => {
+    if (!('mediaSession' in navigator)) return;
+    navigator.mediaSession.playbackState = player.isPlaying ? 'playing' : 'paused';
+  }, [player.isPlaying]);
+
+  // Sync playback progress/position state
+  useEffect(() => {
+    if (!player.currentTrack || !('mediaSession' in navigator) || !('setPositionState' in navigator.mediaSession)) return;
+
+    const currentDuration = player.duration;
+    const currentPos = player.currentTime;
+
+    if (currentDuration > 0 && currentPos >= 0 && currentPos <= currentDuration) {
+      try {
+        navigator.mediaSession.setPositionState({
+          duration: currentDuration,
+          playbackRate: 1,
+          position: currentPos
+        });
+      } catch (e) {
+        console.warn("setPositionState failed:", e);
+      }
+    }
+  }, [player.currentTime, player.duration, player.currentTrack]);
+
   useEffect(() => {
     db.tracks.toArray().then(saved => { 
       if (saved.length > 0) {
@@ -458,6 +649,24 @@ export default function App() {
       {/* SCROLLABLE CONTENT */}
       <main className="flex-1 overflow-y-auto px-6 pb-40">
         <section className="space-y-1">
+          {permissionStatus === 'denied' && (
+            <div 
+              onClick={requestPermission}
+              className="mb-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-between gap-3 cursor-pointer hover:bg-amber-500/15 active:scale-[0.99] transition-all group"
+            >
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-xl bg-amber-500/20 text-amber-500 shrink-0">
+                  <Music size={16} strokeWidth={2.5} />
+                </div>
+                <div className="text-left">
+                  <p className="text-xs font-black text-amber-500 uppercase tracking-widest">Storage Permission Denied</p>
+                  <p className="text-[11px] font-bold opacity-60 mt-0.5">Click here to retry permissions so Muzic can index your files.</p>
+                </div>
+              </div>
+              <ChevronRight size={16} className="text-amber-500/60 group-hover:translate-x-1 transition-transform" />
+            </div>
+          )}
+
           {viewMode === 'tracks' ? (
             filteredTracks.length > 0 ? (
               filteredTracks.map(track => (
@@ -704,6 +913,58 @@ export default function App() {
                 <span>{scanProgress}%</span>
               </div>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Permission Request Modal Overlay (Material 3 standard) */}
+      <AnimatePresence>
+        {permissionStatus === 'undetermined' && (
+          <motion.div 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-md p-6"
+          >
+            <motion.div 
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 350 }}
+              className="w-full max-w-sm bg-[var(--m3-surface)] p-8 rounded-[36px] shadow-2xl border border-white/10 space-y-6 flex flex-col justify-between"
+            >
+              <div className="space-y-4">
+                <div className="w-14 h-14 rounded-2xl bg-[var(--m3-primary-container)] flex items-center justify-center text-[var(--m3-primary)] shadow-md">
+                  <Music size={28} strokeWidth={2.5} />
+                </div>
+                <div className="space-y-2 text-left">
+                  <h2 className="text-xl font-black tracking-tight leading-snug text-[var(--m3-on-surface)]">
+                    Access Media Files?
+                  </h2>
+                  <p className="text-sm font-semibold opacity-60 leading-relaxed text-[var(--m3-on-surface-variant)]">
+                    Muzic needs storage permission to scan the folders on your device and populate your offline music library seamlessly.
+                  </p>
+                  <p className="text-xs font-semibold opacity-50 leading-relaxed bg-black/5 p-3 rounded-xl border border-white/5 text-[var(--m3-on-surface-variant)]">
+                    💡 This app processes your files locally, respects your privacy, and never uploads any data.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2 pt-2">
+                <button 
+                  onClick={requestPermission}
+                  className="w-full py-3.5 bg-[var(--m3-primary)] text-white hover:bg-[var(--m3-primary)]/95 active:scale-[0.98] transition-all rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-[var(--m3-primary)]/25 cursor-pointer"
+                >
+                  Grant Permissions
+                </button>
+                <button 
+                  onClick={handleDenyPermission}
+                  className="w-full py-3 opacity-40 hover:opacity-100 active:scale-[0.98] transition-all rounded-2xl font-bold text-xs uppercase tracking-widest text-[var(--m3-on-surface)] cursor-pointer"
+                >
+                  Maybe Later
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
