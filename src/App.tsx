@@ -20,12 +20,52 @@ import {
   Repeat,
   Repeat1,
   LayoutGrid,
-  Clock
+  Clock,
+  Search,
+  Globe
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Track, FolderNode } from './types';
 import { db } from './db';
 import * as mm from 'music-metadata-browser';
+
+// --- Lightweight JSONP Client to bypass CORS on the client side ---
+function fetchJSONP(url: string, callbackParam: string = 'callback'): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const callbackName = `jsonp_cb_${Math.round(100000 * Math.random())}`;
+    
+    // Assign global callback
+    (window as any)[callbackName] = (data: any) => {
+      cleanup();
+      resolve(data);
+    };
+
+    const cleanup = () => {
+      delete (window as any)[callbackName];
+      const script = document.getElementById(callbackName);
+      if (script) {
+        document.body.removeChild(script);
+      }
+    };
+
+    // Construct final JSONP URL
+    const hasQuery = url.indexOf('?') !== -1;
+    const separator = hasQuery ? '&' : '?';
+    const finalUrl = `${url}${separator}${callbackParam}=${callbackName}`;
+
+    // Create script tag
+    const script = document.createElement('script');
+    script.id = callbackName;
+    script.src = finalUrl;
+    script.async = true;
+    script.onerror = () => {
+      cleanup();
+      reject(new Error(`JSONP request loading failed for: ${url}`));
+    };
+
+    document.body.appendChild(script);
+  });
+}
 
 // --- ViewModel / Hook for Playback Engine ---
 
@@ -147,7 +187,7 @@ const TrackItem = memo(({ track, isActive, onClick }: { track: Track; isActive: 
       </p>
     </div>
     <div className="text-[10px] font-bold opacity-30 group-hover:opacity-60 transition-opacity">
-      {track.format}
+      {track.format || 'STREAM'}
     </div>
   </div>
 ));
@@ -290,7 +330,205 @@ export default function App() {
     return result; // Latest is default order from DB
   }, [tracks, sortBy]);
 
-  const player = useMusicPlayer(sortedTracks);
+  const [playbackQueue, setPlaybackQueue] = useState<Track[]>([]);
+  const [activeTab, setActiveTab] = useState<'local' | 'online'>('local');
+  const [onlineSearchQuery, setOnlineSearchQuery] = useState('');
+  const [onlineTracks, setOnlineTracks] = useState<Track[]>([]);
+  const [isOnlineLoading, setIsOnlineLoading] = useState(false);
+  const [onlineError, setOnlineError] = useState<string | null>(null);
+  const [onlineEngine, setOnlineEngine] = useState<'itunes' | 'audius'>('itunes');
+
+  // Sync playbackQueue with local sortedTracks initially when first loaded
+  useEffect(() => {
+    if (sortedTracks.length > 0 && playbackQueue.length === 0) {
+      setPlaybackQueue(sortedTracks);
+    }
+  }, [sortedTracks]);
+
+  const currentQueue = useMemo(() => {
+    return playbackQueue.length > 0 ? playbackQueue : (sortedTracks.length > 0 ? sortedTracks : onlineTracks);
+  }, [playbackQueue, sortedTracks, onlineTracks]);
+
+  const player = useMusicPlayer(currentQueue);
+
+  // Fetch online tracks from iTunes Search API via JSONP or Audius API
+  const fetchOnlineTracks = async (queryVal?: string, forcedEngine?: 'itunes' | 'audius') => {
+    setIsOnlineLoading(true);
+    setOnlineError(null);
+    const engine = forcedEngine || onlineEngine;
+    try {
+      const q = queryVal !== undefined ? queryVal : onlineSearchQuery;
+      let term = q && q.trim() !== "" ? q.trim() : "trending";
+
+      // Common spelling auto-correction map (under the hood) to maximize search hits!
+      term = term
+        .replace(/\btution\b/gi, "tuition")
+        .replace(/\btutor\b/gi, "tuition") // Handle mobile keyboard autocorrect of "tution" -> "tutor"
+        .replace(/\bmoosewala\b/gi, "moose wala")
+        .replace(/\bshub\b/gi, "shubh")
+        .replace(/\bbolywood\b/gi, "bollywood")
+        .replace(/\bpunjabi\s+songs?\b/gi, "punjabi hits")
+        .replace(/\bhindi\s+songs?\b/gi, "hindi hits");
+
+      if (engine === 'itunes') {
+        // If the query is just a tag, search with tag context
+        if (term === "trending") {
+          term = "top hits 2026";
+        }
+        
+        // Use JSONP to search iTunes to COMPLETELY bypass CORS in all sandboxed frames/browsers!
+        // Query both US/Global store and Indian store in parallel to combine regional catalog availability!
+        const urlGlobal = `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=song&limit=40`;
+        const urlIndia = `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=song&limit=40&country=in`;
+        
+        let resultsGlobal: any[] = [];
+        let resultsIndia: any[] = [];
+        
+        try {
+          const dataGlobal = await fetchJSONP(urlGlobal);
+          if (dataGlobal && dataGlobal.results) {
+            resultsGlobal = dataGlobal.results;
+          }
+        } catch (e) {
+          console.error("Global iTunes search failed:", e);
+        }
+        
+        try {
+          const dataIndia = await fetchJSONP(urlIndia);
+          if (dataIndia && dataIndia.results) {
+            resultsIndia = dataIndia.results;
+          }
+        } catch (e) {
+          console.error("India iTunes search failed:", e);
+        }
+        
+        // Merge results and remove duplicates based on trackId
+        const mergedResults = [...resultsGlobal];
+        const existingTrackIds = new Set(mergedResults.map((item: any) => item.trackId).filter(Boolean));
+        
+        for (const item of resultsIndia) {
+          if (item && item.trackId && !existingTrackIds.has(item.trackId)) {
+            mergedResults.push(item);
+            existingTrackIds.add(item.trackId);
+          }
+        }
+        
+        if (mergedResults.length > 0) {
+          // Filter out results that don't have playables
+          const results = mergedResults.filter((item: any) => item.previewUrl);
+          
+          const formatted = results.map((item: any) => ({
+            id: `online_${item.trackId || Math.random()}`,
+            title: item.trackName || "Unknown Title",
+            artist: item.artistName || "Unknown Artist",
+            album: item.collectionName || "Single",
+            duration: item.trackTimeMillis ? Math.round(item.trackTimeMillis / 1000) : 30, // preview is generally 30s
+            url: item.previewUrl,
+            cover: item.artworkUrl100 ? item.artworkUrl100.replace("100x100bb.jpg", "400x400bb.jpg") : "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400",
+            format: "STREAM",
+            fileName: `${item.trackName || 'stream'}.mp3`,
+            size: 0
+          }));
+          setOnlineTracks(formatted);
+        } else {
+          setOnlineTracks([]);
+        }
+      } else {
+        // --- AUDIUS (Full-length indie/commercial tracks with CORS) ---
+        // Strip common "songs" noise so search queries retrieve accurate results
+        const cleaned = term
+          .toLowerCase()
+          .replace(/\b(song|songs|music|mp3|track|tracks|playing|sound|stream|free|download)\b/g, '')
+          .replace(/\s+/g, ' ')
+          .trim();
+
+        const searchKeywords = cleaned || term;
+        
+        // Use api.audius.co as the primary endpoint which auto-resolves dynamically to active, responsive hosts
+        const backupNodes = [
+          "https://api.audius.co",
+          "https://discoveryprovider.audius.co",
+          "https://discovery-us-01.audius.co",
+          "https://discovery-us-02.audius.co"
+        ];
+        
+        let data = null;
+        let successNode = "https://api.audius.co";
+        
+        let apiEndpoint = `/v1/tracks/search?query=${encodeURIComponent(searchKeywords)}&app_name=muzicapp`;
+        if (searchKeywords === "trending") {
+          apiEndpoint = `/v1/tracks/trending?limit=30&app_name=muzicapp`;
+        }
+
+        for (const node of backupNodes) {
+          try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 6500); // Fail fast and switch nodes if one is slow
+            const res = await fetch(`${node}${apiEndpoint}`, { signal: controller.signal });
+            clearTimeout(timeoutId);
+            if (res.ok) {
+              data = await res.json();
+              if (data && data.data && data.data.length > 0) {
+                successNode = node;
+                break;
+              }
+            }
+          } catch (e) {
+            console.warn(`Audius search failed at ${node}, trying next host...`, e);
+          }
+        }
+
+        if (data && data.data && data.data.length > 0) {
+          const formatted = data.data.map((item: any) => {
+            const trackId = item.id;
+            // Use successNode or standard redirector api.audius.co for reliable mp3 streaming
+            const streamUrl = `${successNode}/v1/tracks/${trackId}/stream?app_name=muzicapp`;
+            
+            // Resolve cover artwork size
+            let coverUrl = "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400";
+            if (item.artwork) {
+              coverUrl = item.artwork["480x480"] || item.artwork["150x150"] || item.artwork["1000x1000"] || coverUrl;
+            }
+            
+            return {
+              id: `online_${trackId}`,
+              title: item.title || "Untitled Track",
+              artist: item.user?.name || item.user?.handle || "Unknown Artist",
+              album: item.genre || "Audius Stream",
+              duration: item.duration ? Math.round(item.duration) : 180,
+              url: streamUrl,
+              cover: coverUrl,
+              format: "STREAM",
+              fileName: `${item.title || 'audius'}.mp3`,
+              size: 0
+            };
+          });
+          setOnlineTracks(formatted);
+        } else {
+          setOnlineTracks([]);
+        }
+      }
+    } catch (err: any) {
+      console.error("Online search error:", err);
+      setOnlineError(`Could not fetch online music. Please check your network connection.`);
+    } finally {
+      setIsOnlineLoading(false);
+    }
+  };
+
+  // Switch to online tab or search submit handler
+  useEffect(() => {
+    if (activeTab === 'online' && onlineTracks.length === 0) {
+      fetchOnlineTracks("");
+    }
+  }, [activeTab]);
+
+  const handleOnlineSearchSubmit = (e: any) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+    fetchOnlineTracks(onlineSearchQuery);
+  };
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const folderInputRef = useRef<HTMLInputElement>(null);
@@ -526,7 +764,18 @@ export default function App() {
   }, [sortedTracks, expandedFolders]);
 
   const selectTrack = (track: Track) => {
+    setPlaybackQueue(sortedTracks);
     const index = sortedTracks.findIndex(t => t.id === track.id);
+    if (index !== -1) {
+      player.setCurrentTrackIndex(index);
+      player.setIsPlaying(true);
+      setShowPlayer(true);
+    }
+  };
+
+  const selectOnlineTrack = (track: Track) => {
+    setPlaybackQueue(onlineTracks);
+    const index = onlineTracks.findIndex(t => t.id === track.id);
     if (index !== -1) {
       player.setCurrentTrackIndex(index);
       player.setIsPlaying(true);
@@ -603,53 +852,187 @@ export default function App() {
       />
 
       {/* FIXED HEADER */}
-      <header className="px-6 pt-10 pb-4 shrink-0">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-2xl font-black tracking-tight leading-none">Muzic</h1>
-            <p className="text-[12px] font-bold opacity-30 uppercase tracking-widest mt-1">Local Library</p>
-          </div>
-          <div className="flex gap-2">
-            <button 
-              onClick={() => setSortBy(p => p === 'alphabet' ? 'latest' : 'alphabet')} 
-              className={`p-3 bg-[var(--m3-surface-variant)] rounded-xl transition-all flex items-center gap-2 group`}
-              title={sortBy === 'alphabet' ? 'Sort: Alphabetical' : 'Sort: Latest'}
-            >
-              {sortBy === 'alphabet' ? <LayoutGrid size={20} className="group-active:scale-90" /> : <Clock size={20} className="group-active:scale-90" />}
-              <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">
-                {sortBy === 'alphabet' ? 'A-Z' : 'Recent'}
-              </span>
-            </button>
-            <button onClick={() => folderInputRef.current?.click()} className="p-3 bg-[var(--m3-primary-container)] text-[var(--m3-on-primary-container)] rounded-xl hover:scale-105 active:scale-95 transition-all outline-none">
-              <FolderPlus size={20} />
-            </button>
-          </div>
+      <header className="px-6 pt-10 pb-4 shrink-0 space-y-4">
+        {/* TOP LEVEL PILL SWITCHER */}
+        <div className="flex p-1 bg-[var(--m3-surface-variant)]/30 rounded-2xl w-full relative">
+          <button 
+            type="button"
+            onClick={() => setActiveTab('local')}
+            className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 z-10 cursor-pointer ${
+              activeTab === 'local' 
+              ? 'bg-[var(--m3-primary)] text-white shadow-lg shadow-[var(--m3-primary)]/20' 
+              : 'opacity-40 hover:opacity-100'
+            }`}
+          >
+            <Folder size={15} />
+            My Device
+          </button>
+          <button 
+            type="button"
+            onClick={() => setActiveTab('online')}
+            className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 z-10 cursor-pointer ${
+              activeTab === 'online' 
+              ? 'bg-[var(--m3-primary)] text-white shadow-lg shadow-[var(--m3-primary)]/20' 
+              : 'opacity-40 hover:opacity-100'
+            }`}
+          >
+            <Globe size={15} />
+            Online Stream
+          </button>
         </div>
 
-        {/* TABS (FIXED) */}
-        <div className="space-y-4">
-          <div className="flex p-1 bg-[var(--m3-surface-variant)]/30 rounded-2xl w-full">
-            {(['tracks', 'folders'] as const).map(mode => (
-              <button 
-                key={mode}
-                onClick={() => setViewMode(mode)} 
-                className={`flex-1 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${
-                  viewMode === mode 
-                  ? 'bg-[var(--m3-primary)] text-white shadow-lg shadow-[var(--m3-primary)]/20' 
-                  : 'opacity-40 hover:opacity-100'
-                }`}
-              >
-                {mode === 'tracks' ? 'Songs' : 'Folders'}
-              </button>
-            ))}
+        {activeTab === 'local' ? (
+          <div className="space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-black tracking-tight leading-none">Muzic</h1>
+                <p className="text-[12px] font-bold opacity-30 uppercase tracking-widest mt-1">Local Library</p>
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => setSortBy(p => p === 'alphabet' ? 'latest' : 'alphabet')} 
+                  className={`p-3 bg-[var(--m3-surface-variant)] rounded-xl transition-all flex items-center gap-2 group cursor-pointer`}
+                  title={sortBy === 'alphabet' ? 'Sort: Alphabetical' : 'Sort: Latest'}
+                >
+                  {sortBy === 'alphabet' ? <LayoutGrid size={20} className="group-active:scale-90" /> : <Clock size={20} className="group-active:scale-90" />}
+                  <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">
+                    {sortBy === 'alphabet' ? 'A-Z' : 'Recent'}
+                  </span>
+                </button>
+                <button onClick={() => folderInputRef.current?.click()} className="p-3 bg-[var(--m3-primary-container)] text-[var(--m3-on-primary-container)] rounded-xl hover:scale-105 active:scale-95 transition-all outline-none cursor-pointer">
+                  <FolderPlus size={20} />
+                </button>
+              </div>
+            </div>
+
+            {/* Local Search Input Area */}
+            <div className="relative flex items-center w-full">
+              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30" />
+              <input 
+                type="text" 
+                placeholder="Search local library..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-11 pr-4 py-3 bg-[var(--m3-surface-variant)]/40 rounded-2xl text-xs font-bold focus:bg-[var(--m3-surface-variant)]/70 transition-all border-none focus:outline-none placeholder:opacity-40"
+              />
+            </div>
+
+            {/* TABS (FIXED) */}
+            <div className="flex p-1 bg-[var(--m3-surface-variant)]/30 rounded-2xl w-full">
+              {(['tracks', 'folders'] as const).map(mode => (
+                <button 
+                  key={mode}
+                  onClick={() => setViewMode(mode)} 
+                  className={`flex-1 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+                    viewMode === mode 
+                    ? 'bg-[var(--m3-primary)] text-white shadow-md' 
+                    : 'opacity-40 hover:opacity-100'
+                  }`}
+                >
+                  {mode === 'tracks' ? 'Songs' : 'Folders'}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-black tracking-tight leading-none">Muzic</h1>
+                <p className="text-[12px] font-bold opacity-30 uppercase tracking-widest mt-1">Free Stream</p>
+              </div>
+            </div>
+
+            {/* Online Search input line */}
+            <form onSubmit={handleOnlineSearchSubmit} className="relative flex items-center gap-2 w-full">
+              <div className="relative flex-1">
+                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30" />
+                <input 
+                  type="text" 
+                  placeholder="Search millions of free streams..." 
+                  value={onlineSearchQuery}
+                  onChange={(e) => setOnlineSearchQuery(e.target.value)}
+                  className="w-full pl-11 pr-4 py-3 bg-[var(--m3-surface-variant)]/40 rounded-2xl text-xs font-bold focus:bg-[var(--m3-surface-variant)]/70 transition-all border-none focus:outline-none placeholder:opacity-40"
+                />
+              </div>
+              <button 
+                type="submit"
+                className="px-5 py-3 bg-[var(--m3-primary)] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+              >
+                Search
+              </button>
+            </form>
+
+            {/* Stream Engine Selector Slider */}
+            <div className="space-y-1.5">
+              <div className="flex gap-2 items-center justify-between bg-[var(--m3-surface-variant)]/10 p-2 rounded-xl border border-[var(--m3-primary)]/5">
+                <span className="text-[10px] font-black uppercase tracking-wider opacity-40">Source Mode:</span>
+                <div className="flex p-0.5 bg-[var(--m3-surface-variant)]/30 rounded-lg">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOnlineEngine('itunes');
+                      fetchOnlineTracks(onlineSearchQuery, 'itunes');
+                    }}
+                    className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+                      onlineEngine === 'itunes'
+                      ? 'bg-[var(--m3-primary)] text-white shadow-sm'
+                      : 'opacity-40 hover:opacity-100'
+                    }`}
+                  >
+                    Global Previews (30s)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOnlineEngine('audius');
+                      fetchOnlineTracks(onlineSearchQuery, 'audius');
+                    }}
+                    className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+                      onlineEngine === 'audius'
+                      ? 'bg-[var(--m3-primary)] text-white shadow-sm'
+                      : 'opacity-40 hover:opacity-100'
+                    }`}
+                  >
+                    Audius Full Tracks
+                  </button>
+                </div>
+              </div>
+              <p className="text-[9px] font-bold text-center opacity-45 px-1 leading-normal uppercase tracking-wider">
+                {onlineEngine === 'itunes' 
+                  ? '🎯 Best for Punjabi, Bollywood, Hindi, & English Mainstream hits!' 
+                  : '🎸 Best for indie synth, instrumental, lofi, or electronic tracks (Full length)'}
+              </p>
+            </div>
+
+            {/* Category Tags selection bar */}
+            <div className="flex gap-1.5 overflow-x-auto no-scrollbar pt-1 max-w-full pb-1">
+              {['trending', 'punjabi', 'hindi', 'bollywood', 'lofi', 'pop', 'electronic', 'rock'].map((tag) => (
+                <button
+                   key={tag}
+                   type="button"
+                   onClick={() => {
+                     setOnlineSearchQuery(tag === 'trending' ? '' : tag);
+                     fetchOnlineTracks(tag === 'trending' ? '' : tag);
+                   }}
+                   className={`px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer shrink-0 ${
+                     (tag === 'trending' && onlineSearchQuery === '') || onlineSearchQuery.toLowerCase() === tag
+                     ? 'bg-[var(--m3-primary-container)] text-[var(--m3-primary)] font-black border border-[var(--m3-primary)]/10 text-[10px]'
+                     : 'bg-[var(--m3-surface-variant)]/40 opacity-65 hover:opacity-100 text-[10px]'
+                   }`}
+                >
+                  #{tag}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </header>
 
       {/* SCROLLABLE CONTENT */}
       <main className="flex-1 overflow-y-auto px-6 pb-40">
         <section className="space-y-1">
-          {permissionStatus === 'denied' && (
+          {permissionStatus === 'denied' && activeTab === 'local' && (
             <div 
               onClick={requestPermission}
               className="mb-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-between gap-3 cursor-pointer hover:bg-amber-500/15 active:scale-[0.99] transition-all group"
@@ -667,36 +1050,84 @@ export default function App() {
             </div>
           )}
 
-          {viewMode === 'tracks' ? (
-            filteredTracks.length > 0 ? (
-              filteredTracks.map(track => (
-                <TrackItem 
-                  key={track.id} 
-                  track={track} 
-                  isActive={player.currentTrack?.id === track.id} 
-                  onClick={() => selectTrack(track)} 
-                />
-              ))
-            ) : (
-              <div className="flex flex-col items-center justify-center py-20 opacity-20">
-                <Music size={48} />
-                <p className="mt-4 font-bold text-sm tracking-widest uppercase">No tracks found</p>
-              </div>
-            )
-          ) : viewMode === 'folders' ? (
-            <RecursiveFolderView 
-              node={folderTree} 
-              expandedFolders={expandedFolders} 
-              toggleFolder={(path: string) => setExpandedFolders(p => { 
-                const n = new Set(p); 
-                if (n.has(path)) n.delete(path); 
-                else n.add(path); 
-                return n; 
-              })}
-              currentTrackId={player.currentTrack?.id}
-              onTrackSelect={selectTrack}
-            />
-          ) : null}
+          {activeTab === 'local' ? (
+            viewMode === 'tracks' ? (
+              filteredTracks.length > 0 ? (
+                filteredTracks.map(track => (
+                  <TrackItem 
+                    key={track.id} 
+                    track={track} 
+                    isActive={player.currentTrack?.id === track.id} 
+                    onClick={() => selectTrack(track)} 
+                  />
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center py-20 opacity-20">
+                  <Music size={48} />
+                  <p className="mt-4 font-bold text-sm tracking-widest uppercase">No tracks found</p>
+                </div>
+              )
+            ) : viewMode === 'folders' ? (
+              <RecursiveFolderView 
+                node={folderTree} 
+                expandedFolders={expandedFolders} 
+                toggleFolder={(path: string) => setExpandedFolders(p => { 
+                  const n = new Set(p); 
+                  if (n.has(path)) n.delete(path); 
+                  else n.add(path); 
+                  return n; 
+                })}
+                currentTrackId={player.currentTrack?.id}
+                onTrackSelect={selectTrack}
+              />
+            ) : null
+          ) : (
+            /* ONLINE LIST VIEW */
+            <div className="space-y-2 animate-[fadeIn_0.2s_ease-out]">
+              {isOnlineLoading ? (
+                <div className="flex flex-col items-center justify-center py-24 gap-3">
+                  <Loader2 size={32} className="animate-spin text-[var(--m3-primary)]" />
+                  <p className="text-xs font-black uppercase tracking-widest opacity-40">Loading Streams...</p>
+                </div>
+              ) : onlineError ? (
+                <div className="text-center py-16 px-4 space-y-3">
+                  <p className="text-xs font-bold text-red-500 opacity-80">{onlineError}</p>
+                  <button 
+                    onClick={() => fetchOnlineTracks()}
+                    className="px-4 py-2 bg-[var(--m3-primary-container)] text-[var(--m3-primary)] rounded-xl text-xs font-black uppercase tracking-widest cursor-pointer"
+                  >
+                    Retry Connection
+                  </button>
+                </div>
+              ) : onlineTracks.length > 0 ? (
+                onlineTracks.map(track => (
+                  <TrackItem 
+                    key={track.id} 
+                    track={track} 
+                    isActive={player.currentTrack?.id === track.id} 
+                    onClick={() => selectOnlineTrack(track)} 
+                  />
+                ))
+              ) : (
+                <div className="flex flex-col items-center justify-center py-12 px-4 bg-[var(--m3-surface-variant)]/10 border border-[var(--m3-primary)]/5 rounded-2xl">
+                  <Globe size={40} className="opacity-20 animate-pulse text-[var(--m3-primary)] mb-2" />
+                  <p className="font-extrabold text-xs tracking-widest uppercase opacity-60">No Streams Found</p>
+                  
+                  {onlineSearchQuery && (
+                    <div className="mt-4 max-w-sm space-y-3 text-[11px] font-bold opacity-80">
+                      <p className="text-[var(--m3-primary)] text-center uppercase tracking-wider">💡 Helpful Search & Spelling Tips:</p>
+                      <ul className="text-left list-disc list-neutral space-y-2 font-black bg-[var(--m3-surface-variant)]/30 p-4 rounded-xl border border-[var(--m3-primary)]/10 leading-relaxed uppercase tracking-wider text-[9px]">
+                        <li>⚠️ spelling counts! Search engine query is exact. Try <strong className="text-[var(--m3-primary)]">"tuition cheema"</strong> instead of <strong className="text-[var(--m3-primary)]">"tution cheema"</strong>.</li>
+                        <li>🎯 Punjabi, Bollywood, Hindi, & commercial hits are best found under <strong className="text-[var(--m3-primary)]">"Global Previews (30s)"</strong> (iTunes mode) due to strict mainstream copyright policies.</li>
+                        <li>🎸 Use <strong className="text-[var(--m3-primary)]">"Audius Mode"</strong> mainly for independent music, synthwave, instrumentals, or lofi beats!</li>
+                        <li>🔍 Try spelling artist names fully or searching with less words (e.g. <strong className="text-[var(--m3-primary)]">"Cheema Y"</strong>, <strong className="text-[var(--m3-primary)]">"Sidhu Moose"</strong>, <strong className="text-[var(--m3-primary)]">"Dosanjh"</strong> or <strong className="text(--m3-primary)">"Karan Aujla"</strong>).</li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
         </section>
       </main>
 

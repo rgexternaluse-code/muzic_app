@@ -85,3 +85,39 @@ Because the application is fully integrated with the standards-based **W3C Media
 Always encourage users to:
 1. Grant the file access permission prompted on first launch so that directories can be indexed.
 2. Exclude the **Muzic** application from Android Battery Optimization (Doze Mode) in the Android device system settings if they experience any mid-track pausing when the device screen is off for long periods (this is standard behavior for all native storage-bound players).
+
+---
+
+## 5. Resolving the Gradle Error (API Level 34 Upgrade)
+
+If you see a Gradle error during build regarding permissions or foreground services (e.g., `FOREGROUND_SERVICE_MEDIA_PLAYBACK` or target SDK constraints), this is because Android 13/14 requires your Native compiler toolchain to target API level 34.
+
+### The Fix:
+
+1. Open `/android/variables.gradle` in your project root of the Android build and verify values match:
+```groovy
+ext {
+    minSdkVersion = 22
+    compileSdkVersion = 34
+    targetSdkVersion = 34
+    // Modern androidx dependencies
+    androidxActivityVersion = '1.8.0'
+    androidxAppCompatVersion = '1.6.1'
+    androidxCoordinatorLayoutVersion = '1.2.0'
+    androidxCoreVersion = '1.12.0'
+}
+```
+
+2. Alternatively, open `/android/app/build.gradle` and change the versions manually in your compile options:
+```groovy
+android {
+    compileSdkVersion 34
+    defaultConfig {
+        targetSdkVersion 34
+        ...
+    }
+}
+```
+
+3. Sync Gradle in Android Studio (`File` -> `Sync Project with Gradle Files`) and run clean build (`Build` -> `Clean Project` then `Build` -> `Rebuild Project`). This resolves all permission-related manifest syntax and Foreground Service compilation errors.
+

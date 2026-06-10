@@ -5,12 +5,12 @@ export interface Track {
   album: string;
   duration: number;
   url: string;
-  file: Blob; // Persisted file blob for playback across sessions
+  file?: Blob; // Persisted file blob for playback across sessions (optional for online audio)
   cover?: string;
-  format: string;
-  folderPath: string;
-  fileName: string;
-  size: number;
+  format?: string;
+  folderPath?: string;
+  fileName?: string;
+  size?: number;
 }
 
 export interface FolderNode {
