@@ -1,3 +1,73 @@
+name: Android CI Build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_SDK_ROOT: /opt/android-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Android command-line tools
+        run: |
+          sudo mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          curl -sSLo /tmp/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+          unzip -q /tmp/cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
+          mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT --install "platform-tools" "platforms;android-33" "build-tools;33.0.2"
+
+      - name: Accept Android SDK licenses
+        run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web
+        run: npm run build
+
+      - name: Capacitor sync
+        run: npx cap sync android
+
+      - name: Ensure Gradle (regenerate wrapper if needed)
+        run: |
+          cd android
+          if [ ! -f gradle/wrapper/gradle-wrapper.jar ] || ! ./gradlew --version >/dev/null 2>&1; then
+            echo "Regenerating Gradle wrapper using downloaded Gradle"
+            curl -sSLo /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.14.3-bin.zip
+            unzip -q /tmp/gradle.zip -d /tmp/gradle-dist
+            /tmp/gradle-dist/gradle-8.14.3/bin/gradle wrapper --gradle-version 8.14.3 --distribution-type bin
+          fi
+
+      - name: Build debug APK
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: android/app/build/outputs/apk/**/app-*.apk
 name: Android Build
 
 on:
