@@ -1,6 +1,6 @@
 {
-  "name": "Muzic Player",
-  "short_name": "Muzic",
+  "name": "Music Player",
+  "short_name": "Music Player",
   "description": "High-fidelity Material 3 music player.",
   "start_url": "/",
   "display": "standalone",

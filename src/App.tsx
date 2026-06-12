@@ -4,6 +4,8 @@
  */
 
 import { useState, useRef, useEffect, useMemo, ChangeEvent, memo } from 'react';
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, FilesystemDirectory } from '@capacitor/filesystem';
 import { 
   Play, 
   Pause, 
@@ -22,7 +24,13 @@ import {
   LayoutGrid,
   Clock,
   Search,
-  Globe
+  Globe,
+  Filter,
+  Heart,
+  ListMusic,
+  Volume2,
+  Moon,
+  MoreVertical
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Track, FolderNode } from './types';
@@ -166,30 +174,45 @@ function useMusicPlayer(tracks: Track[]) {
 // --- Shared Components (Memoized to prevent flickering) ---
 
 const TrackItem = memo(({ track, isActive, onClick }: { track: Track; isActive: boolean; onClick: () => void }) => (
-  <div 
+  <button
+    type="button"
     onClick={(e) => {
       e.stopPropagation();
       onClick();
     }}
-    className={`flex items-center p-3 rounded-2xl cursor-pointer transition-all active:scale-[0.98] group ${
-      isActive ? 'bg-[var(--m3-primary-container)]' : 'hover:bg-[var(--m3-surface-variant)]'
+    className={`w-full text-left flex items-center gap-4 p-4 rounded-[28px] transition-all duration-200 ${
+      isActive 
+        ? 'bg-[linear-gradient(135deg,rgba(99,45,255,0.24),rgba(24,9,79,0.18))] border border-[rgba(141,107,255,0.22)] shadow-[0_24px_80px_-44px_rgba(141,107,255,0.45)]' 
+        : 'bg-[rgba(255,255,255,0.02)] border border-white/10 @media(hover:hover):[&:hover]:bg-[rgba(255,255,255,0.06)] @media(hover:hover):[&:hover]:shadow-[0_20px_40px_-30px_rgba(255,255,255,0.12)]'
     }`}
   >
-    <div className="w-12 h-12 rounded-xl overflow-hidden bg-[var(--m3-secondary-container)] mr-4 shadow-sm shrink-0">
+    <div className="w-16 h-16 rounded-[24px] overflow-hidden bg-[var(--m3-secondary-container)] shadow-[0_18px_40px_-24px_rgba(0,0,0,0.35)] flex items-center justify-center shrink-0">
       <img src={track.cover} alt={track.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
     </div>
-    <div className="flex-1 min-w-0 pr-4">
-      <h3 className={`text-[16px] font-bold truncate leading-tight ${isActive ? 'text-[var(--m3-on-primary-container)]' : ''}`}>
-        {track.title}
-      </h3>
-      <p className={`text-[13px] truncate font-medium opacity-60 ${isActive ? 'text-[var(--m3-on-primary-container)]' : ''}`}>
-        {track.artist}
-      </p>
+    <div className="flex-1 min-w-0">
+      <div className="flex items-center justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className={`text-sm font-black truncate leading-tight ${isActive ? 'text-[var(--m3-on-primary-container)]' : 'text-white'}`}>
+            {track.title}
+          </h3>
+          <p className={`text-[11px] truncate font-semibold mt-1 ${isActive ? 'text-[var(--m3-on-primary-container)]/80' : 'text-white/60'}`}>
+            {track.artist}
+          </p>
+        </div>
+        <div className="flex flex-col items-end gap-1">
+          <span className={`text-[10px] font-black uppercase tracking-[0.28em] ${isActive ? 'text-[var(--m3-primary)]' : 'text-white/50'}`}>{track.format || 'MPEG'}</span>
+          <div className="flex items-center gap-2">
+            {isActive && (
+              <div className="h-8 w-8 rounded-full bg-[var(--m3-primary)] text-white flex items-center justify-center shadow-[0_10px_30px_-18px_rgba(141,107,255,0.9)]">
+                <Play size={14} />
+              </div>
+            )}
+            <span className="text-[10px] font-semibold text-white/40">{track.duration ? formatTime(track.duration) : ''}</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div className="text-[10px] font-bold opacity-30 group-hover:opacity-60 transition-opacity">
-      {track.format || 'STREAM'}
-    </div>
-  </div>
+  </button>
 ));
 
 const FolderItem = memo(({ 
@@ -205,7 +228,7 @@ const FolderItem = memo(({
     {node.name !== 'Root' && (
       <div 
         onClick={() => onToggle(node.path)}
-        className="flex items-center py-3 px-4 hover:bg-[var(--m3-surface-variant)]/50 rounded-2xl cursor-pointer transition-colors"
+        className="flex items-center py-3 px-4 @media(hover:hover):[&:hover]:bg-[var(--m3-surface-variant)]/50 @media(hover:hover):[&:hover]:shadow-sm rounded-2xl cursor-pointer transition-[background-color,box-shadow] duration-200 ease-out"
         style={{ paddingLeft: `${depth * 16 + 16}px` }}
       >
         <div className="w-8 h-8 rounded-lg bg-[var(--m3-secondary-container)] flex items-center justify-center mr-3 text-[var(--m3-primary)]">
@@ -221,9 +244,10 @@ const FolderItem = memo(({
     <AnimatePresence>
       {isExpanded && (
         <motion.div 
-          initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
-          exit={{ height: 0, opacity: 0 }}
+          initial={{ height: 0, opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+          animate={{ height: 'auto', opacity: 1, clipPath: 'inset(0 0 0 0)' }}
+          exit={{ height: 0, opacity: 0, clipPath: 'inset(0 0 100% 0)' }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
           className="overflow-hidden"
         >
           {renderSubfolders()}
@@ -290,6 +314,91 @@ const generateStableId = (file: File, folderPath: string): string => {
   return btoa(`${folderPath}/${file.name}-${file.size}`).substring(0, 16);
 };
 
+const audioExtensions = ['mp3', 'm4a', 'wav', 'aac', 'ogg', 'flac', 'opus', 'webm'];
+
+const isAudioFile = (name: string) => {
+  const ext = name.split('.').pop()?.toLowerCase() || '';
+  return audioExtensions.includes(ext);
+};
+
+const getExternalFileUri = async (path: string): Promise<string | undefined> => {
+  try {
+    const result = await Filesystem.getUri({
+      directory: FilesystemDirectory.External,
+      path,
+    });
+    return Capacitor.convertFileSrc(result.uri);
+  } catch (e) {
+    console.error('Could not resolve external file URI for', path, e);
+    return undefined;
+  }
+};
+
+const scanDirectoryRecursive = async (basePath: string, trackFolder: string, found: Track[]) => {
+  try {
+    const dir = await Filesystem.readdir({
+      directory: FilesystemDirectory.External,
+      path: basePath,
+    });
+
+    for (const name of dir.files) {
+      if (name.startsWith('.')) continue;
+      const itemPath = basePath ? `${basePath}/${name}` : name;
+      const stat = await Filesystem.stat({
+        directory: FilesystemDirectory.External,
+        path: itemPath,
+      }).catch(() => null);
+
+      const isDir = stat?.type === 'directory' || stat?.type === 'dir';
+      if (isDir) {
+        await scanDirectoryRecursive(itemPath, trackFolder, found);
+        continue;
+      }
+
+      if (!isAudioFile(name)) continue;
+
+      const uri = await getExternalFileUri(itemPath);
+      if (!uri) continue;
+
+      found.push({
+        id: btoa(`${itemPath}-${stat?.size ?? 0}`).substring(0, 16),
+        title: name.replace(/\.[^/.]+$/, ''),
+        artist: 'Local Audio',
+        album: trackFolder || 'Device Music',
+        duration: 0,
+        url: uri,
+        format: name.split('.').pop()?.toUpperCase() || 'MP3',
+        cover: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200',
+        folderPath: trackFolder || basePath || 'Device',
+        fileName: name,
+        size: stat?.size ?? 0,
+      });
+    }
+  } catch (e) {
+    console.warn('Failed to scan directory', basePath, e);
+  }
+};
+
+const scanDeviceMusic = async (setTracks: React.Dispatch<React.SetStateAction<Track[]>>, setIsScanning: React.Dispatch<React.SetStateAction<boolean>>, setScanProgress: React.Dispatch<React.SetStateAction<number>>, setViewMode: React.Dispatch<React.SetStateAction<'tracks' | 'folders'>>,) => {
+  setIsScanning(true);
+  setScanProgress(0);
+
+  const folders = ['Music', 'Download', 'Documents', 'DCIM'];
+  const found: Track[] = [];
+
+  for (let i = 0; i < folders.length; i++) {
+    await scanDirectoryRecursive(folders[i], folders[i], found);
+    setScanProgress(Math.round(((i + 1) / folders.length) * 100));
+  }
+
+  setIsScanning(false);
+
+  if (found.length > 0) {
+    setTracks(found);
+    setViewMode('folders');
+  }
+};
+
 // --- Sub-components for isolation ---
 
 const ProgressBar = memo(({ current, total, onSeek, formatTime }: any) => (
@@ -301,7 +410,7 @@ const ProgressBar = memo(({ current, total, onSeek, formatTime }: any) => (
       step="0.1" 
       value={current} 
       onChange={onSeek}
-      className="w-full h-2 bg-[var(--m3-surface-variant)]/50 rounded-full appearance-none cursor-pointer accent-[var(--m3-primary)] hover:h-2.5 transition-all [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-[var(--m3-primary)] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-md"
+      className="w-full h-2 bg-[var(--m3-surface-variant)]/50 rounded-full appearance-none cursor-pointer accent-[var(--m3-primary)] @media(hover:hover):[&:hover]:h-2.5 transition-[height] duration-200 ease-out [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-[var(--m3-primary)] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:transition-shadow [&::-webkit-slider-thumb]:duration-200 [&::-webkit-slider-thumb]:@media(hover:hover):[&::-webkit-slider-thumb:hover]:shadow-xl"
     />
     <div className="flex justify-between text-[9px] font-black opacity-30 tracking-tight">
       <span>{formatTime(current)}</span>
@@ -313,6 +422,7 @@ const ProgressBar = memo(({ current, total, onSeek, formatTime }: any) => (
 export default function App() {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [viewMode, setViewMode] = useState<'tracks' | 'folders'>('tracks');
+  const [libraryTab, setLibraryTab] = useState<'songs' | 'artists' | 'albums' | 'folders'>('songs');
   const [showPlayer, setShowPlayer] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isScanning, setIsScanning] = useState(false);
@@ -687,7 +797,7 @@ export default function App() {
       navigator.mediaSession.metadata = new (window as any).MediaMetadata({
         title: track.title,
         artist: track.artist,
-        album: track.album || 'Muzic',
+        album: track.album || 'Track',
         artwork: [
           { src: track.cover || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=192&h=192&fit=crop', sizes: '192x192', type: 'image/jpeg' },
           { src: track.cover || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=512&h=512&fit=crop', sizes: '512x512', type: 'image/jpeg' }
@@ -843,7 +953,7 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-full bg-[var(--m3-surface)] text-[var(--m3-on-surface)] flex flex-col overflow-hidden font-sans select-none">
+    <div className="app-shell h-screen w-full text-[var(--m3-on-surface)] flex flex-col overflow-hidden font-sans select-none">
       <audio 
         ref={player.audioRef} 
         src={player.currentTrack?.url} 
@@ -852,181 +962,167 @@ export default function App() {
       />
 
       {/* FIXED HEADER */}
-      <header className="px-6 pt-10 pb-4 shrink-0 space-y-4">
-        {/* TOP LEVEL PILL SWITCHER */}
-        <div className="flex p-1 bg-[var(--m3-surface-variant)]/30 rounded-2xl w-full relative">
-          <button 
-            type="button"
-            onClick={() => setActiveTab('local')}
-            className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 z-10 cursor-pointer ${
-              activeTab === 'local' 
-              ? 'bg-[var(--m3-primary)] text-white shadow-lg shadow-[var(--m3-primary)]/20' 
-              : 'opacity-40 hover:opacity-100'
-            }`}
-          >
-            <Folder size={15} />
-            My Device
-          </button>
-          <button 
-            type="button"
-            onClick={() => setActiveTab('online')}
-            className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all duration-300 z-10 cursor-pointer ${
-              activeTab === 'online' 
-              ? 'bg-[var(--m3-primary)] text-white shadow-lg shadow-[var(--m3-primary)]/20' 
-              : 'opacity-40 hover:opacity-100'
-            }`}
-          >
-            <Globe size={15} />
-            Online Stream
-          </button>
-        </div>
-
-        {activeTab === 'local' ? (
-          <div className="space-y-4 animate-[fadeIn_0.2s_ease-out]">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-black tracking-tight leading-none">Muzic</h1>
-                <p className="text-[12px] font-bold opacity-30 uppercase tracking-widest mt-1">Local Library</p>
-              </div>
-              <div className="flex gap-2">
-                <button 
-                  onClick={() => setSortBy(p => p === 'alphabet' ? 'latest' : 'alphabet')} 
-                  className={`p-3 bg-[var(--m3-surface-variant)] rounded-xl transition-all flex items-center gap-2 group cursor-pointer`}
-                  title={sortBy === 'alphabet' ? 'Sort: Alphabetical' : 'Sort: Latest'}
-                >
-                  {sortBy === 'alphabet' ? <LayoutGrid size={20} className="group-active:scale-90" /> : <Clock size={20} className="group-active:scale-90" />}
-                  <span className="text-[10px] font-black uppercase tracking-widest hidden sm:block">
-                    {sortBy === 'alphabet' ? 'A-Z' : 'Recent'}
-                  </span>
-                </button>
-                <button onClick={() => folderInputRef.current?.click()} className="p-3 bg-[var(--m3-primary-container)] text-[var(--m3-on-primary-container)] rounded-xl hover:scale-105 active:scale-95 transition-all outline-none cursor-pointer">
-                  <FolderPlus size={20} />
-                </button>
-              </div>
-            </div>
-
-            {/* Local Search Input Area */}
-            <div className="relative flex items-center w-full">
-              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30" />
-              <input 
-                type="text" 
-                placeholder="Search local library..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-11 pr-4 py-3 bg-[var(--m3-surface-variant)]/40 rounded-2xl text-xs font-bold focus:bg-[var(--m3-surface-variant)]/70 transition-all border-none focus:outline-none placeholder:opacity-40"
-              />
-            </div>
-
-            {/* TABS (FIXED) */}
-            <div className="flex p-1 bg-[var(--m3-surface-variant)]/30 rounded-2xl w-full">
-              {(['tracks', 'folders'] as const).map(mode => (
-                <button 
-                  key={mode}
-                  onClick={() => setViewMode(mode)} 
-                  className={`flex-1 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all cursor-pointer ${
-                    viewMode === mode 
-                    ? 'bg-[var(--m3-primary)] text-white shadow-md' 
-                    : 'opacity-40 hover:opacity-100'
-                  }`}
-                >
-                  {mode === 'tracks' ? 'Songs' : 'Folders'}
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-4 animate-[fadeIn_0.2s_ease-out]">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-2xl font-black tracking-tight leading-none">Muzic</h1>
-                <p className="text-[12px] font-bold opacity-30 uppercase tracking-widest mt-1">Free Stream</p>
-              </div>
-            </div>
-
-            {/* Online Search input line */}
-            <form onSubmit={handleOnlineSearchSubmit} className="relative flex items-center gap-2 w-full">
-              <div className="relative flex-1">
-                <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30" />
-                <input 
-                  type="text" 
-                  placeholder="Search millions of free streams..." 
-                  value={onlineSearchQuery}
-                  onChange={(e) => setOnlineSearchQuery(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-[var(--m3-surface-variant)]/40 rounded-2xl text-xs font-bold focus:bg-[var(--m3-surface-variant)]/70 transition-all border-none focus:outline-none placeholder:opacity-40"
-                />
-              </div>
-              <button 
-                type="submit"
-                className="px-5 py-3 bg-[var(--m3-primary)] text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+      <header className="px-6 pt-5 pb-4 shrink-0">
+        <div className="surface-panel rounded-[36px] p-5 border border-white/10 shadow-[0_40px_90px_-40px_rgba(0,0,0,0.45)]">
+          <div className="flex items-center justify-between gap-3 mb-5">
+            <div className="flex rounded-full bg-[rgba(255,255,255,0.05)] border border-white/10 shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+              <button
+                type="button"
+                onClick={() => setActiveTab('local')}
+                className={`flex items-center gap-2 px-5 py-2 rounded-full transition duration-200 ${
+                  activeTab === 'local'
+                    ? 'bg-[linear-gradient(135deg,rgba(115,73,255,0.95),rgba(92,118,255,0.95))] text-white shadow-[0_22px_70px_-40px_rgba(92,118,255,0.7)]'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}
               >
-                Search
+                <Folder size={14} className={activeTab === 'local' ? 'text-white' : 'text-white/70'} />
+                <span className="text-[10px] font-black uppercase tracking-[0.32em]">My Device</span>
               </button>
-            </form>
-
-            {/* Stream Engine Selector Slider */}
-            <div className="space-y-1.5">
-              <div className="flex gap-2 items-center justify-between bg-[var(--m3-surface-variant)]/10 p-2 rounded-xl border border-[var(--m3-primary)]/5">
-                <span className="text-[10px] font-black uppercase tracking-wider opacity-40">Source Mode:</span>
-                <div className="flex p-0.5 bg-[var(--m3-surface-variant)]/30 rounded-lg">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOnlineEngine('itunes');
-                      fetchOnlineTracks(onlineSearchQuery, 'itunes');
-                    }}
-                    className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer ${
-                      onlineEngine === 'itunes'
-                      ? 'bg-[var(--m3-primary)] text-white shadow-sm'
-                      : 'opacity-40 hover:opacity-100'
-                    }`}
-                  >
-                    Global Previews (30s)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOnlineEngine('audius');
-                      fetchOnlineTracks(onlineSearchQuery, 'audius');
-                    }}
-                    className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer ${
-                      onlineEngine === 'audius'
-                      ? 'bg-[var(--m3-primary)] text-white shadow-sm'
-                      : 'opacity-40 hover:opacity-100'
-                    }`}
-                  >
-                    Audius Full Tracks
-                  </button>
-                </div>
-              </div>
-              <p className="text-[9px] font-bold text-center opacity-45 px-1 leading-normal uppercase tracking-wider">
-                {onlineEngine === 'itunes' 
-                  ? '🎯 Best for Punjabi, Bollywood, Hindi, & English Mainstream hits!' 
-                  : '🎸 Best for indie synth, instrumental, lofi, or electronic tracks (Full length)'}
-              </p>
+              <button
+                type="button"
+                onClick={() => setActiveTab('online')}
+                className={`flex items-center gap-2 px-5 py-2 rounded-full transition duration-200 ${
+                  activeTab === 'online'
+                    ? 'bg-[linear-gradient(135deg,rgba(115,73,255,0.95),rgba(92,118,255,0.95))] text-white shadow-[0_22px_70px_-40px_rgba(92,118,255,0.7)]'
+                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Globe size={14} className={activeTab === 'online' ? 'text-white' : 'text-white/70'} />
+                <span className="text-[10px] font-black uppercase tracking-[0.32em]">Online Stream</span>
+              </button>
             </div>
-
-            {/* Category Tags selection bar */}
-            <div className="flex gap-1.5 overflow-x-auto no-scrollbar pt-1 max-w-full pb-1">
-              {['trending', 'punjabi', 'hindi', 'bollywood', 'lofi', 'pop', 'electronic', 'rock'].map((tag) => (
-                <button
-                   key={tag}
-                   type="button"
-                   onClick={() => {
-                     setOnlineSearchQuery(tag === 'trending' ? '' : tag);
-                     fetchOnlineTracks(tag === 'trending' ? '' : tag);
-                   }}
-                   className={`px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer shrink-0 ${
-                     (tag === 'trending' && onlineSearchQuery === '') || onlineSearchQuery.toLowerCase() === tag
-                     ? 'bg-[var(--m3-primary-container)] text-[var(--m3-primary)] font-black border border-[var(--m3-primary)]/10 text-[10px]'
-                     : 'bg-[var(--m3-surface-variant)]/40 opacity-65 hover:opacity-100 text-[10px]'
-                   }`}
-                >
-                  #{tag}
-                </button>
-              ))}
+            <div className="flex items-center gap-3">
+              <button className="h-12 w-12 rounded-3xl bg-[rgba(255,255,255,0.06)] border border-white/10 flex items-center justify-center text-white/60 transition hover:text-white hover:bg-[rgba(255,255,255,0.14)]">
+                <LayoutGrid size={18} />
+              </button>
+              <button onClick={() => folderInputRef.current?.click()} className="h-12 w-12 rounded-3xl bg-[rgba(255,255,255,0.06)] border border-white/10 flex items-center justify-center text-white/60 transition hover:text-white hover:bg-[rgba(255,255,255,0.14)]">
+                <FolderPlus size={18} />
+              </button>
             </div>
           </div>
-        )}
+
+          <div className="mb-5">
+            <p className="text-[11px] uppercase tracking-[0.35em] text-white/50">
+              {activeTab === 'local' ? 'Local Library' : 'Free Stream'}
+            </p>
+          </div>
+
+          <div className="grid gap-3 lg:grid-cols-[1fr_auto] items-center">
+            <div className="relative">
+              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50" />
+              <input 
+                type="search" 
+                placeholder={activeTab === 'local' ? 'Search in your library...' : 'Search millions of streams...'}
+                value={activeTab === 'local' ? searchQuery : onlineSearchQuery}
+                onChange={(e) => activeTab === 'local' ? setSearchQuery(e.target.value) : setOnlineSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-14 py-4 rounded-[28px] bg-[rgba(255,255,255,0.05)] border border-white/10 text-white text-sm placeholder:text-white/35 focus:outline-none focus:border-[var(--m3-primary-container)]/60 focus:ring-2 focus:ring-[var(--m3-primary-container)]/20 transition duration-200"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 -translate-y-1/2 h-11 w-11 rounded-full bg-[rgba(255,255,255,0.08)] border border-white/10 text-white/70 flex items-center justify-center transition hover:bg-[rgba(141,107,255,0.18)] hover:text-white"
+              >
+                <Filter size={18} />
+              </button>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSortBy((prev) => (prev === 'alphabet' ? 'latest' : 'alphabet'))}
+              className="h-14 rounded-[24px] bg-[rgba(255,255,255,0.08)] border border-white/10 text-white/60 px-5 text-[11px] font-black uppercase tracking-[0.3em] transition hover:text-white hover:bg-[rgba(255,255,255,0.14)]"
+            >
+              {sortBy === 'alphabet' ? 'Recent' : 'A-Z'}
+            </button>
+          </div>
+
+          <div className="mt-5 flex flex-wrap gap-2">
+            {(['songs', 'artists', 'albums', 'folders'] as const).map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => {
+                  setLibraryTab(tab);
+                  if (tab === 'folders') {
+                    setViewMode('folders');
+                  } else {
+                    setViewMode('tracks');
+                  }
+                }}
+                className={`rounded-full px-4 py-3 text-[11px] font-black uppercase tracking-[0.32em] transition duration-200 ${
+                  libraryTab === tab
+                    ? 'bg-[var(--m3-primary)] text-white shadow-[0_18px_50px_-28px_rgba(141,107,255,0.75)]'
+                    : 'bg-[rgba(255,255,255,0.04)] text-white/60 hover:text-white hover:bg-[rgba(255,255,255,0.1)]'
+                }`}
+              >
+                {tab === 'songs' ? 'Songs' : tab === 'artists' ? 'Artists' : tab === 'albums' ? 'Albums' : 'Folders'}
+              </button>
+            ))}
+          </div>
+
+          {activeTab === 'online' && (
+            <div className="mt-4 space-y-4">
+              <div className="space-y-1.5 surface-panel p-3 rounded-[28px] border border-white/10 shadow-[0_18px_40px_-20px_rgba(0,0,0,0.45)]">
+                <div className="flex gap-2 items-center justify-between">
+                  <span className="text-[10px] font-black uppercase tracking-wider opacity-50">Source Mode:</span>
+                  <div className="flex p-0.5 bg-white/5 rounded-3xl">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOnlineEngine('itunes');
+                        fetchOnlineTracks(onlineSearchQuery, 'itunes');
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition duration-150 ease-out cursor-pointer ${
+                        onlineEngine === 'itunes'
+                          ? 'bg-[var(--m3-primary)] text-white shadow-[0_18px_40px_-20px_rgba(141,107,255,0.8)]'
+                          : 'opacity-40 @media(hover:hover):[&:hover]:opacity-100 @media(hover:hover):[&:hover]:scale-[1.02]'
+                      }`}
+                    >
+                      Global Previews
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setOnlineEngine('audius');
+                        fetchOnlineTracks(onlineSearchQuery, 'audius');
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest transition duration-150 ease-out cursor-pointer ${
+                        onlineEngine === 'audius'
+                          ? 'bg-[var(--m3-primary)] text-white shadow-[0_18px_40px_-20px_rgba(141,107,255,0.8)]'
+                          : 'opacity-40 @media(hover:hover):[&:hover]:opacity-100 @media(hover:hover):[&:hover]:scale-[1.02]'
+                      }`}
+                    >
+                      Audius Full Tracks
+                    </button>
+                  </div>
+                </div>
+                <p className="text-[9px] font-bold text-center opacity-45 px-1 leading-normal uppercase tracking-wider">
+                  {onlineEngine === 'itunes'
+                    ? '🎯 Best for Punjabi, Bollywood, Hindi, & English Mainstream hits!'
+                    : '🎸 Best for independent synth, instrumental, lofi, or electronic tracks'
+                  }
+                </p>
+              </div>
+
+              <div className="flex gap-1.5 overflow-x-auto no-scrollbar pt-1 max-w-full pb-1">
+                {['trending', 'punjabi', 'hindi', 'bollywood', 'lofi', 'pop', 'electronic', 'rock'].map((tag) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => {
+                      setOnlineSearchQuery(tag === 'trending' ? '' : tag);
+                      fetchOnlineTracks(tag === 'trending' ? '' : tag);
+                    }}
+                    className={`px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition duration-150 ease-out cursor-pointer shrink-0 ${
+                      (tag === 'trending' && onlineSearchQuery === '') || onlineSearchQuery.toLowerCase() === tag
+                        ? 'bg-[var(--m3-primary-container)] text-[var(--m3-primary)] font-black border border-[var(--m3-primary)]/20 shadow-sm'
+                        : 'bg-white/8 opacity-65 @media(hover:hover):[&:hover]:opacity-100 @media(hover:hover):[&:hover]:scale-[1.02]'
+                    }`}
+                  >
+                    #{tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
       </header>
 
       {/* SCROLLABLE CONTENT */}
@@ -1035,7 +1131,7 @@ export default function App() {
           {permissionStatus === 'denied' && activeTab === 'local' && (
             <div 
               onClick={requestPermission}
-              className="mb-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl flex items-center justify-between gap-3 cursor-pointer hover:bg-amber-500/15 active:scale-[0.99] transition-all group"
+              className="mb-4 p-4 bg-white/8 border border-white/10 rounded-[26px] flex items-center justify-between gap-3 cursor-pointer @media(hover:hover):[&:hover]:bg-white/12 active:scale-[0.98] transition-[background-color,transform,box-shadow] duration-180 ease-out shadow-[0_20px_50px_-30px_rgba(0,0,0,0.45)] group"
             >
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-amber-500/20 text-amber-500 shrink-0">
@@ -1043,7 +1139,7 @@ export default function App() {
                 </div>
                 <div className="text-left">
                   <p className="text-xs font-black text-amber-500 uppercase tracking-widest">Storage Permission Denied</p>
-                  <p className="text-[11px] font-bold opacity-60 mt-0.5">Click here to retry permissions so Muzic can index your files.</p>
+                  <p className="text-[11px] font-bold opacity-60 mt-0.5">Click here to retry permissions so the app can index your files.</p>
                 </div>
               </div>
               <ChevronRight size={16} className="text-amber-500/60 group-hover:translate-x-1 transition-transform" />
@@ -1062,9 +1158,10 @@ export default function App() {
                   />
                 ))
               ) : (
-                <div className="flex flex-col items-center justify-center py-20 opacity-20">
-                  <Music size={48} />
-                  <p className="mt-4 font-bold text-sm tracking-widest uppercase">No tracks found</p>
+                <div className="flex flex-col items-center justify-center py-20 text-center opacity-70">
+                  <Music size={48} className="text-[var(--m3-primary)]" />
+                  <p className="mt-4 font-black text-sm tracking-widest uppercase text-[var(--m3-on-surface)]">No tracks found</p>
+                  <p className="mt-2 text-[10px] opacity-50 max-w-[280px] leading-relaxed">Import your music or scan device storage to instantly fill this premium playlist.</p>
                 </div>
               )
             ) : viewMode === 'folders' ? (
@@ -1167,7 +1264,7 @@ export default function App() {
           <motion.footer 
             initial={{ y: 100 }} animate={{ y: 0 }} exit={{ y: 100 }}
             onClick={() => setShowPlayer(true)}
-            className="fixed bottom-6 left-6 right-6 bg-[var(--m3-primary-container)] rounded-[24px] shadow-2xl flex flex-col cursor-pointer z-10 border border-white/20 backdrop-blur-xl overflow-hidden"
+            className="fixed bottom-6 left-6 right-6 bg-white/8 rounded-[28px] shadow-[0_40px_120px_-45px_rgba(0,0,0,0.7)] flex flex-col cursor-pointer z-10 border border-white/10 backdrop-blur-3xl overflow-hidden"
           >
             <div className="flex items-center px-4 pt-3 pb-2">
               <div className="w-12 h-12 rounded-xl overflow-hidden mr-3 shadow-lg shrink-0">
@@ -1180,7 +1277,7 @@ export default function App() {
               <div className="flex items-center gap-1">
                 <button 
                   onClick={(e) => { e.stopPropagation(); player.togglePlay(); }}
-                  className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:scale-90 transition-all flex items-center justify-center p-0"
+                  className="w-11 h-11 rounded-full bg-[var(--m3-surface-variant)]/15 @media(hover:hover):[&:hover]:bg-[var(--m3-surface-variant)]/25 active:scale-95 transition-[background-color,transform,box-shadow] duration-150 ease-out flex items-center justify-center p-0 shadow-sm"
                 >
                   {player.isPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="currentColor" className="ml-0.5" />}
                 </button>
@@ -1199,7 +1296,7 @@ export default function App() {
                     value={player.currentTime} 
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => { e.stopPropagation(); player.seek(parseFloat(e.target.value)); }}
-                    className="w-full h-1 bg-black/10 rounded-full appearance-none cursor-pointer accent-[var(--m3-primary)] hover:h-1.5 transition-all"
+                    className="w-full h-1 bg-white/15 rounded-full appearance-none cursor-pointer accent-[var(--m3-primary)] @media(hover:hover):[&:hover]:h-1.5 transition-[height,background-color] duration-150 ease-out"
                   />
                 </div>
                 <span className="text-[9px] font-black opacity-30 w-8 text-right">{formatTime(player.duration)}</span>
@@ -1215,86 +1312,81 @@ export default function App() {
           <motion.div 
             initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
             transition={{ type: 'spring', damping: 35, stiffness: 250, mass: 0.8 }}
-            className="fixed inset-0 bg-[var(--m3-surface)] z-50 flex flex-col px-8 pb-10 overflow-hidden select-none"
+            className="fixed inset-0 bg-[#07050f] z-50 flex flex-col px-6 pb-10 overflow-hidden select-none"
           >
-            {/* Drag Handle */}
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-black/20 rounded-full shrink-0 z-20" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(115,73,255,0.18),transparent_30%),radial-gradient(circle_at_bottom,_rgba(59,53,255,0.15),transparent_35%),linear-gradient(180deg,rgba(7,5,15,0.95),rgba(4,2,9,0.95))] pointer-events-none" />
+            <div className="absolute inset-x-0 top-0 h-72 bg-[radial-gradient(circle,rgba(115,73,255,0.16),transparent_40%)] blur-3xl opacity-70" />
 
-            <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[var(--m3-primary-container)]/30 to-transparent blur-[120px] scale-125 opacity-40" />
-            
-            <header className="flex items-center justify-between mt-12 mb-6 shrink-0">
-              <button onClick={() => setShowPlayer(false)} className="p-2 -ml-2 rounded-full hover:bg-black/5 active:scale-90 transition-all">
+            <header className="flex items-center justify-between mt-8 mb-6">
+              <button onClick={() => setShowPlayer(false)} className="p-3 rounded-full bg-white/5 border border-white/10 text-white/70 transition duration-150 ease-out @media(hover:hover):hover:bg-white/10 active:scale-95">
                 <ChevronDown size={22} strokeWidth={3} />
               </button>
-              <div className="text-center">
-                <p className="text-[8px] font-black uppercase tracking-[0.3em] opacity-30 mb-0.5">Focus Mode</p>
-                <p className="font-black text-xs truncate max-w-[160px] opacity-80">{player.currentTrack.album}</p>
+
+              <div className="flex flex-col items-center gap-2">
+                <p className="text-[9px] uppercase tracking-[0.32em] text-white/40">playing from</p>
+                <span className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/90">My Device</span>
               </div>
-              <div className="w-8" /> {/* Spacer */}
+
+              <button type="button" className="p-3 rounded-full bg-white/5 border border-white/10 text-white/70 transition duration-150 ease-out @media(hover:hover):hover:bg-white/10 active:scale-95">
+                <MoreVertical size={20} />
+              </button>
             </header>
 
-            <div className="flex-1 flex flex-col items-center justify-center space-y-6 max-w-[280px] mx-auto w-full">
+            <div className="flex-1 flex flex-col items-center justify-center space-y-6 max-w-[320px] mx-auto w-full">
               {/* Rotating Vinyl Disc */}
-              <div className="relative w-full aspect-square group">
+              <div className="relative w-full aspect-square max-w-[320px] group">
+                <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(115,73,255,0.18),transparent_45%)] blur-2xl opacity-80" />
+                <div className="absolute inset-6 rounded-full border border-white/10 shadow-[0_0_80px_-20px_rgba(115,73,255,0.75)]" />
+
                 <motion.div 
                   animate={{ rotate: player.isPlaying ? 360 : 0 }}
                   transition={{ 
-                    duration: 4, 
+                    duration: 6, 
                     repeat: Infinity, 
-                    ease: "linear",
-                    repeatType: "loop"
+                    ease: 'linear',
+                    repeatType: 'loop'
                   }}
-                  className="w-full h-full rounded-full overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.4)] ring-8 ring-black/5 relative"
+                  className="relative w-full h-full rounded-full overflow-hidden shadow-[0_30px_90px_-30px_rgba(57,38,255,0.55)] border border-white/10 bg-black/20"
                 >
                   <img src={player.currentTrack.cover} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                  {/* Vinyl Texture Overlay */}
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.1)_70%,rgba(0,0,0,0.3)_100%)] pointer-events-none" />
-                  <div className="absolute inset-0 border-[30px] border-black/5 rounded-full pointer-events-none" />
-                  {/* Center Hole */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[var(--m3-surface)] rounded-full shadow-inner ring-4 ring-black/20" />
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.25)_60%,rgba(0,0,0,0.6)_100%)] pointer-events-none" />
+                  <div className="absolute inset-0 border-[12px] border-white/10 rounded-full pointer-events-none" />
+                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-[#09050f] rounded-full shadow-inner ring ring-white/10" />
                 </motion.div>
-                
-                {/* Tone Arm Decoration (Static) */}
-                <div 
-                  className={`absolute -top-4 -right-4 w-24 h-40 pointer-events-none transition-transform duration-700 origin-top-right ${player.isPlaying ? 'rotate-[-5deg]' : 'rotate-[-25deg]'}`}
-                  style={{ opacity: 0.1 }}
-                >
-                  <div className="w-1.5 h-full bg-black rounded-full ml-auto mr-4" />
-                </div>
               </div>
 
-              <div className="w-full text-center space-y-0.5 pt-2">
-                <h2 className="text-xl font-black tracking-tight leading-tight px-2 line-clamp-1">{player.currentTrack.title}</h2>
-                <p className="text-base text-[var(--m3-on-surface-variant)] font-bold opacity-30">{player.currentTrack.artist}</p>
+              <div className="w-full text-center space-y-1 pt-2">
+                <h2 className="text-2xl font-black tracking-tight leading-tight px-2 line-clamp-1 text-white">{player.currentTrack.title}</h2>
+                <p className="text-sm text-white/50 font-medium">{player.currentTrack.artist}</p>
               </div>
 
               <div className="w-full space-y-6">
                 <div className="flex items-center justify-between w-full px-2">
                   <button 
                     onClick={player.toggleShuffle}
-                    className={`p-2 transition-all ${player.shuffle ? 'text-[var(--m3-primary)] opacity-100 scale-110' : 'opacity-30 hover:opacity-100'}`}
+                    className={`p-3 rounded-2xl transition-all duration-150 ${player.shuffle ? 'bg-white/10 text-white' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}
                   >
                     <Shuffle size={20} strokeWidth={3} />
                   </button>
                   
                   <div className="flex items-center gap-5">
-                    <button onClick={player.prevTrack} className="p-2 rounded-full hover:bg-black/5 active:scale-90 transition-all text-current">
+                    <button onClick={player.prevTrack} className="p-3 rounded-2xl bg-white/5 text-white/60 hover:bg-white/10 active:scale-95 transition duration-150">
                       <SkipBack size={22} fill="currentColor" />
                     </button>
                     <button 
                       onClick={player.togglePlay}
-                      className="w-14 h-14 bg-[var(--m3-primary-container)] text-[var(--m3-on-primary-container)] rounded-2xl flex items-center justify-center shadow-lg active:scale-95 transition-all"
+                      className="w-16 h-16 rounded-3xl bg-[#6b46ff] text-white flex items-center justify-center shadow-[0_24px_64px_-28px_rgba(107,70,255,0.8)] transition duration-150 ease-out active:scale-95"
                     >
-                      {player.isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-0.5" />}
+                      {player.isPlaying ? <Pause size={28} fill="currentColor" /> : <Play size={28} fill="currentColor" className="ml-0.5" />}
                     </button>
-                    <button onClick={player.nextTrack} className="p-2 rounded-full hover:bg-black/5 active:scale-90 transition-all text-current">
+                    <button onClick={player.nextTrack} className="p-3 rounded-2xl bg-white/5 text-white/60 hover:bg-white/10 active:scale-95 transition duration-150">
                       <SkipForward size={22} fill="currentColor" />
                     </button>
                   </div>
 
                   <button 
                     onClick={player.toggleRepeat}
-                    className={`p-2 transition-all ${player.repeatMode !== 'off' ? 'text-[var(--m3-primary)] opacity-100 scale-110' : 'opacity-30 hover:opacity-100'}`}
+                    className={`p-3 rounded-2xl transition-all duration-150 ${player.repeatMode !== 'off' ? 'bg-white/10 text-white' : 'bg-white/5 text-white/50 hover:bg-white/10'}`}
                   >
                     {player.repeatMode === 'one' ? <Repeat1 size={20} strokeWidth={3} /> : <Repeat size={20} strokeWidth={3} />}
                   </button>
@@ -1308,6 +1400,20 @@ export default function App() {
                     formatTime={formatTime}
                   />
                 </div>
+              </div>
+              <div className="mt-6 flex items-center justify-between px-6 text-white/50">
+                <button type="button" className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 transition duration-150 active:scale-95">
+                  <Heart size={16} />
+                </button>
+                <button type="button" className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 transition duration-150 active:scale-95">
+                  <ListMusic size={16} />
+                </button>
+                <button type="button" className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 transition duration-150 active:scale-95">
+                  <Volume2 size={16} />
+                </button>
+                <button type="button" className="p-3 rounded-2xl bg-white/5 hover:bg-white/10 transition duration-150 active:scale-95">
+                  <Moon size={16} />
+                </button>
               </div>
             </div>
           </motion.div>
@@ -1373,7 +1479,7 @@ export default function App() {
                     Access Media Files?
                   </h2>
                   <p className="text-sm font-semibold opacity-60 leading-relaxed text-[var(--m3-on-surface-variant)]">
-                    Muzic needs storage permission to scan the folders on your device and populate your offline music library seamlessly.
+                    This app needs storage permission to scan the folders on your device and populate your offline music library seamlessly.
                   </p>
                   <p className="text-xs font-semibold opacity-50 leading-relaxed bg-black/5 p-3 rounded-xl border border-white/5 text-[var(--m3-on-surface-variant)]">
                     💡 This app processes your files locally, respects your privacy, and never uploads any data.

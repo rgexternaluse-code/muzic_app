@@ -25,6 +25,13 @@
       "command": "./gradlew assembleDebug",
       "options": { "cwd": "${workspaceFolder}/android" },
       "problemMatcher": []
+    },
+    {
+      "label": "Android: Assemble Release",
+      "type": "shell",
+      "command": "./gradlew assembleRelease",
+      "options": { "cwd": "${workspaceFolder}/android" },
+      "problemMatcher": []
     }
   ]
 }
