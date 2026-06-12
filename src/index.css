@@ -7,48 +7,57 @@
 }
 
 :root {
-  --m3-primary: #6750A4;
+  --m3-primary: #6355FE;
   --m3-on-primary: #FFFFFF;
-  --m3-primary-container: #EADDFF;
-  --m3-on-primary-container: #21005D;
-  --m3-secondary: #625B71;
-  --m3-on-secondary: #FFFFFF;
-  --m3-secondary-container: #E8DEF8;
-  --m3-on-secondary-container: #1D192B;
-  --m3-surface: #FEF7FF;
-  --m3-on-surface: #1D1B20;
-  --m3-surface-variant: #E7E0EB;
-  --m3-on-surface-variant: #49454F;
-  --m3-outline: #79747E;
+  --m3-primary-container: #1C153E;
+  --m3-on-primary-container: #ECE6FF;
+  --m3-secondary: #8E7CFF;
+  --m3-on-secondary: #120A3E;
+  --m3-secondary-container: #12102A;
+  --m3-on-secondary-container: #EDEAF9;
+  --m3-surface: #0A0818;
+  --m3-on-surface: #F5F4F9;
+  --m3-surface-variant: #14122B;
+  --m3-on-surface-variant: #B9B6CE;
+  --m3-outline: #2B2651;
 }
 
 @layer base {
   body {
-    @apply bg-[var(--m3-surface)] text-[var(--m3-on-surface)] font-sans antialiased selection:bg-[var(--m3-primary-container)];
+    @apply bg-[#0A0818] text-[#F5F4F9] font-sans antialiased selection:bg-[#1C153E];
     overflow: hidden;
   }
 }
 
 @layer utilities {
   .m3-card {
-    @apply bg-[var(--m3-surface-variant)] rounded-[28px] transition-all duration-300;
+    @apply bg-[#14122B]/90 rounded-[28px] border border-white/5 shadow-2xl;
   }
   
   .glass {
-    @apply backdrop-blur-xl bg-white/10 border border-white/20;
+    @apply backdrop-blur-xl bg-[#14122B]/75 border border-white/10 shadow-[0_8px_32px_0_rgba(10,8,24,0.37)];
   }
 
-  /* Custom scrollbar to look like Android scrollbars */
+  /* No scrollbar utility */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Custom scrollbar to look like premium Android scrollbars */
   ::-webkit-scrollbar {
-    width: 4px;
+    width: 3px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--m3-outline);
+    background: #2B2651;
     border-radius: 10px;
-    opacity: 0.5;
+    opacity: 0.4;
   }
 }
 
