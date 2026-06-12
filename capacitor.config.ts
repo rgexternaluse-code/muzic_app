@@ -2,7 +2,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.example.muzic',
-  appName: 'Music Player',
+  appName: 'Muzic',
   webDir: 'dist',
   server: {
     androidScheme: 'https'

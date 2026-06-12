@@ -7,28 +7,22 @@
 }
 
 :root {
-  --m3-primary: #8D6BFF;
+  --m3-primary: #6750A4;
   --m3-on-primary: #FFFFFF;
-  --m3-primary-container: #632DFF;
-  --m3-on-primary-container: #F7F2FF;
-  --m3-secondary: #7C73FF;
+  --m3-primary-container: #EADDFF;
+  --m3-on-primary-container: #21005D;
+  --m3-secondary: #625B71;
   --m3-on-secondary: #FFFFFF;
-  --m3-secondary-container: #2B1E59;
-  --m3-on-secondary-container: #E7E5FF;
-  --m3-surface: #080510;
-  --m3-on-surface: #F5F3FF;
-  --m3-surface-variant: #150E2F;
-  --m3-on-surface-variant: #D3CCFF;
-  --m3-outline: #5D4F8E;
-  --m3-surface-strong: #04030A;
-  --m3-glow: rgba(141, 107, 255, 0.24);
+  --m3-secondary-container: #E8DEF8;
+  --m3-on-secondary-container: #1D192B;
+  --m3-surface: #FEF7FF;
+  --m3-on-surface: #1D1B20;
+  --m3-surface-variant: #E7E0EB;
+  --m3-on-surface-variant: #49454F;
+  --m3-outline: #79747E;
 }
 
 @layer base {
-  html, body {
-    min-height: 100%;
-  }
-
   body {
     @apply bg-[var(--m3-surface)] text-[var(--m3-on-surface)] font-sans antialiased selection:bg-[var(--m3-primary-container)];
     overflow: hidden;
@@ -36,77 +30,38 @@
 }
 
 @layer utilities {
-  .app-shell {
-    background: radial-gradient(circle at top left, rgba(141, 107, 255, 0.34), transparent 20%),
-                radial-gradient(circle at 80% 12%, rgba(84, 44, 233, 0.18), transparent 18%),
-                radial-gradient(circle at 50% 82%, rgba(46, 11, 71, 0.24), transparent 24%),
-                linear-gradient(180deg, #09020d 0%, #04020a 100%);
-  }
-
-  .surface-panel {
-    background: rgba(11, 7, 24, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 32px 90px rgba(0, 0, 0, 0.28);
-    backdrop-filter: blur(30px);
-  }
-
-  .card-surface {
-    background: rgba(22, 12, 44, 0.92);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.22);
-    backdrop-filter: blur(20px);
-  }
-
-  .glass {
-    @apply backdrop-blur-xl bg-white/10 border border-white/10;
-  }
-
   .m3-card {
-    @apply bg-[var(--m3-surface-variant)] rounded-[28px] transition-[background-color,box-shadow] duration-200;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    @apply bg-[var(--m3-surface-variant)] rounded-[28px] transition-all duration-300;
+  }
+  
+  .glass {
+    @apply backdrop-blur-xl bg-white/10 border border-white/20;
   }
 
-  .btn-premium {
-    @apply transition-[transform,box-shadow,background-color] duration-150;
-  }
-
-  .btn-premium:active {
-    @apply scale-[0.96] shadow-lg;
-  }
-
-  .btn-premium:hover:not(:active) {
-    @apply shadow-md;
-  }
-
-  .no-scrollbar {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
+  /* Custom scrollbar to look like Android scrollbars */
   ::-webkit-scrollbar {
     width: 4px;
   }
-
   ::-webkit-scrollbar-track {
     background: transparent;
   }
-
   ::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.18);
+    background: var(--m3-outline);
     border-radius: 10px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
+    opacity: 0.5;
   }
 }
+
+@keyframes vinyl-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.vinyl-rotating {
+  animation: vinyl-spin 20s linear infinite;
+}
+

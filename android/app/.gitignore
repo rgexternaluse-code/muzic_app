@@ -1,5 +1,2 @@
 /build/*
 !/build/.npmkeep
-
-# Ignore node_modules in nested app folders
-node_modules/

@@ -8,12 +8,16 @@
     "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "android:sync": "npm run build && npx cap sync",
+    "android:copy": "npm run build && npx cap copy",
+    "android:open": "npx cap open android",
+    "android:build": "npm run build && npx cap sync && cd android && ./gradlew assembleDebug",
+    "android:build-win": "npm run build && npx cap sync && cd android && gradlew.bat assembleDebug"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.0",
     "@capacitor/core": "^8.4.0",
-    "@capacitor/filesystem": "^8.1.2",
     "@google/genai": "^1.29.0",
     "@tailwindcss/vite": "^4.1.14",
     "@vitejs/plugin-react": "^5.0.4",

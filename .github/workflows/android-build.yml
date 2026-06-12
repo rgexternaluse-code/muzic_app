@@ -1,22 +1,14 @@
-﻿name: Android CI Build
+name: Android Build
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main ]
   pull_request:
-    branches: [ main, master ]
-
-env:
-  ANDROID_SDK_ROOT: /opt/android-sdk
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-      ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-      ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
@@ -24,88 +16,25 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
           java-version: '17'
+          distribution: 'zulu'
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      - name: Install Dependencies
+        run: npm ci --legacy-peer-deps || npm install --legacy-peer-deps
 
-      - name: Install Android command-line tools
-        run: |
-          sudo mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-          curl -sSLo /tmp/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-          unzip -q /tmp/cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
-          mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --sdk_root=$ANDROID_SDK_ROOT --install "platform-tools" "platforms;android-33" "build-tools;33.0.2"
-
-      - name: Accept Android SDK licenses
-        run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build web
+      - name: Build Web Application
         run: npm run build
 
       - name: Sync Capacitor
-        run: npx cap sync android
+        run: npx cap sync
 
-      - name: Prepare signing keys
-        if: env.ANDROID_KEYSTORE_BASE64 != ''
-        run: |
-          echo "$ANDROID_KEYSTORE_BASE64" | base64 --decode > keystore.jks
-          cat > keystore.properties <<'EOF'
-storeFile=keystore.jks
-storePassword=$ANDROID_KEYSTORE_PASSWORD
-keyAlias=$ANDROID_KEY_ALIAS
-keyPassword=$ANDROID_KEY_PASSWORD
-EOF
-
-      - name: Ensure Gradle wrapper
+      - name: Build Android APK
         run: |
           cd android
-          if [ ! -f gradle/wrapper/gradle-wrapper.jar ] || ! ./gradlew --version >/dev/null 2>&1; then
-            echo "Regenerating Gradle wrapper using downloaded Gradle"
-            curl -sSLo /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.14.3-bin.zip
-            unzip -q /tmp/gradle.zip -d /tmp/gradle-dist
-            /tmp/gradle-dist/gradle-8.14.3/bin/gradle wrapper --gradle-version 8.14.3 --distribution-type bin
-          fi
-
-      - name: Build debug APK
-        run: |
-          cd android
-          chmod +x gradlew
           ./gradlew assembleDebug
-
-      - name: Build release APK
-        if: env.ANDROID_KEYSTORE_BASE64 != ''
-        run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleRelease
-
-      - name: Upload debug APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-
-      - name: Upload release APK
-        if: env.ANDROID_KEYSTORE_BASE64 != ''
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
