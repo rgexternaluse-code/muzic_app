@@ -35,12 +35,18 @@ import {
   ArrowLeft,
   SlidersHorizontal,
   ExternalLink,
-  Laptop
+  Laptop,
+  X,
+  Lock,
+  Activity,
+  ShieldCheck,
+  Smartphone
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Track, FolderNode } from './types';
 import { db } from './db';
 import * as mm from 'music-metadata-browser';
+import appLogo from './assets/images/muzic_app_logo_1786456453207.jpg';
 import { TrackContextMenu } from './components/TrackContextMenu';
 import { PlaylistsView } from './components/PlaylistsView';
 import { SettingsView } from './components/SettingsView';
@@ -182,25 +188,25 @@ function useMusicPlayer(tracks: Track[]) {
 // --- Shared Components (Memoized to prevent flickering) ---
 
 const SoundWaveIndicator = ({ isPlaying = true }: { isPlaying?: boolean }) => (
-  <div className="flex items-end gap-[3px] h-3.5 w-4 shrink-0 mx-2 pb-[1px]">
+  <div className="flex items-end gap-[3px] h-3.5 w-4 shrink-0 mx-1.5 pb-[1px]">
     {[...Array(4)].map((_, i) => (
       <motion.span
         key={i}
-        className="w-[2.5px] bg-sky-500 rounded-full"
+        className="w-[2.5px] rounded-full shadow-[0_0_6px_#6355FE]"
         animate={isPlaying ? {
           height: ["25%", "100%", "25%"]
         } : {
           height: "35%"
         }}
         transition={isPlaying ? {
-          duration: 0.5 + i * 0.12,
+          duration: 0.45 + i * 0.1,
           repeat: Infinity,
           ease: "easeInOut",
           repeatType: "reverse"
         } : {}}
         style={{
           transformOrigin: "bottom",
-          backgroundColor: "var(--m3-primary)"
+          backgroundColor: "#8E7CFF"
         }}
       />
     ))}
@@ -229,28 +235,28 @@ const TrackItem = memo(({
       e.stopPropagation();
       onClick();
     }}
-    whileHover={{ scale: 1.015, transition: { duration: 0.15 } }}
+    whileHover={{ scale: 1.012, transition: { duration: 0.15 } }}
     whileTap={{ scale: 0.985 }}
     className={`flex items-center p-3 rounded-2xl cursor-pointer transition-all duration-300 group border ${
       isActive 
-        ? 'bg-[#6355FE]/15 border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/5' 
-        : 'bg-[#14122B]/30 hover:bg-[#1B183A]/70 border-white/5'
+        ? 'bg-[#6355FE]/20 border-[#6355FE]/40 shadow-xl shadow-[#6355FE]/10' 
+        : 'bg-[#14122B]/40 hover:bg-[#1B183A]/80 border-white/5 hover:border-white/10'
     }`}
   >
     {/* Cover Art Image */}
-    <div className="w-12 h-12 rounded-xl overflow-hidden mr-4 shadow-md shrink-0 relative border border-white/5">
-      <img src={track.cover} alt={track.title} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+    <div className="w-12 h-12 rounded-xl overflow-hidden mr-3.5 shadow-md shrink-0 relative border border-white/10 group-hover:shadow-lg transition-all">
+      <img src={track.cover} alt={track.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
       {isActive && (
-        <div className="absolute inset-0 bg-black/20 flex items-center justify-center backdrop-blur-[2px]">
-          {isPlaying && <div className="w-2.5 h-2.5 bg-[#6355FE] rounded-full animate-ping" />}
+        <div className="absolute inset-0 bg-black/30 flex items-center justify-center backdrop-blur-[2px]">
+          {isPlaying && <div className="w-3 h-3 bg-[#6355FE] rounded-full animate-ping shadow-[0_0_8px_#6355FE]" />}
         </div>
       )}
     </div>
 
     {/* Metadata Text Box */}
     <div className="flex-1 min-w-0 pr-2">
-      <h3 className={`text-[14px] font-extrabold truncate leading-tight transition-colors duration-200 ${
-        isActive ? 'text-[#ECE6FF]' : 'text-white'
+      <h3 className={`text-[13.5px] font-black truncate leading-tight transition-colors duration-200 ${
+        isActive ? 'text-white font-black' : 'text-slate-100 group-hover:text-white'
       }`}>
         {track.title}
       </h3>
@@ -262,11 +268,11 @@ const TrackItem = memo(({
     </div>
 
     {/* Action buttons and format capsules */}
-    <div className="flex items-center gap-3 shrink-0" onClick={(e) => e.stopPropagation()}>
+    <div className="flex items-center gap-2.5 shrink-0" onClick={(e) => e.stopPropagation()}>
       {isActive && <SoundWaveIndicator isPlaying={isPlaying} />}
       
       {/* Format Badge (e.g., MP3 or Stream) */}
-      <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-white/5 border border-white/5 text-[#8F8E9C] group-hover:text-white transition-colors`}>
+      <span className={`text-[9px] font-black tracking-wider px-2 py-0.5 rounded-md bg-white/5 border border-white/5 text-[#8F8E9C] group-hover:text-white transition-colors`}>
         {track.format || 'MP3'}
       </span>
 
@@ -276,11 +282,11 @@ const TrackItem = memo(({
           onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
           whileTap={{ scale: 0.8 }}
           type="button"
-          className={`p-1.5 rounded-full transition-colors cursor-pointer hover:bg-white/5 ${
-            isFavorite ? 'text-[#8E7CFF]' : 'text-[#8F8E9C]/40 hover:text-[#8E7CFF]'
+          className={`p-1.5 rounded-full transition-all cursor-pointer hover:bg-white/10 ${
+            isFavorite ? 'text-pink-500 shadow-[0_0_10px_rgba(236,72,153,0.3)]' : 'text-[#8F8E9C]/40 hover:text-pink-400'
           }`}
         >
-          <Heart size={14} fill={isFavorite ? "currentColor" : "none"} />
+          <Heart size={15} fill={isFavorite ? "currentColor" : "none"} />
         </motion.button>
       )}
 
@@ -290,7 +296,7 @@ const TrackItem = memo(({
           onClick={(e) => { e.stopPropagation(); onOpenMenu(); }}
           whileTap={{ scale: 0.85 }}
           type="button"
-          className="p-1.5 rounded-full text-[#8F8E9C]/60 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+          className="p-1.5 rounded-full text-[#8F8E9C]/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
         >
           <MoreVertical size={16} />
         </motion.button>
@@ -856,6 +862,30 @@ export default function App() {
     checkPermission();
   }, []);
 
+  // Screen Wake Lock & Background Audio Persistence (Runs automatically)
+  const wakeLockRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (player.isPlaying && 'wakeLock' in navigator) {
+      navigator.wakeLock.request('screen').then(wl => {
+        wakeLockRef.current = wl;
+      }).catch(e => {
+        console.warn("WakeLock request failed or unsupported:", e);
+      });
+    } else {
+      if (wakeLockRef.current) {
+        wakeLockRef.current.release().catch(() => {});
+        wakeLockRef.current = null;
+      }
+    }
+    return () => {
+      if (wakeLockRef.current) {
+        wakeLockRef.current.release().catch(() => {});
+        wakeLockRef.current = null;
+      }
+    };
+  }, [player.isPlaying]);
+
   // --- Media Session & Lockscreen Controls Integration ---
   const callbacksRef = useRef({
     isPlaying: player.isPlaying,
@@ -1175,96 +1205,116 @@ export default function App() {
         <div className="flex-1 flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease-out]">
           {/* FIXED HEADER */}
           <header className="px-6 pt-10 pb-4 shrink-0 space-y-4">
-            {/* My Device / Online switcher */}
-            <div className="flex p-0.5 bg-white/5 rounded-2xl w-full relative border border-white/5">
-              <button 
-                type="button"
-                onClick={() => setActiveTab('local')}
-                className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 relative z-10 cursor-pointer transition-colors duration-200 ${
-                  activeTab === 'local' ? 'text-white font-extrabold' : 'opacity-40 text-white'
-                }`}
-              >
-                <Folder size={14} />
-                My Device
-                {activeTab === 'local' && (
-                  <motion.div
-                    layoutId="activeTabPill"
-                    className="absolute inset-0 bg-gradient-to-r from-[#6355FE] to-[#8E7CFF] rounded-xl -z-10 shadow-lg shadow-[#6355FE]/20"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </button>
-              
-              <button 
-                type="button"
-                onClick={() => setActiveTab('online')}
-                className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 relative z-10 cursor-pointer transition-colors duration-200 ${
-                  activeTab === 'online' ? 'text-white font-extrabold' : 'opacity-40 text-white'
-                }`}
-              >
-                <Globe size={14} />
-                Online Stream
-                {activeTab === 'online' && (
-                  <motion.div
-                    layoutId="activeTabPill"
-                    className="absolute inset-0 bg-gradient-to-r from-[#6355FE] to-[#8E7CFF] rounded-xl -z-10 shadow-lg shadow-[#6355FE]/20"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </button>
-            </div>
+            {/* Unified Top Branding & Mode Row */}
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center">
+                <div className="w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-[#6355FE]/30 shrink-0 relative group">
+                  <img src={appLogo} alt="Logo" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-[#6355FE]/20 to-transparent pointer-events-none" />
+                </div>
+              </div>
 
-            {activeTab === 'local' ? (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h1 className="text-2xl font-black tracking-tight leading-none text-white">Muzic</h1>
-                    <p className="text-[11px] font-extrabold text-[#8E7CFF] uppercase tracking-widest mt-1">Local Library</p>
-                  </div>
-                  <div className="flex gap-2">
+              {/* Mode Segmented Toggle & Quick Actions */}
+              <div className="flex items-center gap-2">
+                <div className="flex p-1 bg-white/5 backdrop-blur-md rounded-2xl relative border border-white/10 shadow-inner">
+                  <button 
+                    type="button"
+                    onClick={() => setActiveTab('local')}
+                    title="Local Files"
+                    className={`p-2.5 rounded-xl flex items-center justify-center relative z-10 cursor-pointer transition-all duration-200 ${
+                      activeTab === 'local' ? 'text-white' : 'opacity-40 hover:opacity-80 text-white'
+                    }`}
+                  >
+                    <Folder size={16} />
+                    {activeTab === 'local' && (
+                      <motion.div
+                        layoutId="headerActiveTabPill"
+                        className="absolute inset-0 bg-gradient-to-r from-[#6355FE] to-[#8E7CFF] rounded-xl -z-10 shadow-lg shadow-[#6355FE]/30"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                  </button>
+                  
+                  <button 
+                    type="button"
+                    onClick={() => setActiveTab('online')}
+                    title="Online Stream"
+                    className={`p-2.5 rounded-xl flex items-center justify-center relative z-10 cursor-pointer transition-all duration-200 ${
+                      activeTab === 'online' ? 'text-white' : 'opacity-40 hover:opacity-80 text-white'
+                    }`}
+                  >
+                    <Globe size={16} />
+                    {activeTab === 'online' && (
+                      <motion.div
+                        layoutId="headerActiveTabPill"
+                        className="absolute inset-0 bg-gradient-to-r from-[#6355FE] to-[#8E7CFF] rounded-xl -z-10 shadow-lg shadow-[#6355FE]/30"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                  </button>
+                </div>
+
+                {activeTab === 'local' && (
+                  <>
                     <button 
                       onClick={() => setSortBy(p => p === 'alphabet' ? 'latest' : 'alphabet')} 
-                      className="p-3 bg-[#14122B]/80 rounded-xl border border-white/5 transition-all flex items-center gap-2 group cursor-pointer text-[#8F8E9C]"
+                      className="p-3 bg-[#14122B]/80 rounded-2xl border border-white/10 hover:border-[#6355FE]/40 transition-all flex items-center justify-center group cursor-pointer text-[#8F8E9C] hover:text-white"
                       title={sortBy === 'alphabet' ? 'Sort: Alphabetical' : 'Sort: Latest'}
                     >
                       {sortBy === 'alphabet' ? <LayoutGrid size={16} /> : <Clock size={16} />}
-                      <span className="text-[9px] font-black uppercase tracking-widest hidden sm:block">
-                        {sortBy === 'alphabet' ? 'A-Z' : 'Recent'}
-                      </span>
                     </button>
-                    <button onClick={() => folderInputRef.current?.click()} className="p-3 bg-[#6355FE] text-white rounded-xl hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-md shadow-[#6355FE]/20">
+                    <button 
+                      onClick={() => folderInputRef.current?.click()} 
+                      className="p-3 bg-[#6355FE] text-white rounded-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-lg shadow-[#6355FE]/30 hover:bg-[#7265FF]"
+                      title="Import Music Folder"
+                    >
                       <FolderPlus size={16} />
                     </button>
-                  </div>
-                </div>
+                  </>
+                )}
+              </div>
+            </div>
 
+
+
+            {activeTab === 'local' ? (
+              <div className="space-y-3">
                 {/* Local Search Input Area */}
-                <div className="relative flex items-center w-full">
-                  <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30 text-white" />
+                <div className="relative flex items-center w-full group">
+                  <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-40 text-white group-focus-within:opacity-100 group-focus-within:text-[#8E7CFF] transition-all" />
                   <input 
                     type="text" 
-                    placeholder="Search local library..." 
+                    placeholder="Search songs..." 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-11 pr-4 py-3 bg-[#14122B]/60 rounded-2xl text-xs font-bold border border-white/5 focus:bg-[#14122B]/90 focus:border-[#6355FE]/30 transition-all focus:outline-none placeholder:opacity-30 text-white"
+                    className="w-full pl-11 pr-10 py-3 bg-[#14122B]/70 rounded-2xl text-xs font-bold border border-white/10 focus:bg-[#14122B] focus:border-[#6355FE]/50 focus:shadow-[0_0_20px_rgba(99,85,254,0.15)] transition-all focus:outline-none placeholder:opacity-30 text-white"
                   />
+                  {searchQuery && (
+                    <button 
+                      type="button"
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/10 text-white/40 hover:text-white transition-colors"
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
                 </div>
 
                 {/* TABS (Songs vs Folders) */}
-                <div className="flex p-0.5 bg-white/5 rounded-2xl w-full relative border border-white/5">
+                <div className="flex p-1 bg-white/5 rounded-2xl w-full relative border border-white/5">
                   {(['tracks', 'folders'] as const).map(mode => (
                     <button 
                       key={mode}
                       onClick={() => setViewMode(mode)} 
-                      className={`flex-1 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest relative z-10 cursor-pointer transition-colors duration-200 ${
-                        viewMode === mode ? 'text-white' : 'opacity-40 text-white'
+                      className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest relative z-10 cursor-pointer transition-colors duration-200 ${
+                        viewMode === mode ? 'text-white' : 'opacity-40 text-white hover:opacity-80'
                       }`}
                     >
                       {mode === 'tracks' ? 'Songs' : 'Folders'}
                       {viewMode === mode && (
                         <motion.div
                           layoutId="localViewModePill"
-                          className="absolute inset-0 bg-[#6355FE] rounded-xl -z-10 shadow-md shadow-[#6355FE]/10"
+                          className="absolute inset-0 bg-[#6355FE] rounded-xl -z-10 shadow-md shadow-[#6355FE]/20"
                           transition={{ type: "spring", stiffness: 380, damping: 30 }}
                         />
                       )}
@@ -1273,36 +1323,38 @@ export default function App() {
                 </div>
               </div>
             ) : (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h1 className="text-2xl font-black tracking-tight leading-none text-white">Muzic</h1>
-                    <p className="text-[11px] font-extrabold text-[#8E7CFF] uppercase tracking-widest mt-1">Free Stream</p>
-                  </div>
-                </div>
-
+              <div className="space-y-3">
                 {/* Online Search input line */}
                 <form onSubmit={handleOnlineSearchSubmit} className="relative flex items-center gap-2 w-full">
-                  <div className="relative flex-1">
-                    <Search size={14} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-30 text-white" />
+                  <div className="relative flex-1 group">
+                    <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-40 text-white group-focus-within:opacity-100 group-focus-within:text-[#8E7CFF] transition-all" />
                     <input 
                       type="text" 
-                      placeholder="Search free streams..." 
+                      placeholder="Search online..."  
                       value={onlineSearchQuery}
                       onChange={(e) => setOnlineSearchQuery(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-[#14122B]/60 rounded-2xl text-xs font-bold border border-white/5 focus:bg-[#14122B]/90 focus:border-[#6355FE]/30 transition-all focus:outline-none placeholder:opacity-30 text-white"
+                      className="w-full pl-11 pr-10 py-3 bg-[#14122B]/70 rounded-2xl text-xs font-bold border border-white/10 focus:bg-[#14122B] focus:border-[#6355FE]/50 focus:shadow-[0_0_20px_rgba(99,85,254,0.15)] transition-all focus:outline-none placeholder:opacity-30 text-white"
                     />
+                    {onlineSearchQuery && (
+                      <button 
+                        type="button"
+                        onClick={() => setOnlineSearchQuery('')}
+                        className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/10 text-white/40 hover:text-white transition-colors"
+                      >
+                        <X size={13} />
+                      </button>
+                    )}
                   </div>
                   <button 
                     type="submit"
-                    className="px-5 py-3 bg-[#6355FE] text-white rounded-2xl text-[9px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-md shadow-[#6355FE]/20"
+                    className="px-5 py-3 bg-gradient-to-r from-[#6355FE] to-[#8E7CFF] text-white rounded-2xl text-[9px] font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-lg shadow-[#6355FE]/25"
                   >
                     Search
                   </button>
                 </form>
 
                 {/* Stream Engine Selector Slider */}
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   <div className="flex gap-2 items-center justify-between bg-white/5 p-1 rounded-2xl border border-white/5">
                     <span className="text-[9px] font-black uppercase tracking-wider text-[#8F8E9C] pl-2">Source:</span>
                     <div className="flex p-0.5 bg-white/5 rounded-xl relative">
@@ -1346,27 +1398,27 @@ export default function App() {
                       </button>
                     </div>
                   </div>
-                </div>
 
-                {/* Categories */}
-                <div className="flex gap-1.5 overflow-x-auto no-scrollbar pt-1 max-w-full pb-1">
-                  {['trending', 'punjabi', 'hindi', 'bollywood', 'lofi', 'pop', 'electronic', 'rock'].map((tag) => (
-                    <button
-                       key={tag}
-                       type="button"
-                       onClick={() => {
-                         setOnlineSearchQuery(tag === 'trending' ? '' : tag);
-                         fetchOnlineTracks(tag === 'trending' ? '' : tag);
-                       }}
-                       className={`px-3.5 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer shrink-0 ${
-                         (tag === 'trending' && onlineSearchQuery === '') || onlineSearchQuery.toLowerCase() === tag
-                         ? 'bg-[#1C153E] text-[#8E7CFF] border border-[#6355FE]/20'
-                         : 'bg-[#14122B]/40 opacity-60 hover:opacity-100 text-[#8F8E9C]'
-                       }`}
-                    >
-                      #{tag}
-                    </button>
-                  ))}
+                  {/* Categories */}
+                  <div className="flex gap-1.5 overflow-x-auto no-scrollbar pt-1 max-w-full pb-1">
+                    {['trending', 'punjabi', 'hindi', 'bollywood', 'lofi', 'pop', 'electronic', 'rock'].map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => {
+                          setOnlineSearchQuery(tag === 'trending' ? '' : tag);
+                          fetchOnlineTracks(tag === 'trending' ? '' : tag);
+                        }}
+                        className={`px-3.5 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer shrink-0 ${
+                          (tag === 'trending' && onlineSearchQuery === '') || onlineSearchQuery.toLowerCase() === tag
+                          ? 'bg-[#1C153E] text-[#8E7CFF] border border-[#6355FE]/30 shadow-sm shadow-[#6355FE]/10'
+                          : 'bg-[#14122B]/40 opacity-60 hover:opacity-100 text-[#8F8E9C] hover:bg-[#14122B]'
+                        }`}
+                      >
+                        #{tag}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -1680,7 +1732,7 @@ export default function App() {
                 <ChevronDown size={20} strokeWidth={3} />
               </button>
               <div className="text-center">
-                <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#8E7CFF] mb-1">Muzic Engine</p>
+                <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#8E7CFF] mb-1">Now Playing</p>
                 <p className="font-extrabold text-[11px] truncate max-w-[180px] opacity-60 text-[#8F8E9C] uppercase tracking-wider">{player.currentTrack.album}</p>
               </div>
               <div className="w-8" />
@@ -1958,6 +2010,8 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
+
+
 
       {/* Glowing Bottom Nav bar */}
       <nav className="fixed bottom-0 left-0 right-0 h-20 bg-[#0E0B20]/95 backdrop-blur-xl border-t border-white/5 flex items-center justify-around px-4 z-40">

@@ -46,9 +46,3 @@ jobs:
           gradle wrapper --gradle-version 8.13
           chmod +x gradlew
           gradle assembleDebug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: android-debug-apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk

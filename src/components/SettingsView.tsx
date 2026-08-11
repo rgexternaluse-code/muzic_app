@@ -1,5 +1,6 @@
 import React from 'react';
 import { Laptop, ExternalLink } from 'lucide-react';
+import appLogo from '../assets/images/muzic_app_logo_1786456453207.jpg';
 
 interface SettingsViewProps {
   folderInputRef: React.RefObject<HTMLInputElement>;
@@ -16,9 +17,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     <div className="flex-1 flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease-out]">
       {/* Header */}
       <header className="px-6 pt-10 pb-4 shrink-0 space-y-2">
-        <div>
-          <h1 className="text-2xl font-black tracking-tight leading-none text-white">Settings</h1>
-          <p className="text-[11px] font-extrabold text-[#8E7CFF] uppercase tracking-widest mt-1">Device and build details</p>
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-[#6355FE]/30 shrink-0">
+            <img src={appLogo} alt="Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-black tracking-tight leading-none text-white">Settings</h1>
+            <p className="text-[11px] font-extrabold text-[#8E7CFF] uppercase tracking-widest mt-1">Device and build details</p>
+          </div>
         </div>
       </header>
 
