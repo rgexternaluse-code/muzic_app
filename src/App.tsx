@@ -43,6 +43,8 @@ import {
   Smartphone
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Capacitor } from '@capacitor/core';
+import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { Track, FolderNode } from './types';
 import { db } from './db';
 import * as mm from 'music-metadata-browser';
@@ -977,14 +979,23 @@ export default function App() {
     if (!track || !('mediaSession' in navigator)) return;
 
     try {
-      // Set Metadata for notification, lock screen, bluetooth device, Android Auto
+      // Use HTTP URLs for MediaSession artwork so Android NotificationManager accepts it
+      const defaultCover = 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=512&h=512&fit=crop';
+      const artworkUrl = (track.cover && (track.cover.startsWith('http://') || track.cover.startsWith('https://'))) 
+        ? track.cover 
+        : defaultCover;
+
       navigator.mediaSession.metadata = new (window as any).MediaMetadata({
         title: track.title,
         artist: track.artist,
         album: track.album || 'Muzic',
         artwork: [
-          { src: track.cover || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=192&h=192&fit=crop', sizes: '192x192', type: 'image/jpeg' },
-          { src: track.cover || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=512&h=512&fit=crop', sizes: '512x512', type: 'image/jpeg' }
+          { src: artworkUrl, sizes: '96x96', type: 'image/jpeg' },
+          { src: artworkUrl, sizes: '128x128', type: 'image/jpeg' },
+          { src: artworkUrl, sizes: '192x192', type: 'image/jpeg' },
+          { src: artworkUrl, sizes: '256x256', type: 'image/jpeg' },
+          { src: artworkUrl, sizes: '384x384', type: 'image/jpeg' },
+          { src: artworkUrl, sizes: '512x512', type: 'image/jpeg' }
         ]
       });
     } catch (e) {
@@ -1196,7 +1207,71 @@ export default function App() {
     setIsScanning(false);
   };
 
+  const pickAudioFilesNative = async (): Promise<File[]> => {
+    if (Capacitor.isNativePlatform()) {
+      try {
+        const result = await FilePicker.pickFiles({
+          types: ['audio/*'],
+          limit: 0
+        });
+        if (!result.files || result.files.length === 0) return [];
+
+        const files: File[] = [];
+        for (const f of result.files) {
+          try {
+            let blob: Blob;
+            if (f.blob) {
+              blob = f.blob;
+            } else if (f.path) {
+              const webPath = Capacitor.convertFileSrc(f.path);
+              const res = await fetch(webPath);
+              blob = await res.blob();
+            } else if (f.data) {
+              const res = await fetch(`data:${f.mimeType || 'audio/mpeg'};base64,${f.data}`);
+              blob = await res.blob();
+            } else {
+              continue;
+            }
+            const file = new File([blob], f.name, { type: f.mimeType || 'audio/mpeg' });
+            files.push(file);
+          } catch (err) {
+            console.error("Error loading native file:", f.name, err);
+          }
+        }
+        return files;
+      } catch (e: any) {
+        if (e.name === 'AbortError' || e.message?.includes('canceled') || e.message?.includes('cancelled')) {
+          return [];
+        }
+        console.warn("Native FilePicker error:", e);
+        return [];
+      }
+    }
+    return [];
+  };
+
   const triggerDirectoryPicker = async () => {
+    if (Capacitor.isNativePlatform()) {
+      setIsScanning(true);
+      try {
+        try {
+          await FilePicker.requestPermissions();
+        } catch (e) {
+          console.warn("Permission request error:", e);
+        }
+        const nativeFiles = await pickAudioFilesNative();
+        if (nativeFiles.length > 0) {
+          await processAndSaveFiles(nativeFiles);
+        } else {
+          setIsScanning(false);
+        }
+      } catch (e) {
+        console.error("Native scan error:", e);
+        setIsScanning(false);
+      }
+      return;
+    }
+
     if ('showDirectoryPicker' in window) {
       try {
         // @ts-ignore
@@ -1550,67 +1625,113 @@ export default function App() {
               )}
 
               {activeTab === 'local' ? (
-                viewMode === 'tracks' ? (
-                  filteredTracks.length > 0 ? (
-                    filteredTracks.map(track => (
-                      <TrackItem 
-                        key={track.id} 
-                        track={track} 
-                        isActive={player.currentTrack?.id === track.id} 
-                        isPlaying={player.currentTrack?.id === track.id && player.isPlaying}
-                        isFavorite={favoriteTrackIds.includes(track.id)}
-                        onClick={() => selectTrack(track)} 
-                        onToggleFavorite={() => toggleFavorite(track.id)}
-                        onOpenMenu={() => setSelectedTrackForMenu(track)}
-                      />
-                    ))
-                  ) : (
-                    <div className="flex flex-col items-center justify-center py-12 px-6 bg-[#14122B]/60 border border-white/10 rounded-3xl text-center space-y-4 shadow-xl">
-                      <div className="w-16 h-16 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/20">
-                        <FolderPlus size={32} />
+                <>
+                  {isScanning && (
+                    <div className="mb-4 p-5 bg-[#14122B] border border-[#6355FE]/40 rounded-3xl shadow-2xl space-y-3 relative overflow-hidden animate-[fadeIn_0.2s_ease-out]">
+                      <div className="absolute -top-10 -right-10 w-32 h-32 bg-[#6355FE]/20 blur-2xl rounded-full pointer-events-none" />
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shrink-0 shadow-lg shadow-[#6355FE]/20">
+                          <Loader2 size={24} className="animate-spin text-[#8E7CFF]" />
+                        </div>
+                        <div className="flex-1 min-w-0 text-left">
+                          <div className="flex items-center justify-between gap-2">
+                            <h3 className="font-black text-xs text-white uppercase tracking-wider">Scanning Device Audio Files</h3>
+                            <span className="text-[11px] font-black text-[#8E7CFF] bg-[#6355FE]/20 px-2.5 py-0.5 rounded-full border border-[#6355FE]/30 shrink-0">{scanProgress}%</span>
+                          </div>
+                          <p className="text-[11px] font-semibold text-[#8F8E9C] mt-0.5 truncate">Indexing audio tracks & extracting artwork metadata...</p>
+                        </div>
                       </div>
-                      <div className="space-y-1 max-w-xs">
-                        <h3 className="font-black text-sm text-white">No Music Files Loaded</h3>
-                        <p className="text-[11px] font-semibold text-[#8F8E9C]">Scan your device folders or select audio files to populate your local music library.</p>
-                      </div>
-                      <div className="flex flex-col sm:flex-row gap-2 w-full max-w-xs pt-1">
-                        <button
-                          type="button"
-                          onClick={triggerDirectoryPicker}
-                          className="flex-1 py-3 bg-[#6355FE] hover:bg-[#7265FF] text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer shadow-lg shadow-[#6355FE]/30 active:scale-95 flex items-center justify-center gap-2"
-                        >
-                          <FolderPlus size={16} />
-                          <span>Scan Folder</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => fileInputRef.current?.click()}
-                          className="flex-1 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer border border-white/10 active:scale-95 flex items-center justify-center gap-2"
-                        >
-                          <Music size={16} />
-                          <span>Select Songs</span>
-                        </button>
+                      <div className="space-y-1">
+                        <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+                          <motion.div 
+                            className="h-full bg-gradient-to-r from-[#6355FE] via-[#8E7CFF] to-[#A798FF]" 
+                            animate={{ width: `${scanProgress}%` }} 
+                            transition={{ duration: 0.3 }} 
+                          />
+                        </div>
                       </div>
                     </div>
-                  )
-                ) : viewMode === 'folders' ? (
-                  <RecursiveFolderView 
-                    node={folderTree} 
-                    expandedFolders={expandedFolders} 
-                    toggleFolder={(path: string) => setExpandedFolders(p => { 
-                      const n = new Set(p); 
-                      if (n.has(path)) n.delete(path); 
-                      else n.add(path); 
-                      return n; 
-                    })}
-                    currentTrackId={player.currentTrack?.id}
-                    isPlaying={player.isPlaying}
-                    favoriteTrackIds={favoriteTrackIds}
-                    onToggleFavorite={toggleFavorite}
-                    onOpenMenu={setSelectedTrackForMenu}
-                    onTrackSelect={selectTrack}
-                  />
-                ) : null
+                  )}
+
+                  {viewMode === 'tracks' ? (
+                    filteredTracks.length > 0 ? (
+                      filteredTracks.map(track => (
+                        <TrackItem 
+                          key={track.id} 
+                          track={track} 
+                          isActive={player.currentTrack?.id === track.id} 
+                          isPlaying={player.currentTrack?.id === track.id && player.isPlaying}
+                          isFavorite={favoriteTrackIds.includes(track.id)}
+                          onClick={() => selectTrack(track)} 
+                          onToggleFavorite={() => toggleFavorite(track.id)}
+                          onOpenMenu={() => setSelectedTrackForMenu(track)}
+                        />
+                      ))
+                    ) : isScanning ? (
+                      <div className="flex flex-col items-center justify-center py-16 px-6 bg-[#14122B]/80 border border-[#6355FE]/40 rounded-3xl text-center space-y-4 shadow-xl">
+                        <div className="w-16 h-16 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/20">
+                          <Loader2 size={32} className="animate-spin text-[#8E7CFF]" />
+                        </div>
+                        <div className="space-y-1 max-w-xs">
+                          <h3 className="font-black text-sm text-white">Scanning Audio Files ({scanProgress}%)</h3>
+                          <p className="text-[11px] font-semibold text-[#8F8E9C]">Searching device folders & extracting ID3 track artwork...</p>
+                        </div>
+                        <div className="w-full max-w-xs h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
+                          <motion.div 
+                            className="h-full bg-gradient-to-r from-[#6355FE] via-[#8E7CFF] to-[#A798FF]" 
+                            animate={{ width: `${scanProgress}%` }} 
+                            transition={{ duration: 0.3 }} 
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-center justify-center py-12 px-6 bg-[#14122B]/60 border border-white/10 rounded-3xl text-center space-y-4 shadow-xl">
+                        <div className="w-16 h-16 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/20">
+                          <FolderPlus size={32} />
+                        </div>
+                        <div className="space-y-1 max-w-xs">
+                          <h3 className="font-black text-sm text-white">No Music Files Loaded</h3>
+                          <p className="text-[11px] font-semibold text-[#8F8E9C]">Scan your device folders or select audio files to populate your local music library.</p>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-2 w-full max-w-xs pt-1">
+                          <button
+                            type="button"
+                            onClick={triggerDirectoryPicker}
+                            className="flex-1 py-3 bg-[#6355FE] hover:bg-[#7265FF] text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer shadow-lg shadow-[#6355FE]/30 active:scale-95 flex items-center justify-center gap-2"
+                          >
+                            <FolderPlus size={16} />
+                            <span>Scan Folder</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="flex-1 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer border border-white/10 active:scale-95 flex items-center justify-center gap-2"
+                          >
+                            <Music size={16} />
+                            <span>Select Songs</span>
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  ) : viewMode === 'folders' ? (
+                    <RecursiveFolderView 
+                      node={folderTree} 
+                      expandedFolders={expandedFolders} 
+                      toggleFolder={(path: string) => setExpandedFolders(p => { 
+                        const n = new Set(p); 
+                        if (n.has(path)) n.delete(path); 
+                        else n.add(path); 
+                        return n; 
+                      })}
+                      currentTrackId={player.currentTrack?.id}
+                      isPlaying={player.isPlaying}
+                      favoriteTrackIds={favoriteTrackIds}
+                      onToggleFavorite={toggleFavorite}
+                      onOpenMenu={setSelectedTrackForMenu}
+                      onTrackSelect={selectTrack}
+                    />
+                  ) : null}
+                </>
               ) : (
                 /* ONLINE LIST VIEW */
                 <div className="space-y-2">
@@ -2028,36 +2149,33 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Scanning UI - Non-blocking Toast */}
+      {/* Scanning UI - Floating Toast Banner */}
       <AnimatePresence>
         {isScanning && (
           <motion.div 
-            initial={{ opacity: 0, y: 50, scale: 0.9 }} 
+            initial={{ opacity: 0, y: -40, scale: 0.95 }} 
             animate={{ opacity: 1, y: 0, scale: 1 }} 
-            exit={{ opacity: 0, scale: 0.5 }}
-            className="fixed bottom-[180px] right-6 z-[100] w-64 bg-[#14122B] p-5 rounded-3xl shadow-2xl border border-white/10"
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            className="fixed top-4 left-4 right-4 max-w-sm mx-auto z-[160] bg-[#14122B]/95 backdrop-blur-xl p-4 rounded-3xl shadow-2xl border border-[#6355FE]/40 text-left"
           >
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-[#1C153E] flex items-center justify-center">
+            <div className="flex items-center gap-3 mb-2.5">
+              <div className="w-10 h-10 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shrink-0 shadow-md">
                 <Loader2 className="animate-spin text-[#8E7CFF]" size={20} />
               </div>
-              <div className="flex-1 min-w-0 text-left">
-                <h3 className="text-[11px] font-black uppercase tracking-widest opacity-45">Scanning</h3>
-                <p className="text-[13px] font-bold truncate text-white">Syncing library...</p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-1">
+                  <h3 className="text-[11px] font-black uppercase tracking-widest text-[#8E7CFF]">Scanning Device Audio</h3>
+                  <span className="text-[10px] font-black text-white bg-[#6355FE]/30 px-2 py-0.5 rounded-full border border-[#6355FE]/40 shrink-0">{scanProgress}%</span>
+                </div>
+                <p className="text-xs font-bold truncate text-white mt-0.5">Indexing music tracks...</p>
               </div>
             </div>
-            <div className="space-y-1.5 text-left">
-              <div className="h-1.5 w-full bg-black/20 rounded-full overflow-hidden">
-                <motion.div 
-                  className="h-full bg-gradient-to-r from-[#6355FE] to-[#8E7CFF]" 
-                  animate={{ width: `${scanProgress}%` }} 
-                  transition={{ duration: 0.3 }} 
-                />
-              </div>
-              <div className="flex justify-between text-[8px] font-black opacity-30">
-                <span>INDEXING</span>
-                <span>{scanProgress}%</span>
-              </div>
+            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden border border-white/5">
+              <motion.div 
+                className="h-full bg-gradient-to-r from-[#6355FE] via-[#8E7CFF] to-[#A798FF]" 
+                animate={{ width: `${scanProgress}%` }} 
+                transition={{ duration: 0.3 }} 
+              />
             </div>
           </motion.div>
         )}

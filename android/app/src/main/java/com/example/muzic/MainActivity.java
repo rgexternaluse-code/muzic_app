@@ -16,6 +16,9 @@ public class MainActivity extends BridgeActivity {
             WebSettings settings = webView.getSettings();
             // Allow media playback without explicit physical user gestures in the background
             settings.setMediaPlaybackRequiresUserGesture(false);
+            settings.setJavaScriptEnabled(true);
+            settings.setDomStorageEnabled(true);
+            settings.setDatabaseEnabled(true);
         }
     }
 }
