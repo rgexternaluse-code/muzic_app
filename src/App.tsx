@@ -834,7 +834,7 @@ export default function App() {
         const { Filesystem } = (window as any).Capacitor.Plugins || {};
         if (Filesystem) {
           const result = await Filesystem.requestPermissions();
-          if (result.publicStorage === 'granted') {
+          if (result.publicStorage === 'granted' || result.storage === 'granted') {
             setPermissionStatus('granted');
           } else {
             setPermissionStatus('denied');
@@ -851,6 +851,10 @@ export default function App() {
       localStorage.setItem('muzic_perm_granted', 'true');
       setPermissionStatus('granted');
     }
+
+    setTimeout(() => {
+      triggerDirectoryPicker();
+    }, 200);
   };
 
   const handleDenyPermission = () => {
@@ -1099,51 +1103,151 @@ export default function App() {
     }
   };
 
-  const handleFolderUpload = async (e: any) => {
-    const files = e.target.files;
-    if (!files) return;
+  const isAudioFile = (file: File): boolean => {
+    if (file.type && file.type.startsWith('audio/')) return true;
+    const ext = file.name.split('.').pop()?.toLowerCase() || '';
+    return ['mp3', 'm4a', 'wav', 'flac', 'aac', 'ogg', 'opus', 'wma', 'alac', 'aiff', 'mp4', 'm4b', 'webm', '3gp'].includes(ext);
+  };
+
+  const processAudioFile = async (file: File): Promise<Track> => {
+    let title = file.name.replace(/\.[^/.]+$/, "");
+    let artist = 'Local Artist';
+    let album = 'Local Library';
+    let duration = 0;
+    let cover: string | undefined = undefined;
+
+    const relPath = (file as any).webkitRelativePath || '';
+    const folderPath = relPath ? relPath.split('/').slice(0, -1).join('/') || 'Root' : 'Root';
+    if (folderPath !== 'Root') {
+      album = folderPath.split('/').pop() || 'Local Library';
+    }
+
+    try {
+      const metadata = await mm.parseBlob(file);
+      if (metadata.common) {
+        if (metadata.common.title && metadata.common.title.trim()) title = metadata.common.title.trim();
+        if (metadata.common.artist && metadata.common.artist.trim()) artist = metadata.common.artist.trim();
+        if (metadata.common.album && metadata.common.album.trim()) album = metadata.common.album.trim();
+        if (metadata.common.picture?.[0]) {
+          const picture = metadata.common.picture[0];
+          cover = `data:${picture.format};base64,${window.btoa(
+            new Uint8Array(picture.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
+          )}`;
+        }
+      }
+      if (metadata.format?.duration) {
+        duration = Math.round(metadata.format.duration);
+      }
+    } catch (err) {
+      console.warn("Metadata parsing fallback for:", file.name, err);
+    }
+
+    return {
+      id: generateStableId(file, folderPath),
+      title,
+      artist,
+      album,
+      duration,
+      url: URL.createObjectURL(file),
+      file: file,
+      format: file.name.split('.').pop()?.toUpperCase() || 'MP3',
+      cover: cover || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200',
+      folderPath,
+      fileName: file.name,
+      size: file.size
+    };
+  };
+
+  const processAndSaveFiles = async (files: FileList | File[]) => {
+    const fileArray = Array.from(files as FileList | File[]);
+    const audioFiles = fileArray.filter(isAudioFile);
+
+    if (audioFiles.length === 0) {
+      setIsScanning(false);
+      alert("No audio files (.mp3, .m4a, .wav, .flac, etc.) were found in the selected location.");
+      return;
+    }
+
     setIsScanning(true);
     setScanProgress(0);
-    const audioFiles = Array.from(files as FileList).filter(f => f.type.startsWith('audio/'));
     const newTracks: Track[] = [];
+
     for (let i = 0; i < audioFiles.length; i++) {
-        const file = audioFiles[i] as any;
-        const folderPath = (file.webkitRelativePath || "").split('/').slice(0, -1).join('/') || 'Root';
-        try {
-            const cover = await getArtwork(file);
-            newTracks.push({
-                id: generateStableId(file, folderPath),
-                title: file.name.replace(/\.[^/.]+$/, ""),
-                artist: 'Local Artist',
-                album: folderPath.split('/').pop() || 'Library',
-                duration: 0,
-                url: URL.createObjectURL(file),
-                file: file, // Store the actual blob
-                format: file.type.split('/')[1]?.toUpperCase() || 'MP3',
-                cover: cover || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200',
-                folderPath,
-                fileName: file.name,
-                size: file.size
-            });
-        } catch (err) {
-            console.error("Error processing file", file.name, err);
-        }
-        setScanProgress(Math.round(((i + 1) / audioFiles.length) * 100));
+      try {
+        const track = await processAudioFile(audioFiles[i]);
+        newTracks.push(track);
+      } catch (err) {
+        console.error("Error indexing audio file:", audioFiles[i].name, err);
+      }
+      setScanProgress(Math.round(((i + 1) / audioFiles.length) * 100));
     }
-    
+
     if (newTracks.length > 0) {
-      // Use bulkPut to update existing or add new without clearing
       await db.tracks.bulkPut(newTracks);
-      // Refresh local state from DB to show all tracks
       const allSaved = await db.tracks.toArray();
       const tracksWithUrls = allSaved.map(track => ({
         ...track,
-        url: track.url.startsWith('blob:') ? track.url : URL.createObjectURL(track.file)
+        url: track.url && track.url.startsWith('blob:') ? track.url : URL.createObjectURL(track.file)
       }));
       setTracks(tracksWithUrls);
       if (viewMode !== 'folders') setViewMode('folders');
     }
+
     setIsScanning(false);
+  };
+
+  const triggerDirectoryPicker = async () => {
+    if ('showDirectoryPicker' in window) {
+      try {
+        // @ts-ignore
+        const dirHandle = await window.showDirectoryPicker();
+        setIsScanning(true);
+        setScanProgress(0);
+        const audioFiles: File[] = [];
+
+        async function scanDirectory(handle: any, path: string) {
+          for await (const entry of handle.values()) {
+            if (entry.kind === 'file') {
+              const file = await entry.getFile();
+              if (isAudioFile(file)) {
+                Object.defineProperty(file, 'webkitRelativePath', {
+                  value: `${path}/${file.name}`,
+                  writable: true,
+                  configurable: true
+                });
+                audioFiles.push(file);
+              }
+            } else if (entry.kind === 'directory') {
+              await scanDirectory(entry, `${path}/${entry.name}`);
+            }
+          }
+        }
+
+        await scanDirectory(dirHandle, dirHandle.name);
+
+        if (audioFiles.length > 0) {
+          await processAndSaveFiles(audioFiles);
+        } else {
+          alert("No audio files (.mp3, .m4a, .wav, .flac, etc.) were found in the selected folder.");
+          setIsScanning(false);
+        }
+      } catch (e: any) {
+        if (e.name !== 'AbortError') {
+          console.warn("DirectoryPicker error fallback:", e);
+          folderInputRef.current?.click();
+        } else {
+          setIsScanning(false);
+        }
+      }
+    } else {
+      folderInputRef.current?.click();
+    }
+  };
+
+  const handleFolderUpload = async (e: any) => {
+    const files = e.target.files;
+    if (!files) return;
+    await processAndSaveFiles(files);
   };
 
   const filteredTracks = useMemo(() => 
@@ -1264,7 +1368,7 @@ export default function App() {
                       {sortBy === 'alphabet' ? <LayoutGrid size={16} /> : <Clock size={16} />}
                     </button>
                     <button 
-                      onClick={() => folderInputRef.current?.click()} 
+                      onClick={triggerDirectoryPicker} 
                       className="p-3 bg-[#6355FE] text-white rounded-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-lg shadow-[#6355FE]/30 hover:bg-[#7265FF]"
                       title="Import Music Folder"
                     >
@@ -1461,9 +1565,32 @@ export default function App() {
                       />
                     ))
                   ) : (
-                    <div className="flex flex-col items-center justify-center py-20 opacity-20">
-                      <Music size={40} />
-                      <p className="mt-4 font-bold text-xs tracking-widest uppercase">No local tracks</p>
+                    <div className="flex flex-col items-center justify-center py-12 px-6 bg-[#14122B]/60 border border-white/10 rounded-3xl text-center space-y-4 shadow-xl">
+                      <div className="w-16 h-16 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/20">
+                        <FolderPlus size={32} />
+                      </div>
+                      <div className="space-y-1 max-w-xs">
+                        <h3 className="font-black text-sm text-white">No Music Files Loaded</h3>
+                        <p className="text-[11px] font-semibold text-[#8F8E9C]">Scan your device folders or select audio files to populate your local music library.</p>
+                      </div>
+                      <div className="flex flex-col sm:flex-row gap-2 w-full max-w-xs pt-1">
+                        <button
+                          type="button"
+                          onClick={triggerDirectoryPicker}
+                          className="flex-1 py-3 bg-[#6355FE] hover:bg-[#7265FF] text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer shadow-lg shadow-[#6355FE]/30 active:scale-95 flex items-center justify-center gap-2"
+                        >
+                          <FolderPlus size={16} />
+                          <span>Scan Folder</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="flex-1 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer border border-white/10 active:scale-95 flex items-center justify-center gap-2"
+                        >
+                          <Music size={16} />
+                          <span>Select Songs</span>
+                        </button>
+                      </div>
                     </div>
                   )
                 ) : viewMode === 'folders' ? (
@@ -1604,6 +1731,7 @@ export default function App() {
         <SettingsView 
           folderInputRef={folderInputRef}
           fileInputRef={fileInputRef}
+          onScanDirectory={triggerDirectoryPicker}
           onClearCache={async () => {
             if (confirm("Reset cache? This clears locally scanned path keys only.")) {
               await db.tracks.clear();
@@ -1615,35 +1743,26 @@ export default function App() {
       )}
 
       {/* Hidden Files inputs */}
-      <input type="file" multiple accept="audio/*" ref={fileInputRef} onChange={async (e: any) => {
-          const files = e.target.files;
-          if (!files) return;
-          const filesArray = Array.from(files as FileList);
-          for (const file of filesArray) {
-            const f = file as any;
-            const cover = await getArtwork(f);
-            const folderPath = 'Imports';
-            const track: Track = { 
-                id: generateStableId(f, folderPath), 
-                title: f.name, 
-                artist: 'Imported', 
-                album: 'Imports', 
-                duration: 0, 
-                url: URL.createObjectURL(f), 
-                file: f, 
-                format: 'MP3', 
-                cover: cover || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200', 
-                folderPath, 
-                fileName: f.name, 
-                size: f.size 
-            };
-            setTracks(p => [...p, track]);
-            await db.tracks.put(track);
-          }
-      }} className="hidden" />
+      <input 
+        type="file" 
+        multiple 
+        accept="audio/*,.mp3,.m4a,.wav,.flac,.aac,.ogg,.opus,.wma,.alac,.aiff,.mp4,.m4b,.webm,.3gp" 
+        ref={fileInputRef} 
+        onChange={(e: any) => e.target.files && processAndSaveFiles(e.target.files)} 
+        className="hidden" 
+      />
       
-      <input type="file" // @ts-ignore
-        webkitdirectory="" directory="" multiple ref={folderInputRef} onChange={handleFolderUpload} className="hidden" />
+      <input 
+        type="file" 
+        // @ts-ignore
+        webkitdirectory="" 
+        directory="" 
+        multiple 
+        accept="audio/*,.mp3,.m4a,.wav,.flac,.aac,.ogg,.opus,.wma,.alac,.aiff,.mp4,.m4b,.webm,.3gp" 
+        ref={folderInputRef} 
+        onChange={handleFolderUpload} 
+        className="hidden" 
+      />
 
       {/* Mini Player */}
       <AnimatePresence>

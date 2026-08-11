@@ -6,12 +6,14 @@ interface SettingsViewProps {
   folderInputRef: React.RefObject<HTMLInputElement>;
   fileInputRef: React.RefObject<HTMLInputElement>;
   onClearCache: () => void;
+  onScanDirectory?: () => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
   folderInputRef,
   fileInputRef,
   onClearCache,
+  onScanDirectory,
 }) => {
   return (
     <div className="flex-1 flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease-out]">
@@ -40,7 +42,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           <div className="grid grid-cols-2 gap-2">
             <button 
               type="button"
-              onClick={() => folderInputRef.current?.click()} 
+              onClick={onScanDirectory || (() => folderInputRef.current?.click())} 
               className="p-3 bg-[#1C153E] text-[#ECE6FF] hover:bg-[#2B2651] active:scale-95 transition-all rounded-xl text-[10px] font-black uppercase tracking-wider border border-white/5 cursor-pointer"
             >
               📂 Scan Folder
