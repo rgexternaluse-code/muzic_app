@@ -1,0 +1,7 @@
+*.jar binary
+*.apk binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.so binary
+*.aar binary
