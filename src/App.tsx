@@ -45,6 +45,7 @@ import {
 import { motion, AnimatePresence } from 'motion/react';
 import { Capacitor } from '@capacitor/core';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
+import { scanDeviceAudioFiles } from './services/nativeAudioScanner';
 import { Track, FolderNode } from './types';
 import { db } from './db';
 import * as mm from 'music-metadata-browser';
@@ -52,6 +53,12 @@ import appLogo from './assets/images/muzic_app_logo_1786456453207.jpg';
 import { TrackContextMenu } from './components/TrackContextMenu';
 import { PlaylistsView } from './components/PlaylistsView';
 import { SettingsView } from './components/SettingsView';
+import { 
+  setupSystemMediaActionListener, 
+  syncTrackToSystemMedia, 
+  syncPlaybackStateToSystemMedia, 
+  stopSystemMedia 
+} from './services/systemMediaPlayer';
 
 // --- Lightweight JSONP Client to bypass CORS on the client side ---
 function fetchJSONP(url: string, callbackParam: string = 'callback'): Promise<any> {
@@ -154,6 +161,7 @@ function useMusicPlayer(tracks: Track[]) {
     if (audioRef.current) {
       audioRef.current.currentTime = time;
       setCurrentTime(time);
+      syncPlaybackStateToSystemMedia(isPlaying, time, duration, true);
     }
   };
 
@@ -924,43 +932,77 @@ export default function App() {
     player.duration
   ]);
 
-  // Set action handlers once on mount
+  // Set action handlers once on mount (Native Android System Media + Web MediaSession)
   useEffect(() => {
-    if (!('mediaSession' in navigator)) return;
+    let removeNativeListener: (() => void) | undefined;
 
-    try {
-      navigator.mediaSession.setActionHandler('play', () => {
-        callbacksRef.current.setIsPlaying(true);
-      });
-      navigator.mediaSession.setActionHandler('pause', () => {
-        callbacksRef.current.setIsPlaying(false);
-      });
-      navigator.mediaSession.setActionHandler('previoustrack', () => {
-        callbacksRef.current.prevTrack();
-      });
-      navigator.mediaSession.setActionHandler('nexttrack', () => {
-        callbacksRef.current.nextTrack();
-      });
+    // 1. Android Native System Media Player (Notification controls, Lock-screen, Headset buttons)
+    setupSystemMediaActionListener((event) => {
+      switch (event.action) {
+        case 'play':
+          callbacksRef.current.setIsPlaying(true);
+          break;
+        case 'pause':
+          callbacksRef.current.setIsPlaying(false);
+          break;
+        case 'next':
+          callbacksRef.current.nextTrack();
+          break;
+        case 'previous':
+          callbacksRef.current.prevTrack();
+          break;
+        case 'seekTo':
+          if (event.position !== undefined) {
+            callbacksRef.current.seek(event.position);
+          }
+          break;
+        case 'stop':
+          callbacksRef.current.setIsPlaying(false);
+          break;
+      }
+    }).then((cleanup) => {
+      removeNativeListener = cleanup;
+    });
 
-      // Seek actions for full control accuracy
-      navigator.mediaSession.setActionHandler('seekto', (details) => {
-        if (details.seekTime !== undefined) {
-          callbacksRef.current.seek(details.seekTime);
-        }
-      });
-      navigator.mediaSession.setActionHandler('seekbackward', (details) => {
-        const offset = details.seekOffset || 10;
-        callbacksRef.current.seek(Math.max(0, callbacksRef.current.currentTime - offset));
-      });
-      navigator.mediaSession.setActionHandler('seekforward', (details) => {
-        const offset = details.seekOffset || 10;
-        callbacksRef.current.seek(Math.min(callbacksRef.current.duration, callbacksRef.current.currentTime + offset));
-      });
-    } catch (e) {
-      console.warn("Failed to set advanced MediaSession action handlers:", e);
+    // 2. Web MediaSession API Fallback
+    if ('mediaSession' in navigator) {
+      try {
+        navigator.mediaSession.setActionHandler('play', () => {
+          callbacksRef.current.setIsPlaying(true);
+        });
+        navigator.mediaSession.setActionHandler('pause', () => {
+          callbacksRef.current.setIsPlaying(false);
+        });
+        navigator.mediaSession.setActionHandler('previoustrack', () => {
+          callbacksRef.current.prevTrack();
+        });
+        navigator.mediaSession.setActionHandler('nexttrack', () => {
+          callbacksRef.current.nextTrack();
+        });
+
+        // Seek actions for full control accuracy
+        navigator.mediaSession.setActionHandler('seekto', (details) => {
+          if (details.seekTime !== undefined) {
+            callbacksRef.current.seek(details.seekTime);
+          }
+        });
+        navigator.mediaSession.setActionHandler('seekbackward', (details) => {
+          const offset = details.seekOffset || 10;
+          callbacksRef.current.seek(Math.max(0, callbacksRef.current.currentTime - offset));
+        });
+        navigator.mediaSession.setActionHandler('seekforward', (details) => {
+          const offset = details.seekOffset || 10;
+          callbacksRef.current.seek(Math.min(callbacksRef.current.duration, callbacksRef.current.currentTime + offset));
+        });
+      } catch (e) {
+        console.warn("Failed to set advanced MediaSession action handlers:", e);
+      }
     }
 
     return () => {
+      if (removeNativeListener) {
+        removeNativeListener();
+      }
       if ('mediaSession' in navigator) {
         navigator.mediaSession.setActionHandler('play', null);
         navigator.mediaSession.setActionHandler('pause', null);
@@ -973,74 +1015,97 @@ export default function App() {
     };
   }, []);
 
-  // Sync track metadata & playState
+  // Sync track metadata & playState to Android Native System Media and Web MediaSession
   useEffect(() => {
     const track = player.currentTrack;
-    if (!track || !('mediaSession' in navigator)) return;
-
-    try {
-      // Use HTTP URLs for MediaSession artwork so Android NotificationManager accepts it
-      const defaultCover = 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=512&h=512&fit=crop';
-      const artworkUrl = (track.cover && (track.cover.startsWith('http://') || track.cover.startsWith('https://'))) 
-        ? track.cover 
-        : defaultCover;
-
-      navigator.mediaSession.metadata = new (window as any).MediaMetadata({
-        title: track.title,
-        artist: track.artist,
-        album: track.album || 'Muzic',
-        artwork: [
-          { src: artworkUrl, sizes: '96x96', type: 'image/jpeg' },
-          { src: artworkUrl, sizes: '128x128', type: 'image/jpeg' },
-          { src: artworkUrl, sizes: '192x192', type: 'image/jpeg' },
-          { src: artworkUrl, sizes: '256x256', type: 'image/jpeg' },
-          { src: artworkUrl, sizes: '384x384', type: 'image/jpeg' },
-          { src: artworkUrl, sizes: '512x512', type: 'image/jpeg' }
-        ]
-      });
-    } catch (e) {
-      console.error("Setting MediaSession metadata failed:", e);
+    if (!track) {
+      stopSystemMedia();
+      return;
     }
+
+    // Default high-quality cover if none provided
+    const defaultCover = 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=512&h=512&fit=crop';
+    const artworkUrl = (track.cover && (track.cover.startsWith('http://') || track.cover.startsWith('https://') || track.cover.startsWith('data:') || track.cover.startsWith('content:'))) 
+      ? track.cover 
+      : defaultCover;
+
+    // Web MediaSession
+    if ('mediaSession' in navigator) {
+      try {
+        navigator.mediaSession.metadata = new (window as any).MediaMetadata({
+          title: track.title,
+          artist: track.artist,
+          album: track.album || 'Muzic',
+          artwork: [
+            { src: artworkUrl, sizes: '96x96', type: 'image/jpeg' },
+            { src: artworkUrl, sizes: '128x128', type: 'image/jpeg' },
+            { src: artworkUrl, sizes: '192x192', type: 'image/jpeg' },
+            { src: artworkUrl, sizes: '256x256', type: 'image/jpeg' },
+            { src: artworkUrl, sizes: '384x384', type: 'image/jpeg' },
+            { src: artworkUrl, sizes: '512x512', type: 'image/jpeg' }
+          ]
+        });
+      } catch (e) {
+        console.error("Setting MediaSession metadata failed:", e);
+      }
+    }
+
+    // Android Native System Media Player
+    syncTrackToSystemMedia(track, player.isPlaying, player.currentTime, player.duration);
   }, [player.currentTrack]);
 
-  // Sync playback state
+  // Sync playback state (Play/Pause)
   useEffect(() => {
-    if (!('mediaSession' in navigator)) return;
-    navigator.mediaSession.playbackState = player.isPlaying ? 'playing' : 'paused';
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = player.isPlaying ? 'playing' : 'paused';
+    }
+    syncPlaybackStateToSystemMedia(player.isPlaying, player.currentTime, player.duration, true);
   }, [player.isPlaying]);
 
   // Sync playback progress/position state
   useEffect(() => {
-    if (!player.currentTrack || !('mediaSession' in navigator) || !('setPositionState' in navigator.mediaSession)) return;
+    if (!player.currentTrack) return;
 
     const currentDuration = player.duration;
     const currentPos = player.currentTime;
 
     if (currentDuration > 0 && currentPos >= 0 && currentPos <= currentDuration) {
-      try {
-        navigator.mediaSession.setPositionState({
-          duration: currentDuration,
-          playbackRate: 1,
-          position: currentPos
-        });
-      } catch (e) {
-        console.warn("setPositionState failed:", e);
+      if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
+        try {
+          navigator.mediaSession.setPositionState({
+            duration: currentDuration,
+            playbackRate: 1,
+            position: currentPos
+          });
+        } catch (e) {
+          console.warn("setPositionState failed:", e);
+        }
       }
+      syncPlaybackStateToSystemMedia(player.isPlaying, currentPos, currentDuration);
     }
-  }, [player.currentTime, player.duration, player.currentTrack]);
+  }, [player.currentTime, player.duration, player.currentTrack, player.isPlaying]);
 
   useEffect(() => {
-    db.tracks.toArray().then(saved => { 
+    db.tracks.toArray().then(async saved => { 
       if (saved.length > 0) {
         const tracksWithNewUrls = saved.map(track => ({
           ...track,
-          url: URL.createObjectURL(track.file)
+          url: track.file ? URL.createObjectURL(track.file) : track.url
         }));
         setTracks(tracksWithNewUrls);
+      } else if (Capacitor.isNativePlatform()) {
+        // Automatically scan native device storage on initial launch when library is empty!
+        await triggerAutoScanNative(false);
       }
+    }).catch(err => {
+      console.error("Error retrieving tracks from database:", err);
     });
     return () => {
-      tracks.forEach(t => URL.revokeObjectURL(t.url));
+      tracks.forEach(t => {
+        if (t.url && t.url.startsWith('blob:')) {
+          URL.revokeObjectURL(t.url);
+        }
+      });
     };
   }, []); 
 
@@ -1198,13 +1263,52 @@ export default function App() {
       const allSaved = await db.tracks.toArray();
       const tracksWithUrls = allSaved.map(track => ({
         ...track,
-        url: track.url && track.url.startsWith('blob:') ? track.url : URL.createObjectURL(track.file)
+        url: track.file ? (track.url && track.url.startsWith('blob:') ? track.url : URL.createObjectURL(track.file)) : track.url
       }));
       setTracks(tracksWithUrls);
       if (viewMode !== 'folders') setViewMode('folders');
     }
 
     setIsScanning(false);
+  };
+
+  const triggerAutoScanNative = async (showFeedback = false): Promise<boolean> => {
+    if (!Capacitor.isNativePlatform()) return false;
+
+    setIsScanning(true);
+    setScanProgress(15);
+
+    try {
+      setScanProgress(35);
+      const scannedTracks = await scanDeviceAudioFiles();
+      setScanProgress(75);
+
+      if (scannedTracks && scannedTracks.length > 0) {
+        await db.tracks.bulkPut(scannedTracks);
+        const allSaved = await db.tracks.toArray();
+        const tracksWithUrls = allSaved.map(track => ({
+          ...track,
+          url: track.file ? URL.createObjectURL(track.file) : track.url
+        }));
+        setTracks(tracksWithUrls);
+        setScanProgress(100);
+        setIsScanning(false);
+        return true;
+      } else {
+        if (showFeedback) {
+          alert("No audio files found in device storage. If you just copied music, please ensure audio permission is granted in device settings.");
+        }
+      }
+    } catch (err: any) {
+      console.warn("Device audio auto-scan error:", err);
+      if (showFeedback) {
+        alert("Audio scan error: " + (err.message || String(err)));
+      }
+    } finally {
+      setIsScanning(false);
+      setScanProgress(0);
+    }
+    return false;
   };
 
   const pickAudioFilesNative = async (): Promise<File[]> => {
@@ -1253,6 +1357,18 @@ export default function App() {
   const triggerDirectoryPicker = async () => {
     if (Capacitor.isNativePlatform()) {
       setIsScanning(true);
+      setScanProgress(10);
+      try {
+        const success = await triggerAutoScanNative(false);
+        if (success) {
+          if (viewMode !== 'folders') setViewMode('folders');
+          return;
+        }
+      } catch (e) {
+        console.warn("Native auto-scan fallback:", e);
+      }
+
+      // Fallback: FilePicker if MediaStore returned 0 files or user wants to pick individual files
       try {
         try {
           await FilePicker.requestPermissions();
@@ -1372,7 +1488,10 @@ export default function App() {
         ref={player.audioRef} 
         src={player.currentTrack?.url} 
         onTimeUpdate={player.onTimeUpdate} 
+        onLoadedMetadata={player.onTimeUpdate}
         onEnded={player.nextTrack}
+        onPlay={() => player.setIsPlaying(true)}
+        onPause={() => player.setIsPlaying(false)}
       />
 
       {/* Decorative Blur Accent Dots */}
@@ -1696,11 +1815,11 @@ export default function App() {
                         <div className="flex flex-col sm:flex-row gap-2 w-full max-w-xs pt-1">
                           <button
                             type="button"
-                            onClick={triggerDirectoryPicker}
+                            onClick={() => Capacitor.isNativePlatform() ? triggerAutoScanNative(true) : triggerDirectoryPicker()}
                             className="flex-1 py-3 bg-[#6355FE] hover:bg-[#7265FF] text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer shadow-lg shadow-[#6355FE]/30 active:scale-95 flex items-center justify-center gap-2"
                           >
                             <FolderPlus size={16} />
-                            <span>Scan Folder</span>
+                            <span>{Capacitor.isNativePlatform() ? 'Scan Device Music' : 'Scan Folder'}</span>
                           </button>
                           <button
                             type="button"
@@ -1852,7 +1971,7 @@ export default function App() {
         <SettingsView 
           folderInputRef={folderInputRef}
           fileInputRef={fileInputRef}
-          onScanDirectory={triggerDirectoryPicker}
+          onScanDirectory={() => Capacitor.isNativePlatform() ? triggerAutoScanNative(true) : triggerDirectoryPicker()}
           onClearCache={async () => {
             if (confirm("Reset cache? This clears locally scanned path keys only.")) {
               await db.tracks.clear();

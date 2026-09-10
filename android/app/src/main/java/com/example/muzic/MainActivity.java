@@ -8,6 +8,8 @@ import com.getcapacitor.BridgeActivity;
 public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        registerPlugin(NativeAudioScannerPlugin.class);
+        registerPlugin(SystemMediaPlayerPlugin.class);
         super.onCreate(savedInstanceState);
         
         // Retrieve the Capacitor WebView engine and optimize it for audio
@@ -20,5 +22,17 @@ public class MainActivity extends BridgeActivity {
             settings.setDomStorageEnabled(true);
             settings.setDatabaseEnabled(true);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Ensure webview timers keep running for continuous background playback
+        try {
+            WebView webView = this.getBridge().getWebView();
+            if (webView != null) {
+                webView.resumeTimers();
+            }
+        } catch (Exception ignored) {}
     }
 }
