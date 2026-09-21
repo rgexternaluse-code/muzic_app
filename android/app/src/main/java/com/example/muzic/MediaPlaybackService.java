@@ -77,6 +77,21 @@ public class MediaPlaybackService extends Service {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         createNotificationChannel();
         setupMediaSession();
+        try {
+            Notification notification = buildNotification();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startForeground(
+                    NOTIFICATION_ID,
+                    notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
+                );
+            } else {
+                startForeground(NOTIFICATION_ID, notification);
+            }
+            isForeground = true;
+        } catch (Exception e) {
+            Log.e(TAG, "Initial foreground start exception: " + e.getMessage(), e);
+        }
         Log.d(TAG, "MediaPlaybackService created");
     }
 
@@ -410,7 +425,7 @@ public class MediaPlaybackService extends Service {
         mediaStyle.setShowActionsInCompactView(0, 1, 2);
 
         builder.setStyle(mediaStyle)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(android.R.drawable.ic_media_play)
             .setContentTitle(currentTitle)
             .setContentText(currentArtist)
             .setSubText(currentAlbum)

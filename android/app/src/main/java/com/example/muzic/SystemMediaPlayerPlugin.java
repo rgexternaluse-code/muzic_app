@@ -28,26 +28,34 @@ public class SystemMediaPlayerPlugin extends Plugin {
     @Override
     public void load() {
         super.load();
-        MediaPlaybackService.setActionListener((action, position) -> {
-            JSObject data = new JSObject();
-            data.put("action", action);
-            if (position != null) {
-                data.put("position", position);
-            }
-            notifyListeners("mediaAction", data);
-        });
-        Log.d(TAG, "SystemMediaPlayerPlugin loaded and listener registered");
+        try {
+            MediaPlaybackService.setActionListener((action, position) -> {
+                JSObject data = new JSObject();
+                data.put("action", action);
+                if (position != null) {
+                    data.put("position", position);
+                }
+                notifyListeners("mediaAction", data);
+            });
+            Log.d(TAG, "SystemMediaPlayerPlugin loaded and listener registered");
+        } catch (Exception e) {
+            Log.e(TAG, "Error in SystemMediaPlayerPlugin.load: " + e.getMessage(), e);
+        }
     }
 
     private void ensureServiceStarted() {
-        Context context = getContext();
-        if (MediaPlaybackService.getInstance() == null) {
-            Intent intent = new Intent(context, MediaPlaybackService.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(intent);
-            } else {
-                context.startService(intent);
+        try {
+            Context context = getContext();
+            if (context != null && MediaPlaybackService.getInstance() == null) {
+                Intent intent = new Intent(context, MediaPlaybackService.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(intent);
+                } else {
+                    context.startService(intent);
+                }
             }
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to start MediaPlaybackService: " + e.getMessage(), e);
         }
     }
 
