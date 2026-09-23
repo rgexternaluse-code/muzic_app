@@ -49,4 +49,17 @@ public class MainActivity extends BridgeActivity {
             }
         } catch (Exception ignored) {}
     }
+
+    @Override
+    public void onDestroy() {
+        if (isFinishing()) {
+            try {
+                MediaPlaybackService svc = MediaPlaybackService.getInstance();
+                if (svc != null) {
+                    svc.stopPlayback();
+                }
+            } catch (Exception ignored) {}
+        }
+        super.onDestroy();
+    }
 }

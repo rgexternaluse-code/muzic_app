@@ -199,7 +199,7 @@ public class MediaPlaybackService extends Service {
                     break;
             }
         }
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     public void updateTrack(
@@ -410,6 +410,10 @@ public class MediaPlaybackService extends Service {
             nextPendingIntent
         ).build();
 
+        // Stop/Dismiss Action (Delete Intent)
+        Intent stopIntent = new Intent(this, MediaPlaybackService.class).setAction(ACTION_STOP);
+        PendingIntent deletePendingIntent = PendingIntent.getService(this, 4, stopIntent, pendingIntentFlags);
+
         // Build notification
         Notification.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -430,6 +434,7 @@ public class MediaPlaybackService extends Service {
             .setContentText(currentArtist)
             .setSubText(currentAlbum)
             .setContentIntent(contentPendingIntent)
+            .setDeleteIntent(deletePendingIntent)
             .setVisibility(Notification.VISIBILITY_PUBLIC)
             .setOngoing(isPlaying)
             .addAction(prevAction)
@@ -468,37 +473,72 @@ public class MediaPlaybackService extends Service {
     }
 
     public void stopPlayback() {
+        Log.d(TAG, "stopPlayback called - clearing notification and releasing session");
         isPlaying = false;
         try {
             if (mediaSession != null) {
                 mediaSession.setActive(false);
+                mediaSession.release();
+                mediaSession = null;
             }
-            stopForeground(true);
-            isForeground = false;
+        } catch (Exception e) {
+            Log.e(TAG, "Error releasing mediaSession: " + e.getMessage());
+        }
+
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                stopForeground(STOP_FOREGROUND_REMOVE);
+            } else {
+                stopForeground(true);
+            }
         } catch (Exception e) {
             Log.e(TAG, "Error stopping foreground: " + e.getMessage());
         }
+
+        try {
+            if (notificationManager != null) {
+                notificationManager.cancel(NOTIFICATION_ID);
+                notificationManager.cancelAll();
+            }
+            isForeground = false;
+        } catch (Exception e) {
+            Log.e(TAG, "Error canceling notification: " + e.getMessage());
+        }
+
         stopSelf();
     }
 
     @Override
     public void onDestroy() {
-        if (mediaSession != null) {
-            mediaSession.release();
-            mediaSession = null;
-        }
+        Log.d(TAG, "MediaPlaybackService onDestroy called");
+        try {
+            if (mediaSession != null) {
+                mediaSession.setActive(false);
+                mediaSession.release();
+                mediaSession = null;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                stopForeground(STOP_FOREGROUND_REMOVE);
+            } else {
+                stopForeground(true);
+            }
+            if (notificationManager != null) {
+                notificationManager.cancel(NOTIFICATION_ID);
+                notificationManager.cancelAll();
+            }
+        } catch (Exception ignored) {}
+
         executor.shutdown();
         instance = null;
         super.onDestroy();
-        Log.d(TAG, "MediaPlaybackService destroyed");
+        Log.d(TAG, "MediaPlaybackService destroyed completely");
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         super.onTaskRemoved(rootIntent);
-        if (!isPlaying) {
-            stopPlayback();
-        }
+        Log.d(TAG, "onTaskRemoved: User cleared app from recent running apps list. Removing all controls.");
+        stopPlayback();
     }
 
     @Override
