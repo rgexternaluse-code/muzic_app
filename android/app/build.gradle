@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     namespace = "com.example.muzic"
-    compileSdk = rootProject.ext.compileSdkVersion
+    compileSdk = 35
     defaultConfig {
         applicationId "com.example.muzic"
         minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        targetSdkVersion 35
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
