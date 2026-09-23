@@ -57,7 +57,8 @@ import {
   setupSystemMediaActionListener, 
   syncTrackToSystemMedia, 
   syncPlaybackStateToSystemMedia, 
-  stopSystemMedia 
+  stopSystemMedia,
+  requestNotificationPermissionIfNeeded
 } from './services/systemMediaPlayer';
 
 // --- Lightweight JSONP Client to bypass CORS on the client side ---
@@ -839,6 +840,7 @@ export default function App() {
   };
 
   const requestPermission = async () => {
+    requestNotificationPermissionIfNeeded().catch(() => {});
     if ((window as any).Capacitor) {
       try {
         const { Filesystem } = (window as any).Capacitor.Plugins || {};

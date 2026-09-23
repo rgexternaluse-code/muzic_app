@@ -35,6 +35,34 @@ export interface SystemMediaPlayerPluginInterface {
 export const SystemMediaPlayer = registerPlugin<SystemMediaPlayerPluginInterface>('SystemMediaPlayer');
 
 let actionListenerHandle: PluginListenerHandle | null = null;
+let hasRequestedNotificationPermission = false;
+
+export async function requestNotificationPermissionIfNeeded(): Promise<boolean> {
+  if (!Capacitor.isNativePlatform()) {
+    return true;
+  }
+  if (hasRequestedNotificationPermission) {
+    return true;
+  }
+  hasRequestedNotificationPermission = true;
+
+  try {
+    const plugin = SystemMediaPlayer as any;
+    if (typeof plugin.checkPermissions === 'function') {
+      const status = await plugin.checkPermissions();
+      if (status?.notifications === 'granted') {
+        return true;
+      }
+      if (typeof plugin.requestPermissions === 'function') {
+        const res = await plugin.requestPermissions();
+        return res?.notifications === 'granted';
+      }
+    }
+  } catch (e) {
+    console.warn('Could not request notification permissions:', e);
+  }
+  return true;
+}
 
 export async function setupSystemMediaActionListener(
   onAction: (event: MediaActionEvent) => void
@@ -74,6 +102,8 @@ export async function syncTrackToSystemMedia(
   if (!Capacitor.isNativePlatform() || !track) {
     return;
   }
+
+  requestNotificationPermissionIfNeeded().catch(() => {});
 
   try {
     await SystemMediaPlayer.updateTrack({
