@@ -88,36 +88,32 @@ Always encourage users to:
 
 ---
 
-## 5. Resolving the Gradle Error (API Level 34 Upgrade)
+## 5. Resolving the Gradle Error (API Level 36 Upgrade)
 
-If you see a Gradle error during build regarding permissions or foreground services (e.g., `FOREGROUND_SERVICE_MEDIA_PLAYBACK` or target SDK constraints), this is because Android 13/14 requires your Native compiler toolchain to target API level 34.
+If you see a Gradle error during build regarding `checkDebugAarMetadata` or `CheckAarMetadataWorkAction`:
+This is because Capacitor 8 and AndroidX libraries (such as `androidx.core:core:1.17.0` and `androidx.activity:activity:1.11.0`) require `compileSdkVersion 36`.
 
 ### The Fix:
 
 1. Open `/android/variables.gradle` in your project root of the Android build and verify values match:
 ```groovy
 ext {
-    minSdkVersion = 22
-    compileSdkVersion = 34
-    targetSdkVersion = 34
-    // Modern androidx dependencies
-    androidxActivityVersion = '1.8.0'
-    androidxAppCompatVersion = '1.6.1'
-    androidxCoordinatorLayoutVersion = '1.2.0'
-    androidxCoreVersion = '1.12.0'
+    minSdkVersion = 24
+    compileSdkVersion = 36
+    targetSdkVersion = 36
+    androidxActivityVersion = '1.11.0'
+    androidxAppCompatVersion = '1.7.1'
+    androidxCoordinatorLayoutVersion = '1.3.0'
+    androidxCoreVersion = '1.17.0'
+    androidxFragmentVersion = '1.8.9'
+    coreSplashScreenVersion = '1.2.0'
+    androidxWebkitVersion = '1.14.0'
+    junitVersion = '4.13.2'
+    androidxJunitVersion = '1.3.0'
+    androidxEspressoCoreVersion = '3.7.0'
+    cordovaAndroidVersion = '14.0.1'
 }
 ```
 
-2. Alternatively, open `/android/app/build.gradle` and change the versions manually in your compile options:
-```groovy
-android {
-    compileSdkVersion 34
-    defaultConfig {
-        targetSdkVersion 34
-        ...
-    }
-}
-```
-
-3. Sync Gradle in Android Studio (`File` -> `Sync Project with Gradle Files`) and run clean build (`Build` -> `Clean Project` then `Build` -> `Rebuild Project`). This resolves all permission-related manifest syntax and Foreground Service compilation errors.
+2. Sync Gradle in Android Studio (`File` -> `Sync Project with Gradle Files`) and run clean build (`Build` -> `Clean Project` then `Build` -> `Rebuild Project`). This resolves all AAR metadata check errors and permissions constraints.
 
