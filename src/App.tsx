@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useRef, useEffect, useMemo, ChangeEvent, memo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback, ChangeEvent, memo, ReactNode } from 'react';
 import { 
   Play, 
   Pause, 
@@ -29,6 +29,7 @@ import {
   Trash2,
   Plus,
   Moon,
+  Sun,
   AudioLines,
   MoreVertical,
   Volume2,
@@ -616,6 +617,65 @@ export default function App() {
 
   const [playbackQueue, setPlaybackQueue] = useState<Track[]>([]);
   const [activeTab, setActiveTab] = useState<'local' | 'online'>('local');
+
+  // Toast Notification System
+  const [toast, setToast] = useState<{ id: number; message: string; icon?: React.ReactNode } | null>(null);
+  const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const showToast = useCallback((message: string, icon?: React.ReactNode) => {
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+    setToast({ id: Date.now(), message, icon });
+    toastTimeoutRef.current = setTimeout(() => {
+      setToast(null);
+    }, 2200);
+  }, []);
+
+  // Theme Management (Dark / Light)
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('muzic_theme');
+    return (saved === 'light' || saved === 'dark') ? saved : 'dark';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('muzic_theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'light') {
+      document.documentElement.classList.add('theme-light');
+      document.documentElement.classList.remove('theme-dark');
+    } else {
+      document.documentElement.classList.add('theme-dark');
+      document.documentElement.classList.remove('theme-light');
+    }
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      showToast(
+        next === 'dark' ? 'Dark theme enabled' : 'Light theme enabled',
+        next === 'dark' ? <Moon size={16} className="text-[#8E7CFF]" /> : <Sun size={16} className="text-amber-400" />
+      );
+      return next;
+    });
+  };
+
+  const handleToggleSort = () => {
+    setSortBy(prev => {
+      const next = prev === 'alphabet' ? 'latest' : 'alphabet';
+      showToast(
+        next === 'alphabet' ? 'Sorted alphabetically (A-Z)' : 'Sorted by recently added',
+        next === 'alphabet' ? <LayoutGrid size={16} className="text-[#8E7CFF]" /> : <Clock size={16} className="text-[#8E7CFF]" />
+      );
+      return next;
+    });
+  };
+
+  const handleImportMusicFolder = () => {
+    showToast('Opening music folder picker...', <FolderPlus size={16} className="text-[#8E7CFF]" />);
+    triggerDirectoryPicker();
+  };
   const [onlineSearchQuery, setOnlineSearchQuery] = useState('');
   const [onlineTracks, setOnlineTracks] = useState<Track[]>([]);
   const [isOnlineLoading, setIsOnlineLoading] = useState(false);
@@ -1533,64 +1593,38 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Mode Segmented Toggle & Quick Actions */}
+              {/* Quick Actions: Theme Switch, Sort & Import Music Folder */}
               <div className="flex items-center gap-2">
-                <div className="flex p-1 bg-white/5 backdrop-blur-md rounded-2xl relative border border-white/10 shadow-inner">
-                  <button 
-                    type="button"
-                    onClick={() => setActiveTab('local')}
-                    title="Local Files"
-                    className={`p-2.5 rounded-xl flex items-center justify-center relative z-10 cursor-pointer transition-all duration-200 ${
-                      activeTab === 'local' ? 'text-white' : 'opacity-40 hover:opacity-80 text-white'
-                    }`}
-                  >
-                    <Folder size={16} />
-                    {activeTab === 'local' && (
-                      <motion.div
-                        layoutId="headerActiveTabPill"
-                        className="absolute inset-0 bg-gradient-to-r from-[#6355FE] to-[#8E7CFF] rounded-xl -z-10 shadow-lg shadow-[#6355FE]/30"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      />
-                    )}
-                  </button>
-                  
-                  <button 
-                    type="button"
-                    onClick={() => setActiveTab('online')}
-                    title="Online Stream"
-                    className={`p-2.5 rounded-xl flex items-center justify-center relative z-10 cursor-pointer transition-all duration-200 ${
-                      activeTab === 'online' ? 'text-white' : 'opacity-40 hover:opacity-80 text-white'
-                    }`}
-                  >
-                    <Globe size={16} />
-                    {activeTab === 'online' && (
-                      <motion.div
-                        layoutId="headerActiveTabPill"
-                        className="absolute inset-0 bg-gradient-to-r from-[#6355FE] to-[#8E7CFF] rounded-xl -z-10 shadow-lg shadow-[#6355FE]/30"
-                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      />
-                    )}
-                  </button>
-                </div>
+                <button 
+                  type="button"
+                  onClick={toggleTheme}
+                  title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                  className="p-3 bg-[#14122B]/80 rounded-2xl border border-white/10 hover:border-[#6355FE]/40 transition-all flex items-center justify-center cursor-pointer text-[#8F8E9C] hover:text-white group active:scale-95 shadow-sm"
+                >
+                  {theme === 'dark' ? (
+                    <Sun size={16} className="text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
+                  ) : (
+                    <Moon size={16} className="text-[#6355FE] group-hover:-rotate-12 transition-transform duration-300" />
+                  )}
+                </button>
 
-                {activeTab === 'local' && (
-                  <>
-                    <button 
-                      onClick={() => setSortBy(p => p === 'alphabet' ? 'latest' : 'alphabet')} 
-                      className="p-3 bg-[#14122B]/80 rounded-2xl border border-white/10 hover:border-[#6355FE]/40 transition-all flex items-center justify-center group cursor-pointer text-[#8F8E9C] hover:text-white"
-                      title={sortBy === 'alphabet' ? 'Sort: Alphabetical' : 'Sort: Latest'}
-                    >
-                      {sortBy === 'alphabet' ? <LayoutGrid size={16} /> : <Clock size={16} />}
-                    </button>
-                    <button 
-                      onClick={triggerDirectoryPicker} 
-                      className="p-3 bg-[#6355FE] text-white rounded-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-lg shadow-[#6355FE]/30 hover:bg-[#7265FF]"
-                      title="Import Music Folder"
-                    >
-                      <FolderPlus size={16} />
-                    </button>
-                  </>
-                )}
+                <button 
+                  type="button"
+                  onClick={handleToggleSort} 
+                  className="p-3 bg-[#14122B]/80 rounded-2xl border border-white/10 hover:border-[#6355FE]/40 transition-all flex items-center justify-center group cursor-pointer text-[#8F8E9C] hover:text-white active:scale-95 shadow-sm"
+                  title={sortBy === 'alphabet' ? 'Sort: Alphabetical' : 'Sort: Latest'}
+                >
+                  {sortBy === 'alphabet' ? <LayoutGrid size={16} /> : <Clock size={16} />}
+                </button>
+
+                <button 
+                  type="button"
+                  onClick={handleImportMusicFolder} 
+                  className="p-3 bg-[#6355FE] text-white rounded-2xl hover:scale-105 active:scale-95 transition-all cursor-pointer shadow-lg shadow-[#6355FE]/30 hover:bg-[#7265FF]"
+                  title="Import Music Folder"
+                >
+                  <FolderPlus size={16} />
+                </button>
               </div>
             </div>
 
@@ -1992,12 +2026,14 @@ export default function App() {
         <SettingsView 
           folderInputRef={folderInputRef}
           fileInputRef={fileInputRef}
+          theme={theme}
+          onToggleTheme={toggleTheme}
           onScanDirectory={() => Capacitor.isNativePlatform() ? triggerAutoScanNative(true) : triggerDirectoryPicker()}
           onClearCache={async () => {
             if (confirm("Reset cache? This clears locally scanned path keys only.")) {
               await db.tracks.clear();
               setTracks([]);
-              alert("Cache cleared successfully!");
+              showToast("Cache cleared successfully!", <Trash2 size={16} className="text-red-400" />);
             }
           }}
         />
@@ -2295,6 +2331,31 @@ export default function App() {
                 </div>
               </div>
 
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Action Toast Notification */}
+      <AnimatePresence>
+        {toast && (
+          <motion.div
+            key={toast.id}
+            initial={{ opacity: 0, y: -24, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -16, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 450, damping: 30 }}
+            className="fixed top-5 left-1/2 -translate-x-1/2 z-[250] pointer-events-none"
+          >
+            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#14122B]/95 backdrop-blur-xl border border-[#6355FE]/40 shadow-2xl shadow-black/40 text-white">
+              {toast.icon && (
+                <div className="shrink-0 flex items-center justify-center">
+                  {toast.icon}
+                </div>
+              )}
+              <span className="text-xs font-bold tracking-tight whitespace-nowrap">
+                {toast.message}
+              </span>
             </div>
           </motion.div>
         )}

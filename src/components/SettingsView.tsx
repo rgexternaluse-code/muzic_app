@@ -1,5 +1,5 @@
 import React from 'react';
-import { Laptop, ExternalLink } from 'lucide-react';
+import { RefreshCw, FolderOpen, FileAudio, Trash2, Sun, Moon } from 'lucide-react';
 import appLogo from '../assets/images/muzic_app_logo_1786456453207.jpg';
 
 interface SettingsViewProps {
@@ -7,6 +7,8 @@ interface SettingsViewProps {
   fileInputRef: React.RefObject<HTMLInputElement>;
   onClearCache: () => void;
   onScanDirectory?: () => void;
+  theme?: 'dark' | 'light';
+  onToggleTheme?: () => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
@@ -14,108 +16,108 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   fileInputRef,
   onClearCache,
   onScanDirectory,
+  theme = 'dark',
+  onToggleTheme,
 }) => {
   return (
     <div className="flex-1 flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease-out]">
       {/* Header */}
-      <header className="px-6 pt-10 pb-4 shrink-0 space-y-2">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-[#6355FE]/30 shrink-0">
+      <header className="px-6 pt-10 pb-5 shrink-0">
+        <div className="flex items-center gap-3.5">
+          <div className="w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-[#6355FE]/25 shrink-0 bg-[#14122B]">
             <img src={appLogo} alt="Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
           <div>
             <h1 className="text-2xl font-black tracking-tight leading-none text-white">Settings</h1>
-            <p className="text-[11px] font-extrabold text-[#8E7CFF] uppercase tracking-widest mt-1">Device and build details</p>
+            <p className="text-[11px] font-extrabold text-[#8E7CFF] uppercase tracking-widest mt-1">Theme & Library</p>
           </div>
         </div>
       </header>
 
-      {/* Settings Options Scroll Container */}
-      <main className="flex-1 overflow-y-auto px-6 pb-40 space-y-6">
+      {/* Settings Container */}
+      <main className="flex-1 overflow-y-auto px-6 pb-36 space-y-5">
         
-        {/* Sync panel */}
-        <div className="p-5 rounded-3xl bg-[#14122B]/40 border border-white/5 space-y-4 text-left">
-          <h2 className="text-xs font-black uppercase tracking-wider text-[#8E7CFF]">Library Synchronization</h2>
-          <p className="text-[11px] opacity-60 leading-normal font-bold">
-            Connect devices, clear local cache indexes, or load static media directories.
+        {/* Appearance / Theme Switch */}
+        <div className="p-5 rounded-3xl bg-[#14122B]/60 border border-white/10 space-y-3 text-left shadow-lg">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-[#6355FE]/20 text-[#8E7CFF] flex items-center justify-center border border-[#6355FE]/30 shrink-0">
+                {theme === 'dark' ? <Moon size={18} /> : <Sun size={18} className="text-amber-500" />}
+              </div>
+              <div>
+                <h2 className="text-xs font-black uppercase tracking-wider text-[#8E7CFF]">Theme Mode</h2>
+                <p className="text-[11px] text-white/60 font-medium mt-0.5">
+                  {theme === 'dark' ? 'Dark theme is active' : 'Light theme is active'}
+                </p>
+              </div>
+            </div>
+
+            {/* Switch Toggle */}
+            <button
+              type="button"
+              onClick={onToggleTheme}
+              className={`relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                theme === 'dark' ? 'bg-[#6355FE]' : 'bg-[#D6CFF7]'
+              }`}
+              role="switch"
+              aria-checked={theme === 'dark'}
+              title="Toggle Dark / Light theme"
+            >
+              <span className="sr-only">Toggle theme</span>
+              <span
+                className={`pointer-events-none inline-flex items-center justify-center h-7 w-7 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
+                  theme === 'dark' ? 'translate-x-6 text-[#6355FE]' : 'translate-x-0 text-amber-500'
+                }`}
+              >
+                {theme === 'dark' ? <Moon size={13} /> : <Sun size={13} />}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* Library Synchronization Panel */}
+        <div className="p-5 rounded-3xl bg-[#14122B]/60 border border-white/10 space-y-4 text-left shadow-lg">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-[#6355FE]/20 text-[#8E7CFF] flex items-center justify-center border border-[#6355FE]/30">
+              <RefreshCw size={16} />
+            </div>
+            <div>
+              <h2 className="text-xs font-black uppercase tracking-wider text-[#8E7CFF]">Library Synchronization</h2>
+              <p className="text-[10px] text-white/50 font-medium">Manage music files, local storage, and track indexes</p>
+            </div>
+          </div>
+
+          <p className="text-[11px] text-[#ECE6FF]/80 leading-relaxed font-semibold">
+            Scan your device folders or individual audio files into your library. You can also reset local metadata cache anytime.
           </p>
-          <div className="grid grid-cols-2 gap-2">
+
+          <div className="grid grid-cols-2 gap-3 pt-1">
             <button 
               type="button"
               onClick={onScanDirectory || (() => folderInputRef.current?.click())} 
-              className="p-3 bg-[#1C153E] text-[#ECE6FF] hover:bg-[#2B2651] active:scale-95 transition-all rounded-xl text-[10px] font-black uppercase tracking-wider border border-white/5 cursor-pointer"
+              className="flex items-center justify-center gap-2 p-3.5 bg-[#1C153E] hover:bg-[#2B2651] active:scale-[0.98] text-[#ECE6FF] transition-all rounded-2xl text-[11px] font-bold border border-white/10 cursor-pointer shadow-md shadow-black/20"
             >
-              📂 Scan Folder
+              <FolderOpen size={16} className="text-[#8E7CFF]" />
+              <span>Scan Folder</span>
             </button>
             <button 
               type="button"
               onClick={() => fileInputRef.current?.click()} 
-              className="p-3 bg-[#1C153E] text-[#ECE6FF] hover:bg-[#2B2651] active:scale-95 transition-all rounded-xl text-[10px] font-black uppercase tracking-wider border border-white/5 cursor-pointer"
+              className="flex items-center justify-center gap-2 p-3.5 bg-[#1C153E] hover:bg-[#2B2651] active:scale-[0.98] text-[#ECE6FF] transition-all rounded-2xl text-[11px] font-bold border border-white/10 cursor-pointer shadow-md shadow-black/20"
             >
-              🎵 Index File
+              <FileAudio size={16} className="text-[#8E7CFF]" />
+              <span>Index Files</span>
             </button>
           </div>
+
           <button 
             type="button"
             onClick={onClearCache}
-            className="w-full py-2.5 bg-red-500/10 text-red-100 hover:bg-red-500 hover:text-white rounded-xl text-[10px] font-black uppercase tracking-wider transition-all border border-red-500/10 cursor-pointer"
+            className="w-full mt-2 py-3 bg-red-500/10 hover:bg-red-500/20 active:scale-[0.98] text-red-300 hover:text-red-200 rounded-2xl text-[11px] font-bold transition-all border border-red-500/20 flex items-center justify-center gap-2 cursor-pointer"
           >
-            🗑️ Clear Local Tracks Cache
+            <Trash2 size={15} />
+            <span>Clear Local Tracks Cache</span>
           </button>
-        </div>
-
-        {/* Binary CLI compilers guide */}
-        <div className="p-5 rounded-3xl bg-[#14122B]/40 border border-white/5 space-y-4 text-left">
-          <div className="flex items-center gap-2">
-            <Laptop size={18} className="text-[#8E7CFF]" />
-            <h2 className="text-xs font-black uppercase tracking-wider text-[#8E7CFF]">No Android Studio? Direct CLI Build</h2>
-          </div>
-          <p className="text-[11px] opacity-80 leading-relaxed font-semibold">
-            You **do not need** to install or run full Android Studio to build an APK! You can use the direct **Gradle/Capacitor Command Line interface** right inside your shell.
-          </p>
-
-          <div className="space-y-3 pt-1 text-[11px] font-bold">
-            <div className="space-y-1">
-              <span className="text-[#ECE6FF] uppercase text-[9px] tracking-wider block">1. Run Capacitor Sync:</span>
-              <code className="block bg-[#080714] p-2.5 rounded-xl text-emerald-400 font-mono text-[9px] select-all">
-                npm run build && npx cap sync
-              </code>
-            </div>
-
-            <div className="space-y-1">
-              <span className="text-[#ECE6FF] uppercase text-[9px] tracking-wider block">2. Direct Shell Compile (without Android Studio):</span>
-              <p className="text-[10px] opacity-60 leading-normal mb-1">
-                Java JDK is indispensable to package android projects. However, you can run Gradle compiling directly from terminal using:
-              </p>
-              <code className="block bg-[#080714] p-2.5 rounded-xl text-emerald-400 font-mono text-[9px] select-all">
-                cd android && ./gradlew assembleDebug
-              </code>
-              <p className="text-[9px] text-[#8E7CFF] mt-1 uppercase tracking-wider font-extrabold">
-                🎯 Output APK Location: <span className="text-white">android/app/build/outputs/apk/debug/app-debug.apk</span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Git pulls panel */}
-        <div className="p-5 rounded-3xl bg-[#14122B]/40 border border-white/5 space-y-3.5 text-left">
-          <div className="flex items-center gap-2">
-            <ExternalLink size={18} className="text-[#8E7CFF]" />
-            <h2 className="text-xs font-black uppercase tracking-wider text-[#8E7CFF]">Sync Latest Code From Git</h2>
-          </div>
-          <p className="text-[11px] opacity-80 leading-relaxed font-semibold">
-            To update your workspace's files directly with another git repository's master codebase, you can execute standard git commands in the workspace terminal:
-          </p>
-          <div className="space-y-2 font-mono text-[9px] text-emerald-400 bg-[#080714] p-3 rounded-xl select-all select-all space-y-2.5 leading-relaxed">
-            <p className="text-[#8F8E9C]/60 text-[8px] uppercase tracking-wider mb-1 font-semibold"># Initial Setup (If first time linking remote)</p>
-            <p>git remote add origin YOUR_REPO_URL</p>
-            <p className="text-[#8F8E9C]/60 text-[8px] uppercase tracking-wider mt-2 mb-1 font-semibold"># Pull and integrate master code</p>
-            <p>git fetch --all</p>
-            <p>git reset --hard origin/main</p>
-          </div>
-          <p className="text-[10px] opacity-40 uppercase tracking-wide leading-relaxed font-black block pt-1 text-center">
-            💡 This keeps your files synchronous with cloud repos instantaneously!
-          </p>
         </div>
       </main>
     </div>

@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
+    "icons:generate": "node scripts/generate_android_icons.cjs",
     "android:sync": "npm run build && npx cap sync",
     "android:copy": "npm run build && npx cap copy",
     "android:open": "npx cap open android",
