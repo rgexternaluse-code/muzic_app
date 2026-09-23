@@ -19,8 +19,10 @@ jobs:
           java-version: '21'
           distribution: 'zulu'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Accept Android SDK Licenses & Install API 35
+        run: |
+          yes | sdkmanager --licenses || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" || true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -35,7 +37,7 @@ jobs:
         run: npm run build
 
       - name: Sync Capacitor
-        run: npx cap sync
+        run: npx cap sync android
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
