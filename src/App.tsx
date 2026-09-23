@@ -53,6 +53,7 @@ import appLogo from './assets/images/muzic_app_logo_1786456453207.jpg';
 import { TrackContextMenu } from './components/TrackContextMenu';
 import { PlaylistsView } from './components/PlaylistsView';
 import { SettingsView } from './components/SettingsView';
+import { TrackThumbnail } from './components/TrackThumbnail';
 import { 
   setupSystemMediaActionListener, 
   syncTrackToSystemMedia, 
@@ -256,7 +257,13 @@ const TrackItem = memo(({
   >
     {/* Cover Art Image */}
     <div className="w-12 h-12 rounded-xl overflow-hidden mr-3.5 shadow-md shrink-0 relative border border-white/10 group-hover:shadow-lg transition-all">
-      <img src={track.cover} alt={track.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" referrerPolicy="no-referrer" />
+      <TrackThumbnail
+        cover={track.cover}
+        title={track.title}
+        artist={track.artist}
+        alt={track.title}
+        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      />
       {isActive && (
         <div className="absolute inset-0 bg-black/30 flex items-center justify-center backdrop-blur-[2px]">
           {isPlaying && <div className="w-3 h-3 bg-[#6355FE] rounded-full animate-ping shadow-[0_0_8px_#6355FE]" />}
@@ -694,18 +701,23 @@ export default function App() {
           // Filter out results that don't have playables
           const results = mergedResults.filter((item: any) => item.previewUrl);
           
-          const formatted = results.map((item: any) => ({
-            id: `online_${item.trackId || Math.random()}`,
-            title: item.trackName || "Unknown Title",
-            artist: item.artistName || "Unknown Artist",
-            album: item.collectionName || "Single",
-            duration: item.trackTimeMillis ? Math.round(item.trackTimeMillis / 1000) : 30, // preview is generally 30s
-            url: item.previewUrl,
-            cover: item.artworkUrl100 ? item.artworkUrl100.replace("100x100bb.jpg", "400x400bb.jpg") : "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400",
-            format: "STREAM",
-            fileName: `${item.trackName || 'stream'}.mp3`,
-            size: 0
-          }));
+          const formatted = results.map((item: any) => {
+            const rawArtwork = item.artworkUrl100 || item.artworkUrl60;
+            const cover = rawArtwork ? rawArtwork.replace(/\/\d+x\d+bb?\./, '/500x500bb.') : undefined;
+
+            return {
+              id: `online_${item.trackId || Math.random()}`,
+              title: item.trackName || "Unknown Title",
+              artist: item.artistName || "Unknown Artist",
+              album: item.collectionName || "Single",
+              duration: item.trackTimeMillis ? Math.round(item.trackTimeMillis / 1000) : 30, // preview is generally 30s
+              url: item.previewUrl,
+              cover: cover,
+              format: "STREAM",
+              fileName: `${item.trackName || 'stream'}.mp3`,
+              size: 0
+            };
+          });
           setOnlineTracks(formatted);
         } else {
           setOnlineTracks([]);
@@ -762,9 +774,9 @@ export default function App() {
             const streamUrl = `${successNode}/v1/tracks/${trackId}/stream?app_name=muzicapp`;
             
             // Resolve cover artwork size
-            let coverUrl = "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400";
+            let coverUrl: string | undefined = undefined;
             if (item.artwork) {
-              coverUrl = item.artwork["480x480"] || item.artwork["150x150"] || item.artwork["1000x1000"] || coverUrl;
+              coverUrl = item.artwork["480x480"] || item.artwork["150x150"] || item.artwork["1000x1000"] || undefined;
             }
             
             return {
@@ -1208,9 +1220,16 @@ export default function App() {
         if (metadata.common.album && metadata.common.album.trim()) album = metadata.common.album.trim();
         if (metadata.common.picture?.[0]) {
           const picture = metadata.common.picture[0];
-          cover = `data:${picture.format};base64,${window.btoa(
-            new Uint8Array(picture.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
-          )}`;
+          try {
+            const rawFormat = (picture.format || '').toLowerCase();
+            const mime = rawFormat.startsWith('image/')
+              ? rawFormat
+              : `image/${rawFormat === 'jpg' ? 'jpeg' : (rawFormat || 'jpeg')}`;
+            const blob = new Blob([picture.data], { type: mime });
+            cover = URL.createObjectURL(blob);
+          } catch (e) {
+            console.warn("Could not generate picture object URL", e);
+          }
         }
       }
       if (metadata.format?.duration) {
@@ -1229,7 +1248,7 @@ export default function App() {
       url: URL.createObjectURL(file),
       file: file,
       format: file.name.split('.').pop()?.toUpperCase() || 'MP3',
-      cover: cover || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200',
+      cover: cover || undefined,
       folderPath,
       fileName: file.name,
       size: file.size
@@ -2018,7 +2037,12 @@ export default function App() {
           >
             <div className="flex items-center px-4 pt-3 pb-2">
               <div className="w-12 h-12 rounded-xl overflow-hidden mr-3 shadow-md shrink-0 border border-white/5 relative">
-                <img src={player.currentTrack.cover} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                <TrackThumbnail
+                  cover={player.currentTrack.cover}
+                  title={player.currentTrack.title}
+                  artist={player.currentTrack.artist}
+                  alt={player.currentTrack.title}
+                />
               </div>
               <div className="flex-1 min-w-0 mr-4 text-left">
                 <h4 className="font-extrabold truncate text-[13px] leading-tight text-white">{player.currentTrack.title}</h4>
@@ -2117,7 +2141,13 @@ export default function App() {
                   }}
                   className="w-full h-full rounded-full overflow-hidden shadow-[0_25px_65px_-12px_rgba(0,0,0,0.45)] ring-8 ring-white/5 relative transition-transform duration-300 vinyl-rotating border border-white/10"
                 >
-                  <img src={player.currentTrack.cover} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  <TrackThumbnail
+                    cover={player.currentTrack.cover}
+                    title={player.currentTrack.title}
+                    artist={player.currentTrack.artist}
+                    alt={player.currentTrack.title}
+                    isVinyl={true}
+                  />
                   <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_30%,rgba(0,0,0,0.25)_65%,rgba(0,0,0,0.55)_100%)] pointer-events-none" />
                   <div className="absolute inset-0 border-[35px] border-black/10 rounded-full pointer-events-none" />
                   {/* Center Hub */}

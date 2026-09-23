@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowLeft, ListMusic, Play, Plus, Trash2, ChevronRight } from 'lucide-react';
 import { Track } from '../types';
+import { TrackThumbnail } from './TrackThumbnail';
 
 interface PlaylistsViewProps {
   tracks: Track[];
@@ -133,7 +134,12 @@ export const PlaylistsView: React.FC<PlaylistsViewProps> = ({
                             }`}
                           >
                             <div className="w-11 h-11 rounded-xl overflow-hidden mr-4 shrink-0 border border-white/5">
-                              <img src={track.cover} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                              <TrackThumbnail 
+                                cover={track.cover} 
+                                title={track.title} 
+                                artist={track.artist} 
+                                alt={track.title} 
+                              />
                             </div>
                             <div className="flex-1 min-w-0 pr-12">
                               <h3 className={`text-[13px] font-extrabold truncate ${isActive ? 'text-[#ECE6FF]' : 'text-white'}`}>{track.title}</h3>

@@ -2,6 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Heart, ListMusic, Music, Trash2 } from 'lucide-react';
 import { Track } from '../types';
+import { TrackThumbnail } from './TrackThumbnail';
 
 interface TrackContextMenuProps {
   track: Track | null;
@@ -45,7 +46,13 @@ export const TrackContextMenu: React.FC<TrackContextMenuProps> = ({
           
           <div className="flex items-center gap-4 pt-2">
             <div className="w-14 h-14 rounded-xl overflow-hidden border border-white/5 shadow-md shrink-0">
-              <img src={track.cover} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              <TrackThumbnail
+                cover={track.cover}
+                title={track.title}
+                artist={track.artist}
+                alt={track.title}
+                iconSize={22}
+              />
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-extrabold text-[15px] truncate text-white leading-tight">{track.title}</h3>

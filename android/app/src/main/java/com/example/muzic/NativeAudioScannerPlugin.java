@@ -22,6 +22,12 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 import com.getcapacitor.annotation.Permission;
 import com.getcapacitor.annotation.PermissionCallback;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.util.Base64;
+import android.util.Size;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 @CapacitorPlugin(
@@ -139,8 +145,6 @@ public class NativeAudioScannerPlugin extends Plugin {
                 int sizeCol = cursor.getColumnIndex(MediaStore.Audio.Media.SIZE);
                 int mimeCol = cursor.getColumnIndex(MediaStore.Audio.Media.MIME_TYPE);
 
-                Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
-
                 while (cursor.moveToNext()) {
                     long id = idCol != -1 ? cursor.getLong(idCol) : 0;
                     String title = titleCol != -1 ? cursor.getString(titleCol) : null;
@@ -178,13 +182,40 @@ public class NativeAudioScannerPlugin extends Plugin {
                         } catch (Exception ignored) {}
                     }
 
+                    Uri contentUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
+
                     String coverUrl = null;
-                    if (albumId != -1) {
-                        Uri albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumId);
-                        coverUrl = albumArtUri.toString();
+                    // 1. Try modern Android MediaStore loadThumbnail (Android 10+)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        try {
+                            Bitmap thumb = resolver.loadThumbnail(contentUri, new Size(256, 256), null);
+                            if (thumb != null) {
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                thumb.compress(Bitmap.CompressFormat.JPEG, 75, baos);
+                                coverUrl = "data:image/jpeg;base64," + Base64.encodeToString(baos.toByteArray(), Base64.NO_WRAP);
+                            }
+                        } catch (Exception ignored) {}
                     }
 
-                    Uri contentUri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
+                    // 2. Fallback to embedded ID3 album artwork via MediaMetadataRetriever
+                    if (coverUrl == null && path != null && !path.isEmpty()) {
+                        try {
+                            MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                            mmr.setDataSource(path);
+                            byte[] art = mmr.getEmbeddedPicture();
+                            if (art != null && art.length > 0) {
+                                BitmapFactory.Options opts = new BitmapFactory.Options();
+                                opts.inSampleSize = 2;
+                                Bitmap bmp = BitmapFactory.decodeByteArray(art, 0, art.length, opts);
+                                if (bmp != null) {
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    bmp.compress(Bitmap.CompressFormat.JPEG, 75, baos);
+                                    coverUrl = "data:image/jpeg;base64," + Base64.encodeToString(baos.toByteArray(), Base64.NO_WRAP);
+                                }
+                            }
+                            mmr.release();
+                        } catch (Exception ignored) {}
+                    }
 
                     JSObject trackObj = new JSObject();
                     trackObj.put("id", "device_" + id);

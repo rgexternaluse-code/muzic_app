@@ -31,6 +31,8 @@ public class MainActivity extends BridgeActivity {
                 settings.setMediaPlaybackRequiresUserGesture(false);
                 settings.setJavaScriptEnabled(true);
                 settings.setDomStorageEnabled(true);
+                settings.setAllowContentAccess(true);
+                settings.setAllowFileAccess(true);
             }
         } catch (Exception e) {
             Log.e(TAG, "Error configuring WebView audio settings: " + e.getMessage(), e);
