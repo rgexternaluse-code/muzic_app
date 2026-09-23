@@ -29,13 +29,33 @@ Ensure the following media permissions and service declarations are defined:
 
     <application
         ...
-        android:usesCleartextTraffic="true"> <!-- Useful if streaming local files or HTTP content -->
+        android:allowBackup="false"
+        android:usesCleartextTraffic="false"
+        android:networkSecurityConfig="@xml/network_security_config">
 
         ...
         
     </application>
 </manifest>
 ```
+
+---
+
+## 2. Release & Debug APK Builds
+
+To build the APK:
+- **Release APK (Production / APKLint compliant, non-debuggable)**:
+  ```bash
+  npm run android:build-release
+  # or on Windows:
+  npm run android:build-release-win
+  ```
+- **Debug APK (for local development/logging)**:
+  ```bash
+  npm run android:build
+  # or on Windows:
+  npm run android:build-win
+  ```
 
 ---
 
