@@ -12,5 +12,9 @@
 	},
 	"android": {
 		"backgroundColor": "#0A0818"
-	}
+	},
+	"packageClassList": [
+		"FilesystemPlugin",
+		"FilePickerPlugin"
+	]
 }

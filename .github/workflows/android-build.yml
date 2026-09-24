@@ -49,10 +49,10 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug --stacktrace
+          ./gradlew assembleRelease --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Muzic-apk
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: Muzic-Android-APK
+          path: android/app/build/outputs/apk/release/*.apk

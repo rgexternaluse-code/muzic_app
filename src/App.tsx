@@ -1167,8 +1167,8 @@ export default function App() {
           url: track.file ? URL.createObjectURL(track.file) : track.url
         }));
         setTracks(tracksWithNewUrls);
-      } else if (Capacitor.isNativePlatform()) {
-        // Automatically scan native device storage on initial launch when library is empty!
+      } else if (Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android') {
+        // Automatically scan native device storage on initial launch when library is empty on Android!
         await triggerAutoScanNative(false);
       }
     }).catch(err => {
@@ -1354,7 +1354,7 @@ export default function App() {
   };
 
   const triggerAutoScanNative = async (showFeedback = false): Promise<boolean> => {
-    if (!Capacitor.isNativePlatform()) return false;
+    if (!Capacitor.isNativePlatform() || Capacitor.getPlatform() !== 'android') return false;
 
     setIsScanning(true);
     setScanProgress(15);
@@ -1396,8 +1396,10 @@ export default function App() {
     if (Capacitor.isNativePlatform()) {
       try {
         const result = await FilePicker.pickFiles({
-          types: ['audio/*'],
-          limit: 0
+          // 'audio/*' for Android & web; 'public.audio' Uniform Type Identifier for iOS
+          types: ['audio/*', 'public.audio'],
+          limit: 0,
+          readData: false
         });
         if (!result.files || result.files.length === 0) return [];
 
@@ -1437,19 +1439,22 @@ export default function App() {
 
   const triggerDirectoryPicker = async () => {
     if (Capacitor.isNativePlatform()) {
-      setIsScanning(true);
-      setScanProgress(10);
-      try {
-        const success = await triggerAutoScanNative(false);
-        if (success) {
-          if (viewMode !== 'folders') setViewMode('folders');
-          return;
+      // If Android, attempt automatic MediaStore scan first
+      if (Capacitor.getPlatform() === 'android') {
+        setIsScanning(true);
+        setScanProgress(10);
+        try {
+          const success = await triggerAutoScanNative(false);
+          if (success) {
+            if (viewMode !== 'folders') setViewMode('folders');
+            return;
+          }
+        } catch (e) {
+          console.warn("Native auto-scan fallback:", e);
         }
-      } catch (e) {
-        console.warn("Native auto-scan fallback:", e);
       }
 
-      // Fallback: FilePicker if MediaStore returned 0 files or user wants to pick individual files
+      // iOS and Android fallback: Open native file picker (UIDocumentPicker on iOS)
       try {
         try {
           await FilePicker.requestPermissions();
@@ -1870,15 +1875,36 @@ export default function App() {
                         <div className="flex flex-col sm:flex-row gap-2 w-full max-w-xs pt-1">
                           <button
                             type="button"
-                            onClick={() => Capacitor.isNativePlatform() ? triggerAutoScanNative(true) : triggerDirectoryPicker()}
+                            onClick={() => {
+                              if (Capacitor.getPlatform() === 'android') {
+                                triggerAutoScanNative(true);
+                              } else {
+                                triggerDirectoryPicker();
+                              }
+                            }}
                             className="flex-1 py-3 bg-[#6355FE] hover:bg-[#7265FF] text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer shadow-lg shadow-[#6355FE]/30 active:scale-95 flex items-center justify-center gap-2"
                           >
                             <FolderPlus size={16} />
-                            <span>{Capacitor.isNativePlatform() ? 'Scan Device Music' : 'Scan Folder'}</span>
+                            <span>
+                              {Capacitor.getPlatform() === 'android' 
+                                ? 'Scan Device Music' 
+                                : Capacitor.getPlatform() === 'ios'
+                                  ? 'Import Music'
+                                  : 'Scan Folder'}
+                            </span>
                           </button>
                           <button
                             type="button"
-                            onClick={() => fileInputRef.current?.click()}
+                            onClick={async () => {
+                              if (Capacitor.isNativePlatform()) {
+                                const files = await pickAudioFilesNative();
+                                if (files.length > 0) {
+                                  await processAndSaveFiles(files);
+                                }
+                              } else {
+                                fileInputRef.current?.click();
+                              }
+                            }}
                             className="flex-1 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer border border-white/10 active:scale-95 flex items-center justify-center gap-2"
                           >
                             <Music size={16} />
@@ -2028,7 +2054,13 @@ export default function App() {
           fileInputRef={fileInputRef}
           theme={theme}
           onToggleTheme={toggleTheme}
-          onScanDirectory={() => Capacitor.isNativePlatform() ? triggerAutoScanNative(true) : triggerDirectoryPicker()}
+          onScanDirectory={() => {
+            if (Capacitor.getPlatform() === 'android') {
+              triggerAutoScanNative(true);
+            } else {
+              triggerDirectoryPicker();
+            }
+          }}
           onClearCache={async () => {
             if (confirm("Reset cache? This clears locally scanned path keys only.")) {
               await db.tracks.clear();

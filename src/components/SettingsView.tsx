@@ -1,5 +1,6 @@
 import React from 'react';
 import { RefreshCw, FolderOpen, FileAudio, Trash2, Sun, Moon } from 'lucide-react';
+import { Capacitor } from '@capacitor/core';
 import appLogo from '../assets/images/muzic_app_logo_1786456453207.jpg';
 
 interface SettingsViewProps {
@@ -98,15 +99,27 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               className="flex items-center justify-center gap-2 p-3.5 bg-[#1C153E] hover:bg-[#2B2651] active:scale-[0.98] text-[#ECE6FF] transition-all rounded-2xl text-[11px] font-bold border border-white/10 cursor-pointer shadow-md shadow-black/20"
             >
               <FolderOpen size={16} className="text-[#8E7CFF]" />
-              <span>Scan Folder</span>
+              <span>
+                {Capacitor.getPlatform() === 'android' 
+                  ? 'Scan Storage' 
+                  : Capacitor.getPlatform() === 'ios' 
+                    ? 'Import Music' 
+                    : 'Scan Folder'}
+              </span>
             </button>
             <button 
               type="button"
-              onClick={() => fileInputRef.current?.click()} 
+              onClick={() => {
+                if (Capacitor.isNativePlatform() && onScanDirectory) {
+                  onScanDirectory();
+                } else {
+                  fileInputRef.current?.click();
+                }
+              }} 
               className="flex items-center justify-center gap-2 p-3.5 bg-[#1C153E] hover:bg-[#2B2651] active:scale-[0.98] text-[#ECE6FF] transition-all rounded-2xl text-[11px] font-bold border border-white/10 cursor-pointer shadow-md shadow-black/20"
             >
               <FileAudio size={16} className="text-[#8E7CFF]" />
-              <span>Index Files</span>
+              <span>{Capacitor.isNativePlatform() ? 'Pick Audio' : 'Index Files'}</span>
             </button>
           </div>
 

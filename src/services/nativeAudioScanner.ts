@@ -29,7 +29,7 @@ export async function isNativePlatform(): Promise<boolean> {
 }
 
 export async function scanDeviceAudioFiles(): Promise<Track[]> {
-  if (!Capacitor.isNativePlatform()) {
+  if (Capacitor.getPlatform() !== 'android') {
     return [];
   }
 

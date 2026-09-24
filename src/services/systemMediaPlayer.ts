@@ -38,7 +38,7 @@ let actionListenerHandle: PluginListenerHandle | null = null;
 let hasRequestedNotificationPermission = false;
 
 export async function requestNotificationPermissionIfNeeded(): Promise<boolean> {
-  if (!Capacitor.isNativePlatform()) {
+  if (Capacitor.getPlatform() !== 'android') {
     return true;
   }
   if (hasRequestedNotificationPermission) {
@@ -67,7 +67,7 @@ export async function requestNotificationPermissionIfNeeded(): Promise<boolean> 
 export async function setupSystemMediaActionListener(
   onAction: (event: MediaActionEvent) => void
 ): Promise<() => void> {
-  if (!Capacitor.isNativePlatform()) {
+  if (Capacitor.getPlatform() !== 'android') {
     return () => {};
   }
 
@@ -99,7 +99,7 @@ export async function syncTrackToSystemMedia(
   position: number,
   duration: number
 ): Promise<void> {
-  if (!Capacitor.isNativePlatform() || !track) {
+  if (Capacitor.getPlatform() !== 'android' || !track) {
     return;
   }
 
@@ -133,7 +133,7 @@ export async function syncPlaybackStateToSystemMedia(
   duration: number,
   force: boolean = false
 ): Promise<void> {
-  if (!Capacitor.isNativePlatform()) {
+  if (Capacitor.getPlatform() !== 'android') {
     return;
   }
 
@@ -165,7 +165,7 @@ export async function syncPlaybackStateToSystemMedia(
 }
 
 export async function stopSystemMedia(): Promise<void> {
-  if (!Capacitor.isNativePlatform()) {
+  if (Capacitor.getPlatform() !== 'android') {
     return;
   }
 

@@ -5,7 +5,15 @@ const config: CapacitorConfig = {
   appName: 'Muzic',
   webDir: 'dist',
   server: {
-    androidScheme: 'https'
+    androidScheme: 'https',
+    iosScheme: 'muzic'
+  },
+  ios: {
+    contentInset: 'automatic',
+    backgroundColor: '#0A0818'
+  },
+  android: {
+    backgroundColor: '#0A0818'
   }
 };
 
