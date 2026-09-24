@@ -41,20 +41,26 @@ Ensure the following media permissions and service declarations are defined:
 
 ---
 
-## 2. Release & Debug APK Builds
+## 2. Release & Production APK Builds
 
-To build the APK:
-- **Release APK (Production / APKLint compliant, non-debuggable)**:
+To build the production-ready non-debuggable APK:
+- **Default Build (Release / APKLint compliant, non-debuggable)**:
+  ```bash
+  npm run android:build
+  # or on Windows:
+  npm run android:build-win
+  ```
+- **Explicit Release Build**:
   ```bash
   npm run android:build-release
   # or on Windows:
   npm run android:build-release-win
   ```
-- **Debug APK (for local development/logging)**:
+- **Debug Variant (with debug symbols, non-debuggable)**:
   ```bash
-  npm run android:build
+  npm run android:build-debug
   # or on Windows:
-  npm run android:build-win
+  npm run android:build-debug-win
   ```
 
 ---

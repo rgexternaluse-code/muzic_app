@@ -13,10 +13,12 @@
     "android:sync": "npm run build && npx cap sync",
     "android:copy": "npm run build && npx cap copy",
     "android:open": "npx cap open android",
-    "android:build": "npm run build && npx cap sync && cd android && ./gradlew assembleDebug",
-    "android:build-win": "npm run build && npx cap sync && cd android && gradlew.bat assembleDebug",
+    "android:build": "npm run build && npx cap sync && cd android && ./gradlew assembleRelease",
+    "android:build-win": "npm run build && npx cap sync && cd android && gradlew.bat assembleRelease",
     "android:build-release": "npm run build && npx cap sync && cd android && ./gradlew assembleRelease",
-    "android:build-release-win": "npm run build && npx cap sync && cd android && gradlew.bat assembleRelease"
+    "android:build-release-win": "npm run build && npx cap sync && cd android && gradlew.bat assembleRelease",
+    "android:build-debug": "npm run build && npx cap sync && cd android && ./gradlew assembleDebug",
+    "android:build-debug-win": "npm run build && npx cap sync && cd android && gradlew.bat assembleDebug"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.0",
