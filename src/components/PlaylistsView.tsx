@@ -20,6 +20,7 @@ interface PlaylistsViewProps {
   createPlaylist: (name: string) => void;
   deletePlaylist: (id: string) => void;
   removeTrackFromPlaylist: (plId: string, trackId: string) => void;
+  onBackToLibrary?: () => void;
 }
 
 export const PlaylistsView: React.FC<PlaylistsViewProps> = ({
@@ -38,17 +39,25 @@ export const PlaylistsView: React.FC<PlaylistsViewProps> = ({
   createPlaylist,
   deletePlaylist,
   removeTrackFromPlaylist,
+  onBackToLibrary,
 }) => {
   return (
     <div className="flex-1 flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease-out]">
       {/* Header */}
       <header className="px-6 pt-10 pb-4 shrink-0 space-y-4">
         <div className="flex items-center gap-3">
-          {activePlaylistId && (
+          {(activePlaylistId || onBackToLibrary) && (
             <button 
               type="button" 
-              onClick={() => setActivePlaylistId(null)}
+              onClick={() => {
+                if (activePlaylistId) {
+                  setActivePlaylistId(null);
+                } else if (onBackToLibrary) {
+                  onBackToLibrary();
+                }
+              }}
               className="p-2 -ml-2 rounded-full hover:bg-white/5 active:scale-95 transition-all text-[#8E7CFF] cursor-pointer"
+              title={activePlaylistId ? "Back to Playlists" : "Back to Library"}
             >
               <ArrowLeft size={18} />
             </button>

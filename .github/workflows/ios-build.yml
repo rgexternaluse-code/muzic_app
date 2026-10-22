@@ -48,8 +48,9 @@ jobs:
         run: |
           mkdir -p build-output/Payload
           cp -r ios/App/build/Build/Products/Release-iphoneos/App.app build-output/Payload/
+          codesign --force --deep --sign - build-output/Payload/App.app
           cd build-output
-          zip -r Muzic-iOS.ipa Payload
+          zip -r -y Muzic-iOS.ipa Payload
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v4

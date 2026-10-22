@@ -1,7 +1,8 @@
 import React from 'react';
-import { RefreshCw, FolderOpen, FileAudio, Trash2, Sun, Moon } from 'lucide-react';
+import { RefreshCw, FolderOpen, FileAudio, Trash2, Sun, Moon, ArrowLeft } from 'lucide-react';
 import { Capacitor } from '@capacitor/core';
 import appLogo from '../assets/images/muzic_app_logo_1786456453207.jpg';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface SettingsViewProps {
   folderInputRef: React.RefObject<HTMLInputElement>;
@@ -10,6 +11,7 @@ interface SettingsViewProps {
   onScanDirectory?: () => void;
   theme?: 'dark' | 'light';
   onToggleTheme?: () => void;
+  onBackToLibrary?: () => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
@@ -19,12 +21,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onScanDirectory,
   theme = 'dark',
   onToggleTheme,
+  onBackToLibrary,
 }) => {
   return (
     <div className="flex-1 flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease-out]">
       {/* Header */}
       <header className="px-6 pt-10 pb-5 shrink-0">
         <div className="flex items-center gap-3.5">
+          {onBackToLibrary && (
+            <button 
+              type="button" 
+              onClick={onBackToLibrary}
+              className="p-2 -ml-2 rounded-full hover:bg-white/5 active:scale-95 transition-all text-[#8E7CFF] cursor-pointer"
+              title="Back to Library"
+            >
+              <ArrowLeft size={18} />
+            </button>
+          )}
           <div className="w-12 h-12 rounded-2xl overflow-hidden border border-white/10 shadow-xl shadow-[#6355FE]/25 shrink-0 bg-[#14122B]">
             <img src={appLogo} alt="Logo" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           </div>
@@ -132,6 +145,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <span>Clear Local Tracks Cache</span>
           </button>
         </div>
+
+        {/* Device Installation & iOS IPA Guide */}
+        <PWAInstallButton />
       </main>
     </div>
   );

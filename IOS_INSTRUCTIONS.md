@@ -28,7 +28,32 @@ This project is fully configured for **cross-platform dual-OS support** (Android
 
 ---
 
-## 🛠️ Prerequisites for Building iOS
+## ⚠️ Why Opening `Muzic-iOS.ipa` Directly on iPhone Shows a Black Screen (`Muzic-iOS / data / 2.6 MB`)
+
+Unlike Android (where tapping an `.apk` file in the Files app opens the package installer), **Apple iOS blocks installing `.ipa` files by tapping them in the iPhone Files app or Safari**. When you tap `Muzic-iOS.ipa` directly on an iPhone, iOS QuickLook simply displays the raw file info (`Muzic-iOS / data / 2.6 MB`) with no install option.
+
+Furthermore, Apple requires every native `.ipa` app to be cryptographically signed with your Apple ID before iOS will allow it to install.
+
+### How to Install `Muzic-iOS.ipa` on Your iPhone (2 Options)
+
+#### Option A: Sideload `Muzic-iOS.ipa` Using a PC or Mac (Free Apple ID)
+1. Download `Muzic-iOS.ipa` (inside the `Muzic-iOS-App` artifact from GitHub Actions) onto your **Windows PC or Mac**.
+2. Download and open **[Sideloadly](https://sideloadly.io/)** (or **[AltStore](https://altstore.io/)**).
+3. Connect your iPhone to your computer with a USB cable (and trust the computer on your iPhone).
+4. Drag and drop `Muzic-iOS.ipa` into Sideloadly, enter your Apple ID email, and click **Start**.
+5. Once installed on your iPhone, go to:
+   - **Settings > General > VPN & Device Management** -> Tap your Apple ID -> Tap **Trust**.
+   - *(On iOS 16+, also enable **Settings > Privacy & Security > Developer Mode** if prompted).*
+
+#### Option B: Install Directly on iPhone Without a Computer (Safari Standalone App)
+1. Open the hosted Muzic web app URL in **Safari** on your iPhone.
+2. Tap the **Share** button (square with upward arrow at the bottom of Safari).
+3. Scroll down and tap **Add to Home Screen**.
+4. Tap **Add** in the top-right corner. Muzic will appear on your iPhone Home Screen as a full-screen standalone app with iOS Lock Screen playback controls and Files app audio importing.
+
+---
+
+## 🛠️ Prerequisites for Building iOS Locally in Xcode
 
 To compile and package the native iOS app (`.ipa`), Apple requires:
 - **macOS** (MacBook, Mac mini, Mac Studio, or iMac)

@@ -45,6 +45,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Capacitor } from '@capacitor/core';
+import { App as CapApp } from '@capacitor/app';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 import { scanDeviceAudioFiles } from './services/nativeAudioScanner';
 import { Track, FolderNode } from './types';
@@ -55,6 +56,7 @@ import { TrackContextMenu } from './components/TrackContextMenu';
 import { PlaylistsView } from './components/PlaylistsView';
 import { SettingsView } from './components/SettingsView';
 import { TrackThumbnail } from './components/TrackThumbnail';
+import { EqualizerModal, EQ_PRESETS, EqPresetKey, FREQ_BANDS } from './components/EqualizerModal';
 import { 
   setupSystemMediaActionListener, 
   syncTrackToSystemMedia, 
@@ -580,22 +582,18 @@ export default function App() {
   // --- TRACK OPTIONS CONTEXT ---
   const [selectedTrackForMenu, setSelectedTrackForMenu] = useState<Track | null>(null);
 
-  // --- PREMIUM SLEEP TIMER CONFIG ---
+  // --- PREMIUM SLEEP TIMER CONFIG (2.5s configuration window to increment duration) ---
+  const SLEEP_PRESETS = [15, 30, 45, 60] as const;
   const [sleepTimerTime, setSleepTimerTime] = useState<number | null>(null); // Remaining seconds
   const timerIntervalRef = useRef<any>(null);
+  const timerDelayTimeoutRef = useRef<any>(null);
+  const lastSleepTimerClickRef = useRef<number>(0);
+  const currentSleepPresetIndexRef = useRef<number>(-1);
 
-  const startSleepTimer = (minutes: number) => {
-    if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-    setSleepTimerTime(minutes * 60);
-  };
-
-  const cancelSleepTimer = () => {
-    if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-    setSleepTimerTime(null);
-  };
-
-  // --- PREMIUM EQUALIZER PRESETS ---
-  const [currentEqPreset, setCurrentEqPreset] = useState<'flat' | 'bass-boost' | 'vocal' | 'electronica' | 'lofi'>('bass-boost');
+  // --- PREMIUM EQUALIZER PRESETS & MODAL STATE ---
+  const [currentEqPreset, setCurrentEqPreset] = useState<EqPresetKey>('bass-boost');
+  const [customBands, setCustomBands] = useState<[number, number, number, number, number]>(() => [...EQ_PRESETS['bass-boost'].bands]);
+  const [isEqualizerOpen, setIsEqualizerOpen] = useState(false);
 
   const [viewMode, setViewMode] = useState<'tracks' | 'folders'>('tracks');
   const [showPlayer, setShowPlayer] = useState(false);
@@ -618,18 +616,18 @@ export default function App() {
   const [playbackQueue, setPlaybackQueue] = useState<Track[]>([]);
   const [activeTab, setActiveTab] = useState<'local' | 'online'>('local');
 
-  // Toast Notification System
-  const [toast, setToast] = useState<{ id: number; message: string; icon?: React.ReactNode } | null>(null);
+  // Enhanced Toast Notification System (supports subtitle & high visibility)
+  const [toast, setToast] = useState<{ id: number; message: string; icon?: React.ReactNode; subtitle?: string } | null>(null);
   const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const showToast = useCallback((message: string, icon?: React.ReactNode) => {
+  const showToast = useCallback((message: string, icon?: React.ReactNode, subtitle?: string) => {
     if (toastTimeoutRef.current) {
       clearTimeout(toastTimeoutRef.current);
     }
-    setToast({ id: Date.now(), message, icon });
+    setToast({ id: Date.now(), message, icon, subtitle });
     toastTimeoutRef.current = setTimeout(() => {
       setToast(null);
-    }, 2200);
+    }, 2500);
   }, []);
 
   // Theme Management (Dark / Light)
@@ -681,6 +679,252 @@ export default function App() {
   const [isOnlineLoading, setIsOnlineLoading] = useState(false);
   const [onlineError, setOnlineError] = useState<string | null>(null);
   const [onlineEngine, setOnlineEngine] = useState<'itunes' | 'audius'>('itunes');
+
+  // --- COMPREHENSIVE BACK NAVIGATION & SWIPE-TO-BACK SYSTEM ---
+  const lastBackPressRef = useRef<number>(0);
+  const lastActionTimeRef = useRef<number>(0);
+  const navStateRef = useRef({
+    isEqualizerOpen,
+    selectedTrackForMenu,
+    showPlayer,
+    activePlaylistId,
+    activeNavTab,
+    searchQuery,
+    onlineSearchQuery,
+    activeTab,
+  });
+
+  // Keep navigation state snapshot fresh for async & event callbacks
+  useEffect(() => {
+    navStateRef.current = {
+      isEqualizerOpen,
+      selectedTrackForMenu,
+      showPlayer,
+      activePlaylistId,
+      activeNavTab,
+      searchQuery,
+      onlineSearchQuery,
+      activeTab,
+    };
+  }, [
+    isEqualizerOpen,
+    selectedTrackForMenu,
+    showPlayer,
+    activePlaylistId,
+    activeNavTab,
+    searchQuery,
+    onlineSearchQuery,
+    activeTab,
+  ]);
+
+  const handleBackNavigation = useCallback(() => {
+    const now = Date.now();
+    // Guard against instant duplicate event triggers (< 150ms)
+    if (now - lastActionTimeRef.current < 150) return;
+    lastActionTimeRef.current = now;
+
+    const state = navStateRef.current;
+
+    // 1. If Audio Equalizer Modal is open, close it
+    if (state.isEqualizerOpen) {
+      setIsEqualizerOpen(false);
+      return;
+    }
+
+    // 2. If Track Options Bottom Sheet is open, dismiss it
+    if (state.selectedTrackForMenu) {
+      setSelectedTrackForMenu(null);
+      return;
+    }
+
+    // 3. If Now Playing full-screen player is open, dismiss back to library
+    if (state.showPlayer) {
+      setShowPlayer(false);
+      return;
+    }
+
+    // 4. If an individual playlist is open inside Playlists tab, go back to Playlists list
+    if (state.activePlaylistId) {
+      setActivePlaylistId(null);
+      return;
+    }
+
+    // 5. If on any tab other than Library (Playlists, Favorites, Settings), return to Library
+    if (state.activeNavTab !== 'library') {
+      setActiveNavTab('library');
+      return;
+    }
+
+    // 6. If inside Library and search query is entered, clear search
+    if (state.searchQuery && state.searchQuery.trim() !== '') {
+      setSearchQuery('');
+      return;
+    }
+
+    // 7. If inside Library on the Online tab, reset search and switch back to Local library
+    if (state.activeTab === 'online') {
+      if (state.onlineSearchQuery && state.onlineSearchQuery.trim() !== '') {
+        setOnlineSearchQuery('');
+      }
+      setActiveTab('local');
+      return;
+    }
+
+    // 8. User is already on Library (main screen)! Handle double-press / double-swipe to exit
+    const timeSinceLast = now - lastBackPressRef.current;
+    if (timeSinceLast < 2000 && timeSinceLast > 200) {
+      // Second back action within 2 seconds: Exit app!
+      if (Capacitor.isNativePlatform()) {
+        try {
+          CapApp.exitApp();
+        } catch (e) {
+          console.warn("CapApp.exitApp error:", e);
+        }
+      } else {
+        showToast("Exiting application...", <Smartphone size={16} className="text-[#8E7CFF]" />);
+        try {
+          window.close();
+        } catch {
+          // Ignore
+        }
+      }
+    } else {
+      // First back action: Update timestamp and display notification
+      lastBackPressRef.current = now;
+      showToast(
+        "Press again to exit",
+        <Smartphone size={16} className="text-[#8E7CFF]" />,
+        "Do it again to exit"
+      );
+    }
+  }, [showToast]);
+
+  // Capacitor Android Hardware / Gesture Back Button Interceptor
+  useEffect(() => {
+    let removeListener: (() => void) | null = null;
+
+    try {
+      const listenerPromise = CapApp.addListener('backButton', () => {
+        handleBackNavigation();
+      });
+      listenerPromise.then(handle => {
+        if (handle && typeof handle.remove === 'function') {
+          removeListener = () => handle.remove();
+        }
+      }).catch(err => {
+        console.warn("CapApp.addListener('backButton') initialization error:", err);
+      });
+    } catch (e) {
+      console.warn("CapApp backButton registration failed:", e);
+    }
+
+    return () => {
+      if (removeListener) removeListener();
+    };
+  }, [handleBackNavigation]);
+
+  // Web Browser History / popstate Interceptor
+  useEffect(() => {
+    try {
+      window.history.replaceState({ app: 'muzic_root' }, '');
+      window.history.pushState({ app: 'muzic_ready' }, '');
+    } catch {
+      // Ignore
+    }
+
+    const handlePopState = () => {
+      handleBackNavigation();
+      try {
+        window.history.pushState({ app: 'muzic_ready' }, '');
+      } catch {
+        // Ignore
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [handleBackNavigation]);
+
+  // Horizontal Swipe Left / Right to Back Gesture Handler
+  useEffect(() => {
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchStartTime = 0;
+    let isIgnoredTarget = false;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (!e.touches || e.touches.length !== 1) return;
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      touchStartTime = Date.now();
+
+      // Check whether touch began on interactive elements (e.g., seeker range sliders or text inputs)
+      const target = e.target as HTMLElement | null;
+      if (target) {
+        const isRange = target.tagName === 'INPUT' && (target as HTMLInputElement).type === 'range';
+        const isTextInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
+        const isClassIgnored = target.closest('.no-back-swipe') !== null;
+        isIgnoredTarget = isRange || (isTextInput && (target as HTMLInputElement).type !== 'range') || isClassIgnored;
+      } else {
+        isIgnoredTarget = false;
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (isIgnoredTarget) return;
+      if (!e.changedTouches || e.changedTouches.length !== 1) return;
+
+      const touch = e.changedTouches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+      const duration = Date.now() - touchStartTime;
+
+      // Swift swipe gesture duration (< 650ms)
+      if (duration > 650) return;
+
+      const absDeltaX = Math.abs(deltaX);
+      const absDeltaY = Math.abs(deltaY);
+
+      // Must be predominantly horizontal gesture (not vertical scrolling)
+      if (absDeltaX < 45 || absDeltaX < absDeltaY * 1.4) return;
+
+      const screenWidth = window.innerWidth || document.documentElement.clientWidth;
+      const isLeftEdge = touchStartX <= 65;
+      const isRightEdge = touchStartX >= screenWidth - 65;
+
+      const state = navStateRef.current;
+      const isAlreadyOnMainLibrary = 
+        !state.isEqualizerOpen && 
+        !state.selectedTrackForMenu && 
+        !state.showPlayer && 
+        !state.activePlaylistId && 
+        state.activeNavTab === 'library' && 
+        (!state.searchQuery || state.searchQuery.trim() === '') && 
+        state.activeTab === 'local';
+
+      // Edge swipes: Left edge swiping right inward OR right edge swiping left inward
+      const isLeftEdgeSwipeInward = isLeftEdge && deltaX > 35;
+      const isRightEdgeSwipeInward = isRightEdge && deltaX < -35;
+
+      // On any subscreen / player / modal, any clear horizontal swipe (left or right) takes back to library
+      const isSubscreenHorizontalSwipe = !isAlreadyOnMainLibrary && absDeltaX > 70;
+
+      if (isLeftEdgeSwipeInward || isRightEdgeSwipeInward || isSubscreenHorizontalSwipe) {
+        handleBackNavigation();
+      }
+    };
+
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [handleBackNavigation]);
 
   // Sync playbackQueue with local sortedTracks initially when first loaded
   useEffect(() => {
@@ -1183,31 +1427,13 @@ export default function App() {
     };
   }, []); 
 
-  // --- SLEEP TIMER TIMER PROCESSOR ---
+  // --- SLEEP TIMER CLEANUP ON UNMOUNT ---
   useEffect(() => {
-    if (sleepTimerTime === null) return;
-    if (sleepTimerTime <= 0) {
-      player.setIsPlaying(false);
-      setSleepTimerTime(null);
-      return;
-    }
-
-    timerIntervalRef.current = setInterval(() => {
-      setSleepTimerTime(prev => {
-        if (prev === null) return null;
-        if (prev <= 1) {
-          player.setIsPlaying(false);
-          clearInterval(timerIntervalRef.current);
-          return null;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
     return () => {
       if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+      if (timerDelayTimeoutRef.current) clearTimeout(timerDelayTimeoutRef.current);
     };
-  }, [sleepTimerTime, player.setIsPlaying]);
+  }, []);
 
   const folderTree = useMemo(() => {
     const root: FolderNode = { name: 'Root', path: 'Root', tracks: [], subfolders: new Map(), isExpanded: true };
@@ -1548,23 +1774,131 @@ export default function App() {
     return favoriteTrackIds.map(id => trackMap.get(id)).filter(Boolean) as Track[];
   };
 
-  const cycleEqPreset = () => {
-    const presets: ('flat' | 'bass-boost' | 'vocal' | 'electronica' | 'lofi')[] = ['flat', 'bass-boost', 'vocal', 'electronica', 'lofi'];
-    const nextIdx = (presets.indexOf(currentEqPreset) + 1) % presets.length;
-    setCurrentEqPreset(presets[nextIdx]);
-  };
+  const activateEqPreset = useCallback((presetKey: EqPresetKey) => {
+    setCurrentEqPreset(presetKey);
+    if (presetKey !== 'custom' && EQ_PRESETS[presetKey]) {
+      const preset = EQ_PRESETS[presetKey];
+      setCustomBands([preset.bands[0], preset.bands[1], preset.bands[2], preset.bands[3], preset.bands[4]]);
+      showToast(
+        `Equalizer: ${preset.name} Activated`,
+        <div className="w-5 h-5 rounded-full bg-[#6355FE]/30 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/40">
+          <SlidersHorizontal size={12} className="animate-pulse" />
+        </div>,
+        `${preset.badge} • ${preset.description}`
+      );
+    }
+  }, [showToast]);
+
+  const handleBandChange = useCallback((bandIndex: number, value: number) => {
+    setCustomBands(prev => {
+      const next: [number, number, number, number, number] = [prev[0], prev[1], prev[2], prev[3], prev[4]];
+      next[bandIndex] = value;
+      return next;
+    });
+    setCurrentEqPreset('custom');
+    const bandInfo = FREQ_BANDS[bandIndex];
+    showToast(
+      `Equalizer: ${bandInfo.label} set to ${value > 0 ? '+' : ''}${value} dB`,
+      <div className="w-5 h-5 rounded-full bg-[#6355FE]/30 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/40">
+        <AudioLines size={12} />
+      </div>,
+      `Custom Frequency Tuning (${bandInfo.name})`
+    );
+  }, [showToast]);
+
+  const cycleEqPreset = useCallback(() => {
+    const presetKeys: (keyof typeof EQ_PRESETS)[] = [
+      'bass-boost',
+      'vocal',
+      'electronica',
+      'lofi',
+      'rock',
+      'acoustic',
+      'flat'
+    ];
+    const currentIndex = presetKeys.indexOf(currentEqPreset as any);
+    const nextIdx = (currentIndex + 1) % presetKeys.length;
+    activateEqPreset(presetKeys[nextIdx]);
+  }, [currentEqPreset, activateEqPreset]);
+
+  const cancelSleepTimer = useCallback(() => {
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
+    }
+    if (timerDelayTimeoutRef.current) {
+      clearTimeout(timerDelayTimeoutRef.current);
+      timerDelayTimeoutRef.current = null;
+    }
+    setSleepTimerTime(null);
+    currentSleepPresetIndexRef.current = -1;
+    lastSleepTimerClickRef.current = 0;
+  }, []);
+
+  const startSleepTimer = useCallback((minutes: number, presetIndex: number) => {
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+      timerIntervalRef.current = null;
+    }
+    if (timerDelayTimeoutRef.current) {
+      clearTimeout(timerDelayTimeoutRef.current);
+      timerDelayTimeoutRef.current = null;
+    }
+
+    currentSleepPresetIndexRef.current = presetIndex;
+    lastSleepTimerClickRef.current = Date.now();
+    setSleepTimerTime(minutes * 60);
+
+    // Give user 2.5 seconds (2500ms) on each click to increase timer (15 -> 30 -> 45 -> 60 min)
+    // The countdown ticker only begins after 2.5 seconds of inactivity.
+    timerDelayTimeoutRef.current = setTimeout(() => {
+      timerDelayTimeoutRef.current = null;
+      timerIntervalRef.current = setInterval(() => {
+        setSleepTimerTime(prev => {
+          if (prev === null) return null;
+          if (prev <= 1) {
+            player.setIsPlaying(false);
+            if (timerIntervalRef.current) {
+              clearInterval(timerIntervalRef.current);
+              timerIntervalRef.current = null;
+            }
+            currentSleepPresetIndexRef.current = -1;
+            lastSleepTimerClickRef.current = 0;
+            return null;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }, 2500);
+  }, [player.setIsPlaying]);
 
   const cycleSleepTimer = () => {
-    if (sleepTimerTime === null) {
-      startSleepTimer(15);
-    } else if (sleepTimerTime === 15 * 60) {
-      startSleepTimer(30);
-    } else if (sleepTimerTime === 30 * 60) {
-      startSleepTimer(45);
-    } else if (sleepTimerTime === 45 * 60) {
-      startSleepTimer(60);
+    const now = Date.now();
+    // 2.5-second window from the last click to increment the timer
+    const isWithinGraceWindow = (now - lastSleepTimerClickRef.current) <= 2500;
+
+    if (sleepTimerTime === null || !isWithinGraceWindow) {
+      // If timer is already running and the 2.5s window has elapsed, clicking turns off the timer
+      if (sleepTimerTime !== null && !isWithinGraceWindow) {
+        cancelSleepTimer();
+        showToast('Sleep timer disabled', <Moon size={15} className="text-[#8F8E9C]" />);
+        return;
+      }
+      // First click: start at 15 minutes with a 2.5s window to increment
+      startSleepTimer(15, 0);
+      showToast('Sleep timer set to 15 min', <Moon size={15} className="text-amber-400" />);
     } else {
-      cancelSleepTimer();
+      // Within 2.5 seconds: cycle to the next duration
+      const nextIndex = currentSleepPresetIndexRef.current + 1;
+      if (nextIndex < SLEEP_PRESETS.length) {
+        const nextMinutes = SLEEP_PRESETS[nextIndex];
+        startSleepTimer(nextMinutes, nextIndex);
+        showToast(`Sleep timer set to ${nextMinutes} min`, <Moon size={15} className="text-amber-400" />);
+      } else {
+        // Cycled past 60 min: disable timer
+        cancelSleepTimer();
+        showToast('Sleep timer disabled', <Moon size={15} className="text-[#8F8E9C]" />);
+      }
     }
   };
 
@@ -1994,6 +2328,7 @@ export default function App() {
           createPlaylist={createPlaylist}
           deletePlaylist={deletePlaylist}
           removeTrackFromPlaylist={removeTrackFromPlaylist}
+          onBackToLibrary={() => setActiveNavTab('library')}
         />
       )}
 
@@ -2001,9 +2336,19 @@ export default function App() {
       {activeNavTab === 'favorites' && (
         <div className="flex-1 flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease-out]">
           <header className="px-6 pt-10 pb-4 shrink-0">
-            <div>
-              <h1 className="text-2xl font-black tracking-tight leading-none text-white">Favorites</h1>
-              <p className="text-[11px] font-extrabold text-[#8E7CFF] uppercase tracking-widest mt-1">High fidelity tracks</p>
+            <div className="flex items-center gap-3">
+              <button 
+                type="button" 
+                onClick={() => setActiveNavTab('library')}
+                className="p-2 -ml-2 rounded-full hover:bg-white/5 active:scale-95 transition-all text-[#8E7CFF] cursor-pointer"
+                title="Back to Library"
+              >
+                <ArrowLeft size={18} />
+              </button>
+              <div>
+                <h1 className="text-2xl font-black tracking-tight leading-none text-white">Favorites</h1>
+                <p className="text-[11px] font-extrabold text-[#8E7CFF] uppercase tracking-widest mt-1">High fidelity tracks</p>
+              </div>
             </div>
           </header>
 
@@ -2054,6 +2399,7 @@ export default function App() {
           fileInputRef={fileInputRef}
           theme={theme}
           onToggleTheme={toggleTheme}
+          onBackToLibrary={() => setActiveNavTab('library')}
           onScanDirectory={() => {
             if (Capacitor.getPlatform() === 'android') {
               triggerAutoScanNative(true);
@@ -2188,7 +2534,14 @@ export default function App() {
                 <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#8E7CFF] mb-1">Now Playing</p>
                 <p className="font-extrabold text-[11px] truncate max-w-[180px] opacity-60 text-[#8F8E9C] uppercase tracking-wider">{player.currentTrack.album}</p>
               </div>
-              <div className="w-8" />
+              <motion.button 
+                onClick={() => setIsEqualizerOpen(true)}
+                whileTap={{ scale: 0.9 }} 
+                className="p-2.5 -mr-2 rounded-full hover:bg-white/10 active:scale-95 transition-all cursor-pointer text-[#8E7CFF]"
+                title={`Equalizer Setting: ${currentEqPreset === 'custom' ? 'Custom Tuning' : EQ_PRESETS[currentEqPreset]?.name || currentEqPreset}`}
+              >
+                <SlidersHorizontal size={18} strokeWidth={2.5} />
+              </motion.button>
             </header>
 
             {/* Content box */}
@@ -2327,19 +2680,26 @@ export default function App() {
                   </motion.button>
 
                   {/* Equalizer settings */}
-                  <motion.button 
-                    onClick={cycleEqPreset}
-                    whileTap={{ scale: 0.85 }} 
-                    className={`p-3 rounded-full bg-white/5 border border-white/5 transition-all cursor-pointer relative group ${
-                      currentEqPreset !== 'flat' ? 'text-[#8E7CFF]' : 'text-[#8F8E9C]/60 hover:text-white'
-                    }`}
-                    title={`Equalizer Setting: ${currentEqPreset}`}
-                  >
-                    <SlidersHorizontal size={16} />
-                    <span className="absolute -top-7 left-1/2 -translate-x-1/2 text-[8px] font-black uppercase text-[#8E7CFF] bg-[#14122B] px-1.5 py-0.5 rounded border border-white/5 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                      Preset: {currentEqPreset}
-                    </span>
-                  </motion.button>
+                  <div className="flex flex-col items-center">
+                    <motion.button 
+                      onClick={cycleEqPreset}
+                      whileTap={{ scale: 0.85 }} 
+                      className={`p-3 rounded-full bg-white/5 border border-white/5 transition-all cursor-pointer relative group ${
+                        currentEqPreset !== 'flat' ? 'text-[#8E7CFF] scale-105 shadow-lg shadow-[#6355FE]/20 ring-1 ring-[#8E7CFF]/40' : 'text-[#8F8E9C]/60 hover:text-white'
+                      }`}
+                      title={`Equalizer Setting: ${currentEqPreset === 'custom' ? 'Custom Tuning' : EQ_PRESETS[currentEqPreset]?.name || currentEqPreset} (Tap to cycle preset, click badge to tune)`}
+                    >
+                      <SlidersHorizontal size={16} />
+                    </motion.button>
+                    <button
+                      type="button"
+                      onClick={() => setIsEqualizerOpen(true)}
+                      className="text-[8px] font-black uppercase text-[#8E7CFF] mt-1 hover:underline tracking-wider cursor-pointer"
+                      title="Open Equalizer Tuning Panel"
+                    >
+                      {currentEqPreset === 'custom' ? 'Custom' : (EQ_PRESETS[currentEqPreset]?.name.split(' ')[0] || 'EQ')}
+                    </button>
+                  </div>
 
                   {/* Sleep Timer button */}
                   <div className="flex flex-col items-center">
@@ -2368,30 +2728,51 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Action Toast Notification */}
+      {/* Action Toast Notification (High-visibility on top of Now Playing screen & safe-area aware) */}
       <AnimatePresence>
         {toast && (
           <motion.div
             key={toast.id}
-            initial={{ opacity: 0, y: -24, scale: 0.9 }}
+            initial={{ opacity: 0, y: -28, scale: 0.92 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -16, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 450, damping: 30 }}
-            className="fixed top-5 left-1/2 -translate-x-1/2 z-[250] pointer-events-none"
+            exit={{ opacity: 0, y: -18, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 450, damping: 28 }}
+            className="fixed left-1/2 -translate-x-1/2 z-[300] pointer-events-none max-w-[92vw]"
+            style={{
+              top: 'calc(max(1.25rem, env(safe-area-inset-top, 0px)) + 0.75rem)'
+            }}
           >
-            <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-[#14122B]/95 backdrop-blur-xl border border-[#6355FE]/40 shadow-2xl shadow-black/40 text-white">
+            <div className="flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-[#14122B]/95 backdrop-blur-2xl border border-[#6355FE]/50 shadow-[0_16px_40px_rgba(0,0,0,0.65)] text-white">
               {toast.icon && (
                 <div className="shrink-0 flex items-center justify-center">
                   {toast.icon}
                 </div>
               )}
-              <span className="text-xs font-bold tracking-tight whitespace-nowrap">
-                {toast.message}
-              </span>
+              <div className="flex flex-col text-left">
+                <span className="text-xs font-black tracking-tight text-white whitespace-nowrap">
+                  {toast.message}
+                </span>
+                {toast.subtitle && (
+                  <span className="text-[10px] font-bold text-[#8E7CFF] opacity-90 whitespace-nowrap">
+                    {toast.subtitle}
+                  </span>
+                )}
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Interactive Audio Equalizer Tuning Modal */}
+      <EqualizerModal
+        isOpen={isEqualizerOpen}
+        onClose={() => setIsEqualizerOpen(false)}
+        currentPreset={currentEqPreset}
+        customBands={customBands}
+        onSelectPreset={activateEqPreset}
+        onBandChange={handleBandChange}
+        isPlaying={player.isPlaying}
+      />
 
       {/* Scanning UI - Floating Toast Banner */}
       <AnimatePresence>
