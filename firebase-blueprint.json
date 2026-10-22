@@ -1,0 +1,71 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated user profile for Muzic app",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "User email address"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Display name of the user"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "User avatar profile photo URL"
+        },
+        "tier": {
+          "type": "string",
+          "enum": ["free", "pro", "studio_pass"],
+          "description": "User subscription tier"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp when user was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp when profile was last updated"
+        }
+      },
+      "required": ["email", "tier", "createdAt"]
+    },
+    "StudioQuota": {
+      "title": "StudioQuota",
+      "description": "Monthly local upload tracking per user in Singing Studio",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "User ID owning this quota record"
+        },
+        "month": {
+          "type": "string",
+          "description": "Calendar month in YYYY-MM format"
+        },
+        "usedUploads": {
+          "type": "number",
+          "description": "Number of phone tracks imported in this calendar month"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp when quota was last modified"
+        }
+      },
+      "required": ["userId", "month", "usedUploads"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile document containing account and subscription details"
+    },
+    "/users/{userId}/quota/{month}": {
+      "schema": "StudioQuota",
+      "description": "Monthly Singing Studio phone upload tracking per user"
+    }
+  }
+}

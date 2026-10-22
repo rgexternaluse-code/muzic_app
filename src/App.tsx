@@ -41,7 +41,9 @@ import {
   Lock,
   Activity,
   ShieldCheck,
-  Smartphone
+  Smartphone,
+  Mic,
+  Crown
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Capacitor } from '@capacitor/core';
@@ -55,6 +57,7 @@ import appLogo from './assets/images/muzic_app_logo_1786456453207.jpg';
 import { TrackContextMenu } from './components/TrackContextMenu';
 import { PlaylistsView } from './components/PlaylistsView';
 import { SettingsView } from './components/SettingsView';
+import { SingingStudioView } from './components/SingingStudioView';
 import { TrackThumbnail } from './components/TrackThumbnail';
 import { EqualizerModal, EQ_PRESETS, EqPresetKey, FREQ_BANDS } from './components/EqualizerModal';
 import { 
@@ -501,7 +504,7 @@ export default function App() {
   const [tracks, setTracks] = useState<Track[]>([]);
   
   // --- BOTTOM NAV CHANNELS ---
-  const [activeNavTab, setActiveNavTab] = useState<'library' | 'playlists' | 'favorites' | 'settings'>('library');
+  const [activeNavTab, setActiveNavTab] = useState<'library' | 'studio' | 'playlists' | 'favorites' | 'settings'>('library');
   
   // --- FAVORITES SAVER (CLIENT DB) ---
   const [favoriteTrackIds, setFavoriteTrackIds] = useState<string[]>(() => {
@@ -2417,6 +2420,16 @@ export default function App() {
         />
       )}
 
+      {/* SINGING STUDIO PORTAL VIEW */}
+      {activeNavTab === 'studio' && (
+        <SingingStudioView 
+          libraryTracks={tracks}
+          onBackToLibrary={() => setActiveNavTab('library')}
+          onPauseMainPlayer={() => player.setIsPlaying(false)}
+          onShowToast={showToast}
+        />
+      )}
+
       {/* Hidden Files inputs */}
       <input 
         type="file" 
@@ -2441,7 +2454,7 @@ export default function App() {
 
       {/* Mini Player */}
       <AnimatePresence>
-        {!showPlayer && player.currentTrack && (
+        {!showPlayer && player.currentTrack && activeNavTab !== 'studio' && (
           <motion.footer 
             initial={{ y: 80, opacity: 0 }} 
             animate={{ y: 0, opacity: 1 }} 
@@ -2881,8 +2894,9 @@ export default function App() {
           { tab: 'library', icon: Music, label: 'Library' },
           { tab: 'playlists', icon: ListMusic, label: 'Playlists' },
           { tab: 'favorites', icon: Heart, label: 'Favorites' },
+          { tab: 'studio', icon: Mic, label: 'Studio', isPremium: true },
           { tab: 'settings', icon: SettingsIcon, label: 'Settings' }
-        ].map(({ tab, icon: Icon, label }) => {
+        ].map(({ tab, icon: Icon, label, isPremium }) => {
           const isActive = activeNavTab === tab;
           return (
             <button
@@ -2894,10 +2908,16 @@ export default function App() {
               }}
               className="flex flex-col items-center justify-center gap-1.5 py-2 px-4 rounded-xl relative cursor-pointer group transition-all"
             >
-              <div className={`p-1 rounded-lg transition-all ${
+              <div className={`p-1 rounded-lg transition-all relative ${
                 isActive ? 'text-[#8E7CFF] scale-110' : 'text-[#8F8E9C] group-hover:text-white'
               }`}>
                 <Icon size={18} fill={isActive && tab === 'favorites' ? 'currentColor' : 'none'} />
+                {isPremium && (
+                  <Crown 
+                    size={10} 
+                    className="absolute -top-1.5 -right-1.5 text-amber-400 fill-amber-400 drop-shadow-[0_0_5px_rgba(251,191,36,0.9)] animate-pulse" 
+                  />
+                )}
               </div>
               <span className={`text-[8px] font-black uppercase tracking-wider transition-colors ${
                 isActive ? 'text-[#8E7CFF]' : 'text-[#8F8E9C]/60 group-hover:text-white'
