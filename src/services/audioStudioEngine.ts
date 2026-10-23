@@ -144,6 +144,10 @@ export class AudioStudioEngine {
     await this.backingAudioEl.play();
   }
 
+  public getRecordingCurrentTime(): number {
+    return this.backingAudioEl ? this.backingAudioEl.currentTime : 0;
+  }
+
   private startMeterLoop() {
     const update = () => {
       if (this.analyser && this.dataArray && this.onMeterLevelCallback) {

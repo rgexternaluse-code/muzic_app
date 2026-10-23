@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
   Mic, 
@@ -30,7 +30,10 @@ import {
   Radio,
   Upload,
   ShieldCheck,
-  Lock
+  Lock,
+  FileText,
+  Type,
+  Edit3
 } from 'lucide-react';
 import { Capacitor } from '@capacitor/core';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
@@ -42,6 +45,8 @@ import { Track } from '../types';
 import { VocalSeparationModal } from './VocalSeparationModal';
 import { SubscriptionModal } from './SubscriptionModal';
 import { GoogleVerificationModal } from './GoogleVerificationModal';
+import { KaraokeLyricsView } from './KaraokeLyricsView';
+import { TUM_HI_HO_KARAOKE_DATA, parseLrcOrTextToKaraoke, SongKaraokeTiming } from '../data/karaokeTimings';
 import { useAuth } from '../context/AuthContext';
 import { recordCloudStudioUpload } from '../services/firebase';
 
@@ -70,6 +75,13 @@ export function SingingStudioView({
     blob?: Blob;
     duration: number;
   } | null>(null);
+
+  // Custom Karaoke & Lyrics state for uploaded audio files
+  const [customKaraokeData, setCustomKaraokeData] = useState<SongKaraokeTiming | null>(null);
+  const [customLyricsText, setCustomLyricsText] = useState<string>('');
+  const [isLyricsEditorOpen, setIsLyricsEditorOpen] = useState<boolean>(false);
+  const [tempLyricsDraft, setTempLyricsDraft] = useState<string>('');
+  const lyricsFileInputRef = useRef<HTMLInputElement>(null);
 
   // Audio blob cache for procedural synthesis
   const [synthesizedAudioUrls, setSynthesizedAudioUrls] = useState<Record<string, string>>({});
@@ -123,6 +135,9 @@ export function SingingStudioView({
     }
   });
 
+  // Karaoke Lyrics Teleprompter state
+  const [isLyricsOpen, setIsLyricsOpen] = useState(true);
+
   const [authModalContext, setAuthModalContext] = useState<{
     title?: string;
     subtitle?: string;
@@ -169,6 +184,11 @@ export function SingingStudioView({
   const getActiveBackingUrl = useCallback(async (): Promise<string> => {
     if (sourceTab === 'device' && customDeviceTrack) {
       return customDeviceTrack.url;
+    }
+
+    // Direct pre-bundled audio asset (like Tum Hi Ho karaoke demo mp3)
+    if (selectedBuiltinTrack.previewUrl) {
+      return selectedBuiltinTrack.previewUrl;
     }
 
     const trackId = selectedBuiltinTrack.id;
@@ -231,6 +251,14 @@ export function SingingStudioView({
     setBackingCurrentTime(time);
     if (backingAudioRef.current) {
       backingAudioRef.current.currentTime = time;
+    }
+  };
+
+  const handleBackingSeekTo = (seconds: number) => {
+    if (isRecording) return;
+    setBackingCurrentTime(seconds);
+    if (backingAudioRef.current) {
+      backingAudioRef.current.currentTime = seconds;
     }
   };
 
@@ -352,9 +380,26 @@ export function SingingStudioView({
       }
 
       const url = URL.createObjectURL(file);
+      const audioProbe = new Audio(url);
+      audioProbe.onloadedmetadata = () => {
+        if (audioProbe.duration && !isNaN(audioProbe.duration)) {
+          const detected = Math.round(audioProbe.duration);
+          setCustomDeviceTrack(prev => prev ? { ...prev, duration: detected } : null);
+          if (customLyricsText) {
+            const parsed = parseLrcOrTextToKaraoke(
+              detected,
+              file.name.replace(/\.[^/.]+$/, ''),
+              'Local Backing Track',
+              customLyricsText
+            );
+            setCustomKaraokeData(parsed);
+          }
+        }
+      };
+
       setCustomDeviceTrack({
         title: file.name.replace(/\.[^/.]+$/, ''),
-        artist: 'Local File',
+        artist: 'Local Backing Track',
         url,
         blob: file,
         duration: 180
@@ -368,6 +413,74 @@ export function SingingStudioView({
       if (e.target) e.target.value = '';
     }
   };
+
+  // Handle uploading lyrics (.lrc or .txt) for custom phone audio
+  const handleLyricsFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target?.result as string;
+      if (!text) return;
+      setCustomLyricsText(text);
+      setTempLyricsDraft(text);
+      const trackTitle = customDeviceTrack?.title || 'Custom Track';
+      const trackArtist = customDeviceTrack?.artist || 'Local Backing Track';
+      const duration = customDeviceTrack?.duration || 180;
+      const parsed = parseLrcOrTextToKaraoke(duration, trackTitle, trackArtist, text);
+      setCustomKaraokeData(parsed);
+      onShowToast(
+        `Synchronized ${parsed.lines.length} karaoke lines!`,
+        <Sparkles size={16} className="text-amber-400" />,
+        file.name.endsWith('.lrc') ? 'LRC timestamps parsed' : 'Auto-timed to song duration'
+      );
+    };
+    reader.readAsText(file);
+    if (e.target) e.target.value = '';
+  };
+
+  const handleApplyLyricsText = () => {
+    if (!tempLyricsDraft.trim()) {
+      setCustomLyricsText('');
+      setCustomKaraokeData(null);
+      setIsLyricsEditorOpen(false);
+      onShowToast('Cleared lyrics.');
+      return;
+    }
+    setCustomLyricsText(tempLyricsDraft);
+    const trackTitle = customDeviceTrack?.title || 'Custom Track';
+    const trackArtist = customDeviceTrack?.artist || 'Local Backing Track';
+    const duration = customDeviceTrack?.duration || 180;
+    const parsed = parseLrcOrTextToKaraoke(duration, trackTitle, trackArtist, tempLyricsDraft);
+    setCustomKaraokeData(parsed);
+    setIsLyricsEditorOpen(false);
+    onShowToast(
+      `Synchronized ${parsed.lines.length} karaoke lines!`,
+      <Sparkles size={16} className="text-amber-400" />
+    );
+  };
+
+  // Active karaoke timing and lyrics calculations
+  const activeKaraokeData: SongKaraokeTiming = useMemo(() => {
+    if (sourceTab === 'device') {
+      if (customKaraokeData) return customKaraokeData;
+      if (customLyricsText) {
+        return parseLrcOrTextToKaraoke(
+          customDeviceTrack?.duration || 180,
+          customDeviceTrack?.title || 'Custom Track',
+          customDeviceTrack?.artist || 'Local Backing Track',
+          customLyricsText
+        );
+      }
+    }
+    return TUM_HI_HO_KARAOKE_DATA;
+  }, [sourceTab, customKaraokeData, customLyricsText, customDeviceTrack]);
+
+  const activeDuration = sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.duration : selectedBuiltinTrack.duration;
+  const activeFallbackLyrics = sourceTab === 'device' 
+    ? (customLyricsText || (customDeviceTrack ? `Sing along to ${customDeviceTrack.title}` : ''))
+    : selectedBuiltinTrack.lyrics;
 
   // --- RECORDING WORKFLOW ---
 
@@ -418,10 +531,15 @@ export function SingingStudioView({
       setIsRecording(true);
       setRecordingSeconds(0);
 
-      // Start elapsed timer
+      // Start elapsed timer with 100ms precision for silky-smooth word highlight sweep
       recordingTimerRef.current = setInterval(() => {
-        setRecordingSeconds(prev => prev + 1);
-      }, 1000);
+        const exactCurrent = studioEngine.getRecordingCurrentTime();
+        if (exactCurrent > 0) {
+          setRecordingSeconds(exactCurrent);
+        } else {
+          setRecordingSeconds(prev => +(prev + 0.1).toFixed(2));
+        }
+      }, 100);
 
       onShowToast(
         !isVerified ? 'Demo recording started! Sing into microphone.' : 'Recording started! Sing into microphone.',
@@ -619,9 +737,9 @@ export function SingingStudioView({
         </div>
 
         {/* Studio Utilities */}
-        <div className="flex items-center gap-2">
           {isVerified ? (
             <>
+        <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={() => setIsGoogleAuthModalOpen(true)}
@@ -657,8 +775,10 @@ export function SingingStudioView({
                 <Crown size={14} className="text-amber-400" />
                 <span className="hidden sm:inline text-[10px] uppercase tracking-wider">Pro</span>
               </button>
+            </div>
             </>
           ) : (
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => {
@@ -674,8 +794,9 @@ export function SingingStudioView({
               <ShieldCheck size={14} className="text-emerald-600" />
               <span>Verify with Gmail</span>
             </button>
+            </div>
           )}
-        </div>
+        
       </header>
 
       {/* Main Content Area */}
@@ -797,6 +918,17 @@ export function SingingStudioView({
                   onChange={handleBackingSeek}
                   disabled={isRecording}
                   className="w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer accent-[#6355FE]"
+                />
+              </div>
+
+              {/* Synchronized Word-by-Word Karaoke Lyrics Layer */}
+              <div className="pt-1">
+                <KaraokeLyricsView
+                  currentTimeSec={isRecording ? recordingSeconds : backingCurrentTime}
+                  durationSec={activeDuration}
+                  onSeek={handleBackingSeekTo}
+                  karaokeData={activeKaraokeData}
+                  fallbackLyrics={activeFallbackLyrics}
                 />
               </div>
             </section>
@@ -1179,6 +1311,103 @@ export function SingingStudioView({
                 </div>
               )}
 
+              {/* Custom Karaoke Lyrics Attachment Card for Uploaded Audio */}
+              {customDeviceTrack && (
+                <div className="p-4 rounded-2xl bg-gradient-to-r from-[#1C153E] to-[#120F2B] border border-[#6355FE]/40 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center border border-amber-400/30 shrink-0">
+                        <Sparkles size={16} />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-black text-white">Karaoke Lyrics Synchronizer</span>
+                          {customKaraokeData && (
+                            <span className="text-[8px] bg-green-500/20 text-green-300 font-extrabold px-1.5 py-0.5 rounded-full border border-green-500/30 uppercase">
+                              {customKaraokeData.lines.length} Lines Timed
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[10px] text-[#8F8E9C]">
+                          {customKaraokeData 
+                            ? 'Word-by-word synced teleprompter active for your audio file' 
+                            : 'Upload .lrc or paste lyrics to sing with synchronized karaoke highlight'}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => lyricsFileInputRef.current?.click()}
+                        className="px-2.5 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-xl text-[10px] font-bold cursor-pointer transition-all flex items-center gap-1 shadow-sm"
+                        title="Upload timestamped .lrc or plain .txt file"
+                      >
+                        <Upload size={11} />
+                        <span>Upload .lrc / .txt</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setTempLyricsDraft(customLyricsText);
+                          setIsLyricsEditorOpen(!isLyricsEditorOpen);
+                        }}
+                        className={`px-2.5 py-1.5 rounded-xl text-[10px] font-bold cursor-pointer transition-all flex items-center gap-1 shadow-sm active:scale-95 ${
+                          isLyricsEditorOpen 
+                            ? 'bg-[#6355FE] text-white' 
+                            : 'bg-white/10 hover:bg-white/20 text-white'
+                        }`}
+                      >
+                        <Edit3 size={11} />
+                        <span>{customLyricsText ? 'Edit Lyrics' : 'Paste Lyrics'}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Expandable Lyrics Editor */}
+                  {isLyricsEditorOpen && (
+                    <div className="space-y-2 pt-2 border-t border-white/10 animate-[fadeIn_0.15s_ease-out]">
+                      <textarea
+                        value={tempLyricsDraft}
+                        onChange={(e) => setTempLyricsDraft(e.target.value)}
+                        placeholder="Paste lyrics here... Tip: Supports both plain text and timestamped LRC format (e.g. [00:15.20] Lyric line)."
+                        rows={4}
+                        className="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs text-white placeholder-white/30 focus:outline-none focus:border-[#6355FE] resize-none font-sans"
+                      />
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <span className="text-[9px] text-white/40">
+                          LRC timestamps will be parsed automatically; plain text will be evenly timed across {customDeviceTrack.duration}s.
+                        </span>
+                        <div className="flex items-center justify-end gap-2 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => setIsLyricsEditorOpen(false)}
+                            className="px-3 py-1 text-[10px] text-white/50 hover:text-white cursor-pointer"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleApplyLyricsText}
+                            className="px-3.5 py-1.5 bg-[#6355FE] hover:bg-[#7265FF] text-white rounded-lg text-[10px] font-black uppercase tracking-wider cursor-pointer shadow-md active:scale-95"
+                          >
+                            Save & Sync
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <input
+                    type="file"
+                    ref={lyricsFileInputRef}
+                    accept=".lrc,.txt,text/plain"
+                    onChange={handleLyricsFileUpload}
+                    className="hidden"
+                  />
+                </div>
+              )}
+
               <input
                 type="file"
                 ref={localFileInputRef}
@@ -1314,6 +1543,19 @@ export function SingingStudioView({
               </button>
             )}
           </div>
+
+          {/* Synchronized Word-by-Word Karaoke Lyrics Layer for Recording */}
+          {(activeFallbackLyrics || activeKaraokeData) && (
+            <div className="pt-2">
+              <KaraokeLyricsView
+                currentTimeSec={isRecording ? recordingSeconds : backingCurrentTime}
+                durationSec={activeDuration}
+                onSeek={handleBackingSeekTo}
+                karaokeData={activeKaraokeData}
+                fallbackLyrics={activeFallbackLyrics}
+              />
+            </div>
+          )}
 
           {recordedVoiceBlob && (
             <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-2xl flex items-center justify-between text-xs text-green-300">

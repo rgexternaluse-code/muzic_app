@@ -43,7 +43,8 @@ import {
   ShieldCheck,
   Smartphone,
   Mic,
-  Crown
+  Crown,
+  BookOpen
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Capacitor } from '@capacitor/core';
@@ -59,6 +60,7 @@ import { PlaylistsView } from './components/PlaylistsView';
 import { SettingsView } from './components/SettingsView';
 import { SingingStudioView } from './components/SingingStudioView';
 import { TrackThumbnail } from './components/TrackThumbnail';
+import { KaraokeLyricsView } from './components/KaraokeLyricsView';
 import { EqualizerModal, EQ_PRESETS, EqPresetKey, FREQ_BANDS } from './components/EqualizerModal';
 import { 
   setupSystemMediaActionListener, 
@@ -67,6 +69,21 @@ import {
   stopSystemMedia,
   requestNotificationPermissionIfNeeded
 } from './services/systemMediaPlayer';
+import { TUM_HI_HO_LYRICS } from './data/instrumentals';
+
+export const TUM_HI_HO_ONLINE_TRACK: Track = {
+  id: 'online_tum_hi_ho',
+  title: 'Tum Hi Ho (Learn & Sing Along)',
+  artist: 'Arijit Singh / Mithoon (Aashiqui 2)',
+  album: 'Aashiqui 2 Karaoke & Studio Demo',
+  duration: 262,
+  url: '/assets/aistudio/TUM_HI_HO_-_Aashiqui_2_Karaoke_with_Lyrics_AlgoRhythm_Studio_17e2284d.mp3',
+  cover: appLogo,
+  format: 'KARAOKE',
+  fileName: 'Tum_Hi_Ho_Aashiqui_2.mp3',
+  size: 6300000,
+  lyrics: TUM_HI_HO_LYRICS
+};
 
 // --- Lightweight JSONP Client to bypass CORS on the client side ---
 function fetchJSONP(url: string, callbackParam: string = 'callback'): Promise<any> {
@@ -678,10 +695,11 @@ export default function App() {
     triggerDirectoryPicker();
   };
   const [onlineSearchQuery, setOnlineSearchQuery] = useState('');
-  const [onlineTracks, setOnlineTracks] = useState<Track[]>([]);
+  const [onlineTracks, setOnlineTracks] = useState<Track[]>([TUM_HI_HO_ONLINE_TRACK]);
   const [isOnlineLoading, setIsOnlineLoading] = useState(false);
   const [onlineError, setOnlineError] = useState<string | null>(null);
   const [onlineEngine, setOnlineEngine] = useState<'itunes' | 'audius'>('itunes');
+  const [isNowPlayingLyricsOpen, setIsNowPlayingLyricsOpen] = useState(false);
 
   // --- COMPREHENSIVE BACK NAVIGATION & SWIPE-TO-BACK SYSTEM ---
   const lastBackPressRef = useRef<number>(0);
@@ -690,6 +708,7 @@ export default function App() {
     isEqualizerOpen,
     selectedTrackForMenu,
     showPlayer,
+    isNowPlayingLyricsOpen,
     activePlaylistId,
     activeNavTab,
     searchQuery,
@@ -703,6 +722,7 @@ export default function App() {
       isEqualizerOpen,
       selectedTrackForMenu,
       showPlayer,
+      isNowPlayingLyricsOpen,
       activePlaylistId,
       activeNavTab,
       searchQuery,
@@ -713,6 +733,7 @@ export default function App() {
     isEqualizerOpen,
     selectedTrackForMenu,
     showPlayer,
+    isNowPlayingLyricsOpen,
     activePlaylistId,
     activeNavTab,
     searchQuery,
@@ -737,6 +758,12 @@ export default function App() {
     // 2. If Track Options Bottom Sheet is open, dismiss it
     if (state.selectedTrackForMenu) {
       setSelectedTrackForMenu(null);
+      return;
+    }
+
+    // 2b. If Lyrics drawer is open inside Now Playing, close it first
+    if (state.isNowPlayingLyricsOpen) {
+      setIsNowPlayingLyricsOpen(false);
       return;
     }
 
@@ -1025,9 +1052,9 @@ export default function App() {
               size: 0
             };
           });
-          setOnlineTracks(formatted);
+          setOnlineTracks([TUM_HI_HO_ONLINE_TRACK, ...formatted]);
         } else {
-          setOnlineTracks([]);
+          setOnlineTracks([TUM_HI_HO_ONLINE_TRACK]);
         }
       } else {
         // --- AUDIUS (Full-length indie/commercial tracks with CORS) ---
@@ -1099,14 +1126,15 @@ export default function App() {
               size: 0
             };
           });
-          setOnlineTracks(formatted);
+          setOnlineTracks([TUM_HI_HO_ONLINE_TRACK, ...formatted]);
         } else {
-          setOnlineTracks([]);
+          setOnlineTracks([TUM_HI_HO_ONLINE_TRACK]);
         }
       }
     } catch (err: any) {
       console.error("Online search error:", err);
-      setOnlineError(`Could not fetch online music. Please check your network connection.`);
+      setOnlineTracks([TUM_HI_HO_ONLINE_TRACK]);
+      setOnlineError(`Could not fetch online music. Showing featured demo track.`);
     } finally {
       setIsOnlineLoading(false);
     }
@@ -1473,8 +1501,13 @@ export default function App() {
   };
 
   const selectOnlineTrack = (track: Track) => {
-    setPlaybackQueue(onlineTracks);
-    const index = onlineTracks.findIndex(t => t.id === track.id);
+    let queue = onlineTracks;
+    if (!queue.some(t => t.id === track.id)) {
+      queue = [track, ...queue];
+      setOnlineTracks(queue);
+    }
+    setPlaybackQueue(queue);
+    const index = queue.findIndex(t => t.id === track.id);
     if (index !== -1) {
       player.setCurrentTrackIndex(index);
       player.setIsPlaying(true);
@@ -2271,7 +2304,60 @@ export default function App() {
                 </>
               ) : (
                 /* ONLINE LIST VIEW */
-                <div className="space-y-2">
+                <div className="space-y-3">
+                  {/* Spotlight Banner: Featured Demo Song: Tum Hi Ho */}
+                  <div className="p-4 rounded-3xl bg-gradient-to-br from-[#1C153E] via-[#241A4F] to-[#120F24] border border-[#6355FE]/40 shadow-xl relative overflow-hidden group">
+                    <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-[#6355FE]/20 rounded-full blur-2xl pointer-events-none" />
+                    
+                    <div className="flex items-center justify-between gap-3 relative z-10">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-14 h-14 rounded-2xl overflow-hidden shrink-0 border border-white/10 shadow-lg relative group-hover:scale-105 transition-transform bg-[#0A0818]">
+                          <img src={appLogo} alt="Tum Hi Ho" className="w-full h-full object-cover" />
+                          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                            <Music size={22} className="text-white drop-shadow" />
+                          </div>
+                        </div>
+                        <div className="text-left min-w-0">
+                          <div className="flex items-center gap-1.5 flex-wrap">
+                            <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center gap-1">
+                              <Crown size={10} className="text-amber-400 fill-amber-400" /> Featured Demo Track
+                            </span>
+                            <span className="text-[9px] font-bold text-white/50 uppercase tracking-widest">Aashiqui 2</span>
+                          </div>
+                          <h3 className="text-sm font-black text-white mt-1 truncate">Tum Hi Ho (Learn & Sing Along)</h3>
+                          <p className="text-[11px] font-bold text-[#8E7CFF] opacity-90 truncate">Arijit Singh • Mithoon • 4:22</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] text-white/70 mt-2.5 text-left leading-relaxed">
+                      Listen and study the complete lyrics online, then jump directly into the Singing Studio demo to sing along and record your vocals over the backing track!
+                    </p>
+
+                    <div className="flex items-center gap-2 mt-3 pt-2.5 border-t border-white/10">
+                      <button
+                        type="button"
+                        onClick={() => selectOnlineTrack(TUM_HI_HO_ONLINE_TRACK)}
+                        className="flex-1 py-2 px-3 rounded-xl bg-[#6355FE] hover:bg-[#5244e8] active:scale-95 text-white text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-[#6355FE]/30"
+                      >
+                        <Play size={13} fill="currentColor" />
+                        <span>Listen & Learn</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveNavTab('studio');
+                          showToast('Singing Studio cued with Tum Hi Ho demo!', <Mic size={16} className="text-[#8E7CFF]" />);
+                        }}
+                        className="py-2 px-3.5 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 active:scale-95 text-amber-300 border border-amber-400/30 text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+                      >
+                        <Mic size={13} className="text-amber-400" />
+                        <span>Sing in Studio</span>
+                      </button>
+                    </div>
+                  </div>
+
                   {isOnlineLoading ? (
                     <div className="flex flex-col items-center justify-center py-24 gap-3">
                       <Loader2 size={32} className="animate-spin text-[#8E7CFF]" />
@@ -2733,8 +2819,97 @@ export default function App() {
                     )}
                   </div>
 
+                  {/* Lyrics & Sing Along Teleprompter */}
+                  <div className="flex flex-col items-center">
+                    <motion.button 
+                      onClick={() => setIsNowPlayingLyricsOpen(!isNowPlayingLyricsOpen)}
+                      whileTap={{ scale: 0.85 }} 
+                      className={`p-3 rounded-full bg-white/5 border border-white/5 transition-all cursor-pointer relative group ${
+                        isNowPlayingLyricsOpen || player.currentTrack?.lyrics ? 'text-[#8E7CFF] scale-105 shadow-lg shadow-[#6355FE]/20 ring-1 ring-[#8E7CFF]/40' : 'text-[#8F8E9C]/60 hover:text-white'
+                      }`}
+                      title="View Lyrics & Sing Along"
+                    >
+                      <BookOpen size={16} />
+                    </motion.button>
+                    <button
+                      type="button"
+                      onClick={() => setIsNowPlayingLyricsOpen(!isNowPlayingLyricsOpen)}
+                      className="text-[8px] font-black uppercase text-[#8E7CFF] mt-1 hover:underline tracking-wider cursor-pointer"
+                    >
+                      Lyrics
+                    </button>
+                  </div>
+
                 </div>
               </div>
+
+              {/* Expandable Interactive Lyrics & Sing Studio Drawer */}
+              <AnimatePresence>
+                {isNowPlayingLyricsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 35, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 25, scale: 0.96 }}
+                    transition={{ type: "spring", damping: 25, stiffness: 350 }}
+                    className="absolute inset-x-4 top-20 bottom-24 bg-[#0E0B22]/95 backdrop-blur-2xl rounded-3xl border border-[#6355FE]/40 p-5 flex flex-col z-40 shadow-2xl overflow-hidden"
+                  >
+                    <div className="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
+                      <div className="flex items-center gap-2">
+                        <BookOpen size={16} className="text-[#8E7CFF]" />
+                        <span className="text-xs font-black uppercase tracking-wider text-white">Song Lyrics & Sing-Along</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setShowPlayer(false);
+                            setIsNowPlayingLyricsOpen(false);
+                            setActiveNavTab('studio');
+                            showToast('Opened in Singing Studio!', <Mic size={16} className="text-[#8E7CFF]" />);
+                          }}
+                          className="px-2.5 py-1 bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center gap-1 border border-amber-400/30 cursor-pointer active:scale-95 transition-all"
+                        >
+                          <Mic size={12} className="text-amber-400" />
+                          <span>Sing in Studio</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setIsNowPlayingLyricsOpen(false)}
+                          className="p-1 rounded-full text-white/50 hover:text-white hover:bg-white/10 cursor-pointer"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="flex-1 overflow-hidden my-2">
+                      <KaraokeLyricsView
+                        currentTimeSec={player.currentTime}
+                        durationSec={player.duration}
+                        onSeek={(s) => player.seek(s)}
+                        fallbackLyrics={player.currentTrack.lyrics || TUM_HI_HO_LYRICS}
+                        className="h-full"
+                        showControls={true}
+                      />
+                    </div>
+
+                    <div className="pt-3 border-t border-white/10 shrink-0 flex items-center justify-between text-[10px] text-white/50">
+                      <span>Learn & sing along</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowPlayer(false);
+                          setIsNowPlayingLyricsOpen(false);
+                          setActiveNavTab('studio');
+                        }}
+                        className="text-[#8E7CFF] font-bold hover:underline cursor-pointer flex items-center gap-1"
+                      >
+                        Record your voice in Studio →
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
             </div>
           </motion.div>

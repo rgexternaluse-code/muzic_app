@@ -11,6 +11,7 @@ export interface Track {
   folderPath?: string;
   fileName?: string;
   size?: number;
+  lyrics?: string;
 }
 
 export interface FolderNode {

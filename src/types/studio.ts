@@ -16,6 +16,7 @@ export interface InstrumentalTrack {
   isPlaceholder?: boolean;
   rightsStatus: 'royalty-free-original' | 'placeholder-catalog' | 'user-local' | 'ai-separated';
   tags: string[];
+  lyrics?: string;
 }
 
 export type InstrumentalCategory =

@@ -14,7 +14,61 @@ import { InstrumentalTrack } from '../types/studio';
  * - No copyrighted commercial recordings or ripped audio are bundled.
  * - Real licensed WAV/MP3 files can be dropped into /assets/audio/stems/ to replace placeholders.
  */
+export const TUM_HI_HO_LYRICS = `Hum tere bin ab reh nahi sakte
+Tere bina kya wajood mera
+
+Hum tere bin ab reh nahi sakte
+Tere bina kya wajood mera
+Tujh se juda agar ho jaayenge
+To khud se hee ho jaayenge juda
+Kyonki tum hee ho, ab tum hee ho
+Zindagi ab tum hee ho
+O-o-o, chain bhee, mera dard bhee
+Meri aashiqui ab tum hee ho
+
+Tera-meraa rishta hai kaisaa
+Ek pal door gavaara nahin
+Tere liye har roz hain jeete
+Tujh ko diya mera vakt sabhee
+Koyi lamaha mera naa ho tere binaa
+Har saans pe naam tera
+Kyonki tum hee ho, ab tum hee ho
+Zindagi ab tum hee ho
+O-o-o, chain bhee, mera dard bhee
+Meri aashiqui ab tum hee ho
+
+Tum hee ho...
+Tum hee ho...
+Tere liye hi jiya main
+Khud ko jo yoon de diya hai
+Teri vafaa ne mujh ko sanbhaala
+Saare gamon ko dil se nikaala
+Tere saath mera hai naseeb juda
+Tuje paa ke adhoora naa raha, mmm
+Kyonki tum hee ho, ab tum hee ho
+Zindagi ab tum hee ho
+O-o-o, chain bhee, mera dard bhee
+Meri aashiqui ab tum hee ho
+Kyonki tum hee ho, ab tum hee ho
+Zindagi ab tum hee ho
+O-o-o, chain bhee, mera dard bhee
+Meri aashiqui ab tum hee ho`;
+
 export const BUILTIN_INSTRUMENTAL_CATALOG: InstrumentalTrack[] = [
+  {
+    id: 'inst_tum_hi_ho',
+    title: 'Tum Hi Ho (Aashiqui 2 Karaoke)',
+    category: 'sad-bollywood',
+    categoryLabel: 'Bollywood Romantic / Karaoke',
+    styleDescription: 'Official studio demo karaoke instrumental with lyrics. Soulful piano, acoustic guitar, and strings from Aashiqui 2.',
+    duration: 262,
+    bpm: 88,
+    key: 'Eb Minor',
+    previewUrl: '/assets/aistudio/TUM_HI_HO_-_Aashiqui_2_Karaoke_with_Lyrics_AlgoRhythm_Studio_17e2284d.mp3',
+    rightsStatus: 'user-local',
+    tags: ['Aashiqui 2', 'Arijit Singh', 'Karaoke', 'Demo Song', 'Lyrics Included'],
+    lyrics: TUM_HI_HO_LYRICS
+  },
   {
     id: 'inst_bollywood_1',
     title: 'Mumbai Sunset Groove (Upbeat)',
