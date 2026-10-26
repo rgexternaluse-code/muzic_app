@@ -622,10 +622,9 @@ const BASELINE_TUM_HI_HO_LINES: TimedLine[] = [
 
 /**
  * Word-by-Word Synchronized Karaoke Data for "Tum Hi Ho" (Aashiqui 2)
- * Calibrated with a 4.0s total advance (shifted 3.0s earlier from previous 1.0s calibration)
- * to align lyrics perfectly with the vocal rhythm and music track.
+ * Calibrated accurately to the AlgoRhythm Studio Karaoke audio track (261s).
  */
-const CALIBRATION_ADVANCE_SEC = 3.0; // Cumulative 4.0s lead from original timestamps
+const CALIBRATION_ADVANCE_SEC = 0.0;
 
 export const TUM_HI_HO_KARAOKE_DATA: SongKaraokeTiming = {
   trackId: 'inst_tum_hi_ho',
@@ -825,38 +824,47 @@ export const LUTT_LE_GAYA_KARAOKE_DATA: SongKaraokeTiming = parseLrcOrTextToKara
   255,
   'Lutt Le Gaya',
   'Simran Choudhary • Shashwat Sachdev',
-  `Aaja ve, aaja
-Aaja ve, aaja
-Haaye sajan, haaye sajan, haaye sajan, haaye sajan
-Aaja ve, aaja
-Aaja ve, aaja, seene laa jaa
-Haaye, sajan mainu lutt le gaya, haaye
-Haaye, sajan mainu lutt le gaya
-Pyaase labban de rog mukka jaa
-Haaye, sajan mainu lutt le gaya, haaye
-Haaye, sajan mainu lutt le gaya
-Haaye, sajan meri ankhaan tarasdi
-Har imaan mera tutt beh gaya
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-Aaja ve, aaja
-Ho, mainu lutt le gaya
-Aaja ve, aaja
-Ho, mainu lutt le gaya
-Takdi ankhiyaan aje na thakiyaan
-Naina vich nasha vass gaya
-Rajj ke peevan tainu, sajna
-Raatan vich na rass gaya, haaye
-Vass na jaavan, vich main saahvan
-Mainu oh khich fer ghutt le gaya
-Haaye, sajan meri ankhaan tarasdi
-Har imaan mera tutt beh gaya
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-Aaja ve, aaja`
+  `[00:10.12] Aaja ve, aaja
+[00:12.45] Aaja ve, aaja
+[00:14.63] Haaye sajan, haaye sajan, haaye sajan, haaye sajan
+[00:19.30] Aaja ve, aaja
+[00:23.21] Aaja ve, aaja, seene laa jaa
+[00:26.58] Haaye, sajan mainu lutt le gaya, haaye
+[00:30.95] Haaye, sajan mainu lutt le gaya
+[00:34.42] Pyaase labban de rog mukka jaa
+[00:38.25] Haaye, sajan mainu lutt le gaya, haaye
+[00:42.50] Haaye, sajan mainu lutt le gaya
+[00:45.96] Haaye, sajan meri ankhaan tarasdi
+[00:50.08] Har imaan mera tutt beh gaya
+[00:54.12] Ho, mainu lutt le gaya
+[00:57.02] Ho, mainu lutt le gaya
+[00:59.95] Ho, mainu lutt le gaya
+[01:02.82] Ho, mainu lutt le gaya
+[01:06.30] Aaja ve, aaja
+[01:08.82] Ho, mainu lutt le gaya
+[01:11.85] Aaja ve, aaja (Haaye, sajan)
+[01:14.70] Ho, mainu lutt le gaya
+[01:17.65] Aaja ve, aaja
+[01:20.52] Aaja ve, aaja
+[01:23.42] Aaja ve, aaja
+[01:26.30] Aaja ve, aaja
+[01:29.80] Takdi ankhiyaan aje na thakiyaan
+[01:34.20] Naina vich nasha vass gaya
+[01:38.65] Rajj ke peevan tainu, sajna
+[01:42.60] Raatan vich na rass gaya, haaye
+[01:46.42] Vass na jaavan, vich main saahvan
+[01:50.32] Mainu oh khich fer ghutt le gaya
+[01:54.21] Haaye, sajan meri ankhaan tarasdi
+[01:58.21] Har imaan mera tutt beh gaya
+[02:02.10] Ho, mainu lutt le gaya
+[02:05.15] Ho, mainu lutt le gaya
+[02:08.02] Ho, mainu lutt le gaya
+[02:10.95] Ho, mainu lutt le gaya
+[02:14.42] Aaja ve, aaja
+[02:17.30] Aaja ve, aaja
+[02:20.15] Aaja ve, aaja
+[02:23.02] Aaja ve, aaja
+[02:26.40] Haaye sajan, haaye sajan, haaye sajan, haaye sajan
+[02:32.30] Haaye sajan, haaye sajan, haaye sajan, haaye sajan`
 );
 

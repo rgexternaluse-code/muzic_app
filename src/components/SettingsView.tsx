@@ -1,8 +1,30 @@
 import React, { useState } from 'react';
-import { RefreshCw, FolderOpen, FileAudio, Trash2, Sun, Moon, ArrowLeft, ShieldCheck, Loader2 } from 'lucide-react';
+import { 
+  RefreshCw, 
+  FolderOpen, 
+  FileAudio, 
+  Trash2, 
+  Sun, 
+  Moon, 
+  ArrowLeft, 
+  ShieldCheck, 
+  Loader2,
+  Crown,
+  KeyRound,
+  Lock,
+  Unlock,
+  CheckCircle2,
+  Terminal,
+  Sliders,
+  LogOut,
+  Sparkles
+} from 'lucide-react';
 import { Capacitor } from '@capacitor/core';
 import appLogo from '../assets/images/muzic_app_logo_1786456453207.jpg';
 import { useAuth } from '../context/AuthContext';
+import { AdminLoginModal } from './AdminLoginModal';
+import { subscriptionService } from '../services/subscriptionService';
+import { db } from '../db';
 
 interface SettingsViewProps {
   folderInputRef: React.RefObject<HTMLInputElement>;
@@ -25,6 +47,67 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 }) => {
   const { currentUser, isVerified, signInWithGoogle, signOut } = useAuth();
   const [authBusy, setAuthBusy] = useState(false);
+
+  // Admin Access & Verification State (Scoped to Settings Only)
+  const [isAdminMode, setIsAdminMode] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('muzic_admin_mode') === 'true';
+    } catch {
+      return false;
+    }
+  });
+  const [adminIdentifier, setAdminIdentifier] = useState<string>(() => {
+    try {
+      return localStorage.getItem('muzic_admin_identifier') || 'admin';
+    } catch {
+      return 'admin';
+    }
+  });
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState(false);
+  const [adminToast, setAdminToast] = useState<string | null>(null);
+  const [isProSimulated, setIsProSimulated] = useState(() => subscriptionService.getCurrentTier() !== 'free');
+
+  const handleAdminSuccess = (identifier: string) => {
+    setIsAdminMode(true);
+    setAdminIdentifier(identifier);
+    try {
+      localStorage.setItem('muzic_admin_mode', 'true');
+      localStorage.setItem('muzic_admin_identifier', identifier);
+    } catch {}
+    setAdminToast(`Admin Mode Activated as ${identifier}`);
+    setTimeout(() => setAdminToast(null), 3000);
+  };
+
+  const handleExitAdmin = () => {
+    setIsAdminMode(false);
+    try {
+      localStorage.removeItem('muzic_admin_mode');
+      localStorage.removeItem('muzic_admin_identifier');
+    } catch {}
+    subscriptionService.purchaseProduct('free');
+    setIsProSimulated(false);
+    setAdminToast('Admin Mode Deactivated');
+    setTimeout(() => setAdminToast(null), 2500);
+  };
+
+  const handleToggleProSimulation = () => {
+    if (isProSimulated) {
+      subscriptionService.purchaseProduct('free');
+      setIsProSimulated(false);
+      setAdminToast('Simulating Free Tier');
+    } else {
+      subscriptionService.purchaseProduct('pro');
+      setIsProSimulated(true);
+      setAdminToast('Simulating Pro Tier (Features Unlocked)');
+    }
+    setTimeout(() => setAdminToast(null), 2500);
+  };
+
+  const handleResetQuota = () => {
+    subscriptionService.setCloudSyncedQuota(0);
+    setAdminToast('Studio Upload Quota Reset to 0');
+    setTimeout(() => setAdminToast(null), 2500);
+  };
 
   const handleSignIn = async () => {
     setAuthBusy(true);
@@ -239,7 +322,126 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <span>Clear Local Tracks Cache</span>
           </button>
         </div>
+
+        {/* =========================================================================
+            ADMIN ACCESS & MODE PANEL (Scoped strictly to Settings; isolated for future removal)
+            ========================================================================= */}
+        <div className={`p-5 rounded-3xl border transition-all text-left shadow-lg ${
+          isAdminMode 
+            ? 'bg-gradient-to-b from-amber-500/10 via-[#14122B]/80 to-[#14122B]/90 border-amber-500/30' 
+            : 'bg-[#14122B]/60 border-white/10'
+        }`}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center border shrink-0 ${
+                isAdminMode 
+                  ? 'bg-amber-500/20 text-amber-400 border-amber-500/40 shadow-lg shadow-amber-500/20' 
+                  : 'bg-white/10 text-white/70 border-white/15'
+              }`}>
+                {isAdminMode ? <Crown size={18} /> : <KeyRound size={18} />}
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-xs font-black uppercase tracking-wider text-white">
+                    {isAdminMode ? 'Admin Mode' : 'Admin Access'}
+                  </h2>
+                  <span className={`text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full border ${
+                    isAdminMode
+                      ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                      : 'bg-white/10 text-white/50 border-white/10'
+                  }`}>
+                    {isAdminMode ? 'Unlocked' : 'Restricted'}
+                  </span>
+                </div>
+                <p className="text-[11px] text-white/60 font-medium mt-0.5">
+                  {isAdminMode 
+                    ? `Authenticated as: ${adminIdentifier}` 
+                    : 'Restricted administrative mode for testing and management'}
+                </p>
+              </div>
+            </div>
+
+            {isAdminMode && (
+              <button
+                type="button"
+                onClick={handleExitAdmin}
+                className="px-3 py-1.5 bg-red-500/15 hover:bg-red-500/25 active:scale-95 text-red-300 rounded-xl text-[10px] font-bold uppercase tracking-wider border border-red-500/30 transition-all cursor-pointer flex items-center gap-1.5"
+                title="Exit Admin Mode"
+              >
+                <LogOut size={12} />
+                <span>Exit</span>
+              </button>
+            )}
+          </div>
+
+          {!isAdminMode ? (
+            <div className="pt-3">
+              <p className="text-[11px] text-white/60 leading-relaxed">
+                Unlock admin privileges to test feature tiers, manage internal configurations, and simulate entitlements.
+              </p>
+              <button
+                type="button"
+                onClick={() => setIsAdminModalOpen(true)}
+                className="w-full mt-3 py-3 px-4 bg-gradient-to-r from-amber-500/90 to-amber-600/90 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-black rounded-2xl font-black text-xs tracking-wider cursor-pointer shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2.5 transition-all"
+              >
+                <Lock size={15} className="text-black" />
+                <span>Admin Login</span>
+              </button>
+            </div>
+          ) : (
+            <div className="pt-3 space-y-3">
+              <div className="p-3 bg-black/30 rounded-2xl border border-white/5 text-[11px] space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-white/60">Privilege Level:</span>
+                  <span className="font-bold text-amber-300 flex items-center gap-1">
+                    <Sparkles size={12} /> Full Admin & QA Access
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-white/60">Simulated Tier:</span>
+                  <span className="font-bold text-white uppercase">{subscriptionService.getCurrentTier()}</span>
+                </div>
+              </div>
+
+              {/* Admin Quick Action Controls */}
+              <div className="grid grid-cols-2 gap-2.5">
+                <button
+                  type="button"
+                  onClick={handleToggleProSimulation}
+                  className="p-3 bg-white/5 hover:bg-white/10 active:scale-[0.98] text-[#ECE6FF] rounded-2xl text-[11px] font-bold border border-white/10 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Sliders size={14} className="text-amber-400" />
+                  <span>{isProSimulated ? 'Set Free Tier' : 'Set Pro Tier'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleResetQuota}
+                  className="p-3 bg-white/5 hover:bg-white/10 active:scale-[0.98] text-[#ECE6FF] rounded-2xl text-[11px] font-bold border border-white/10 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <RefreshCw size={14} className="text-emerald-400" />
+                  <span>Reset Quota</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Admin Toast Notification */}
+        {adminToast && (
+          <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-amber-500 text-black font-extrabold text-xs rounded-full shadow-2xl shadow-amber-500/50 flex items-center gap-2 animate-[fadeIn_0.15s_ease-out]">
+            <Crown size={14} />
+            <span>{adminToast}</span>
+          </div>
+        )}
       </main>
+
+      {/* Admin Login Popup Modal */}
+      <AdminLoginModal
+        isOpen={isAdminModalOpen}
+        onClose={() => setIsAdminModalOpen(false)}
+        onSuccess={handleAdminSuccess}
+        currentUserEmail={currentUser?.email}
+      />
     </div>
   );
 };

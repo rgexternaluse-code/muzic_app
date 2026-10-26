@@ -48,6 +48,7 @@ import { GoogleVerificationModal } from './GoogleVerificationModal';
 import { KaraokeLyricsView } from './KaraokeLyricsView';
 import { TUM_HI_HO_KARAOKE_DATA, LUTT_LE_GAYA_KARAOKE_DATA, parseLrcOrTextToKaraoke, SongKaraokeTiming } from '../data/karaokeTimings';
 import { extractClientSideKaraokeAudio } from '../services/vocalSeparationService';
+import { fetchLyricsForUploadedAudio } from '../services/lyricsService';
 import { useAuth } from '../context/AuthContext';
 import { recordCloudStudioUpload } from '../services/firebase';
 
@@ -130,6 +131,18 @@ export function SingingStudioView({
 
   // Authentication & Verification
   const { currentUser, isVerified } = useAuth();
+
+  // Admin Mode Active Check (Full-fledge studio access unlocked)
+  const [isAdminMode] = useState<boolean>(() => {
+    try {
+      return typeof window !== 'undefined' && localStorage.getItem('muzic_admin_mode') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  // When admin mode is active, user has full verified and unlocked privileges
+  const effectiveIsVerified = isVerified || isAdminMode;
 
   // Demo mode state for unverified creators (1 free demo take)
   const [hasCompletedDemo, setHasCompletedDemo] = useState<boolean>(() => {
@@ -282,8 +295,8 @@ export function SingingStudioView({
 
   // Select Device Audio File
   const handlePickDeviceAudio = async () => {
-    // 1. Check Google verification
-    if (!isVerified) {
+    // 1. Check Google verification (Bypassed if Admin Mode)
+    if (!effectiveIsVerified) {
       onShowToast(
         'Google 1-Tap verification required to import phone audio into Singing Studio.',
         <ShieldCheck size={16} className="text-[#8E7CFF]" />
@@ -292,8 +305,8 @@ export function SingingStudioView({
       return;
     }
 
-    // 2. Check quota before initiating picker
-    if (!subscriptionService.canUploadLocalTrack()) {
+    // 2. Check quota before initiating picker (Bypassed if Admin Mode)
+    if (!isAdminMode && !subscriptionService.canUploadLocalTrack()) {
       const quota = subscriptionService.getLocalUploadQuota();
       onShowToast(
         `Monthly studio upload limit reached (${quota.used}/${quota.limit}). Upgrade to import more songs.`,
@@ -353,7 +366,7 @@ export function SingingStudioView({
   const handleLocalFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (!isVerified) {
+      if (!effectiveIsVerified) {
         onShowToast(
           'Google 1-Tap verification required to import phone audio into Singing Studio.',
           <ShieldCheck size={16} className="text-[#8E7CFF]" />
@@ -363,7 +376,7 @@ export function SingingStudioView({
         return;
       }
 
-      if (!subscriptionService.canUploadLocalTrack()) {
+      if (!isAdminMode && !subscriptionService.canUploadLocalTrack()) {
         const quota = subscriptionService.getLocalUploadQuota();
         onShowToast(
           `Monthly studio upload limit reached (${quota.used}/${quota.limit}). Upgrade to import more songs.`,
@@ -385,25 +398,31 @@ export function SingingStudioView({
       }
 
       const url = URL.createObjectURL(file);
+      const cleanTrackName = file.name.replace(/\.[^/.]+$/, '');
+
+      // Reset previous song's lyrics to avoid showing stale data
+      setCustomLyricsText('');
+      setCustomKaraokeData(null);
+      setIsKaraokeExtracted(false);
+
       const audioProbe = new Audio(url);
-      audioProbe.onloadedmetadata = () => {
-        if (audioProbe.duration && !isNaN(audioProbe.duration)) {
-          const detected = Math.round(audioProbe.duration);
-          setCustomDeviceTrack(prev => prev ? { ...prev, duration: detected } : null);
-          if (customLyricsText) {
-            const parsed = parseLrcOrTextToKaraoke(
-              detected,
-              file.name.replace(/\.[^/.]+$/, ''),
-              'Local Backing Track',
-              customLyricsText
-            );
-            setCustomKaraokeData(parsed);
-          }
+      audioProbe.onloadedmetadata = async () => {
+        const detected = (audioProbe.duration && !isNaN(audioProbe.duration)) ? Math.round(audioProbe.duration) : 180;
+        setCustomDeviceTrack(prev => prev ? { ...prev, duration: detected } : null);
+
+        // Fetch and synchronize real lyrics for this uploaded song
+        try {
+          const lyricsRes = await fetchLyricsForUploadedAudio(file.name, 'Local Backing Track', detected);
+          setCustomLyricsText(lyricsRes.lyricsText);
+          setCustomKaraokeData(lyricsRes.karaokeData);
+          setIsLyricsOpen(true);
+        } catch (err) {
+          console.warn('Initial lyrics lookup deferred:', err);
         }
       };
 
       setCustomDeviceTrack({
-        title: file.name.replace(/\.[^/.]+$/, ''),
+        title: cleanTrackName,
         artist: 'Local Backing Track',
         url,
         blob: file,
@@ -415,6 +434,15 @@ export function SingingStudioView({
         `Loaded "${file.name}" (${rec.remaining} imports left this month)`,
         <Music size={16} className="text-[#8E7CFF]" />
       );
+
+      // Pre-fetch lyrics immediately
+      fetchLyricsForUploadedAudio(file.name, 'Local Backing Track', 180).then(lyricsRes => {
+        setCustomLyricsText(lyricsRes.lyricsText);
+        setCustomKaraokeData(lyricsRes.karaokeData);
+        setIsLyricsOpen(true);
+      }).catch(err => {
+        console.warn('Immediate lyrics fetch deferred:', err);
+      });
       if (e.target) e.target.value = '';
     }
   };
@@ -468,8 +496,8 @@ export function SingingStudioView({
 
   // Client-Side DSP AI Karaoke Vocal Extraction Handler
   const handleExtractKaraokeDsp = async () => {
-    // Verification Gate: AI vocal remover is available once Gmail verification is done
-    if (!isVerified) {
+    // Verification Gate: AI vocal remover is available once Gmail verification is done or Admin Mode
+    if (!effectiveIsVerified) {
       setAuthModalContext({
         title: 'Unlock AI Vocal Remover',
         subtitle: 'Verify with Gmail (100% Free)',
@@ -485,32 +513,49 @@ export function SingingStudioView({
     }
 
     setIsExtractingKaraoke(true);
-    onShowToast('Isolating karaoke music & cancelling center vocals...', <Sparkles size={16} className="text-[#8E7CFF] animate-spin" />);
+    onShowToast('Removing vocals & isolating karaoke backing music...', <Sparkles size={16} className="text-[#8E7CFF] animate-spin" />);
     try {
       const activeUrl = await getActiveBackingUrl();
-      const result = await extractClientSideKaraokeAudio(activeUrl);
-      
-      const currentTitle = sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.title : selectedBuiltinTrack.title;
+      const rawTitle = sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.title : selectedBuiltinTrack.title;
+      const cleanSongTitle = rawTitle.replace(/\s*\(Karaoke\)/gi, '').trim();
       const currentArtist = sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.artist : selectedBuiltinTrack.categoryLabel;
+      const originalDuration = sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.duration : selectedBuiltinTrack.duration;
 
+      // 1. Remove center vocals with DSP phase-inversion demixing
+      const result = await extractClientSideKaraokeAudio(activeUrl);
+      const effectiveDuration = result.duration || originalDuration || 180;
+      
       setCustomDeviceTrack({
-        title: currentTitle.includes('(Karaoke)') ? currentTitle : `${currentTitle} (Karaoke)`,
+        title: `${cleanSongTitle} (Karaoke)`,
         artist: currentArtist,
         url: result.url,
         blob: result.blob,
-        duration: result.duration
+        duration: effectiveDuration
       });
       setSourceTab('device');
       setIsKaraokeExtracted(true);
 
-      // If Lutt Le Gaya was the selected track, maintain timed lyrics
-      if (selectedBuiltinTrack.id === 'inst_lutt_le_gaya' || currentTitle.toLowerCase().includes('lutt')) {
-        setCustomKaraokeData(LUTT_LE_GAYA_KARAOKE_DATA);
-      } else if (selectedBuiltinTrack.id === 'inst_tum_hi_ho' || currentTitle.toLowerCase().includes('tum hi ho')) {
-        setCustomKaraokeData(TUM_HI_HO_KARAOKE_DATA);
-      }
+      // 2. Automatically fetch, parse, and update lyrics in the lyric box below!
+      onShowToast('Vocals cancelled! Synchronizing lyrics into teleprompter...', <Sparkles size={16} className="text-amber-400 animate-spin" />);
+      const lyricsResult = await fetchLyricsForUploadedAudio(cleanSongTitle, currentArtist, effectiveDuration);
 
-      onShowToast('Vocals cancelled! Instrumental karaoke ready to sing.', <CheckCircle2 size={16} className="text-emerald-400" />);
+      setCustomLyricsText(lyricsResult.lyricsText);
+      setCustomKaraokeData(lyricsResult.karaokeData);
+      setIsLyricsOpen(true);
+
+      const sourceDescription = lyricsResult.source === 'synced_lrc'
+        ? 'Word-by-word synced teleprompter active'
+        : lyricsResult.source === 'preset'
+          ? 'Studio karaoke lyrics active'
+          : lyricsResult.source === 'online_plain'
+            ? 'Song lyrics synchronized to track'
+            : 'Custom lyrics prompt active';
+
+      onShowToast(
+        `Vocals removed & lyrics updated for "${cleanSongTitle}"!`,
+        <CheckCircle2 size={16} className="text-emerald-400" />,
+        sourceDescription
+      );
     } catch (err: any) {
       console.error('Karaoke extraction error:', err);
       onShowToast('Vocal extraction error: ' + err.message, <AlertCircle size={16} className="text-red-400" />);
@@ -531,11 +576,33 @@ export function SingingStudioView({
           customLyricsText
         );
       }
+      if (customDeviceTrack) {
+        return parseLrcOrTextToKaraoke(
+          customDeviceTrack.duration || 180,
+          customDeviceTrack.title,
+          customDeviceTrack.artist || 'Device Audio',
+          `[00:02.00] 🎵 "${customDeviceTrack.title}" Loaded
+[00:06.00] Click "AI Vocal Remover & Load Lyrics" above
+[00:10.00] Vocals will be removed and song lyrics will sync here!
+[00:16.00] 🎤 Get ready to sing your song...`
+        );
+      }
+    }
+    if (selectedBuiltinTrack.id === 'inst_tum_hi_ho' || selectedBuiltinTrack.title.toLowerCase().includes('tum hi ho')) {
+      return TUM_HI_HO_KARAOKE_DATA;
     }
     if (selectedBuiltinTrack.id === 'inst_lutt_le_gaya' || selectedBuiltinTrack.title.toLowerCase().includes('lutt')) {
       return LUTT_LE_GAYA_KARAOKE_DATA;
     }
-    return TUM_HI_HO_KARAOKE_DATA;
+    return parseLrcOrTextToKaraoke(
+      selectedBuiltinTrack.duration || 60,
+      selectedBuiltinTrack.title,
+      selectedBuiltinTrack.categoryLabel || 'Studio Instrumental',
+      `[00:02.00] 🎵 "${selectedBuiltinTrack.title}" Backing Track
+[00:06.00] ${selectedBuiltinTrack.categoryLabel} • ${selectedBuiltinTrack.bpm} BPM
+[00:12.00] 🎤 Sing along with your original vocals or freestyle melody
+[00:20.00] Feel the rhythm and bring your voice to the mix!`
+    );
   }, [sourceTab, customKaraokeData, customLyricsText, customDeviceTrack, selectedBuiltinTrack]);
 
   const activeDuration = sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.duration : selectedBuiltinTrack.duration;
@@ -549,8 +616,8 @@ export function SingingStudioView({
     onPauseMainPlayer();
     setMicPermissionDenied(false);
 
-    // If unverified and already used 1 free demo take, prompt verification!
-    if (!isVerified && hasCompletedDemo) {
+    // If unverified and already used 1 free demo take, prompt verification! (Bypassed if Admin Mode)
+    if (!effectiveIsVerified && hasCompletedDemo) {
       setAuthModalContext({
         title: 'Sign In to Sing More',
         subtitle: '1 Free Demo Completed • Verify with Gmail',
@@ -637,8 +704,8 @@ export function SingingStudioView({
         `${recordingSeconds}s captured • Ready to mix & preview`
       );
 
-      // If user is unverified and just finished their 1 free demo take:
-      if (!isVerified && !hasCompletedDemo) {
+      // If user is unverified and just finished their 1 free demo take (never lock out admin!):
+      if (!effectiveIsVerified && !hasCompletedDemo) {
         try {
           localStorage.setItem('muzic_studio_demo_completed', 'true');
         } catch {}
@@ -708,7 +775,7 @@ export function SingingStudioView({
       return;
     }
 
-    if (!isVerified) {
+    if (!effectiveIsVerified) {
       setAuthModalContext({
         title: 'Sign In to Export Mix',
         subtitle: 'Google 1-Tap Account Verification',
@@ -858,7 +925,7 @@ export function SingingStudioView({
       {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 pb-24 text-left">
         
-        {!isVerified ? (
+        {!effectiveIsVerified ? (
           /* ========================================================== */
           /* DEMO MODE: Focused on 1 background music & mic to sing      */
           /* Hides all extra phone uploads, multi-tracks, mixer & export */
@@ -933,20 +1000,33 @@ export function SingingStudioView({
             <section className="bg-[#120F2B]/90 border border-[#6355FE]/35 rounded-[28px] p-5 space-y-4 shadow-2xl">
               {/* Card Header Metadata */}
               <div className="space-y-1 text-left">
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-wider text-[#796BFF]">
-                  <Disc3 size={14} className="text-[#796BFF]" />
-                  <span>DEMO BACKING MUSIC</span>
-                  {isKaraokeExtracted && (
-                    <span className="text-[8px] bg-emerald-500/20 text-emerald-300 font-extrabold px-1.5 py-0.5 rounded-full border border-emerald-500/30 uppercase flex items-center gap-1 ml-auto">
-                      <Sparkles size={9} /> Karaoke Isolated
-                    </span>
-                  )}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-wider text-[#796BFF]">
+                    <Disc3 size={14} className="text-[#796BFF]" />
+                    <span>{sourceTab === 'device' ? 'UPLOADED SONG' : 'DEMO BACKING MUSIC'}</span>
+                    {isKaraokeExtracted && (
+                      <span className="text-[8px] bg-emerald-500/20 text-emerald-300 font-extrabold px-1.5 py-0.5 rounded-full border border-emerald-500/30 uppercase flex items-center gap-1">
+                        <Sparkles size={9} /> Karaoke & Lyrics Synced
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handlePickDeviceAudio}
+                    className="px-2.5 py-1 bg-white/10 hover:bg-white/15 text-[#ECE6FF] hover:text-white rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer border border-white/10 shrink-0 active:scale-95"
+                    title="Upload your own song file to remove vocals and sing along"
+                  >
+                    <Upload size={12} className="text-[#8E7CFF]" />
+                    <span>{customDeviceTrack ? 'Change Song' : 'Upload Song File'}</span>
+                  </button>
                 </div>
                 <h3 className="text-sm font-black text-white leading-tight">
                   {sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.title : selectedBuiltinTrack.title}
                 </h3>
                 <p className="text-[10px] font-bold text-[#8F8E9C]">
-                  {selectedBuiltinTrack.categoryLabel || 'Bollywood Romantic / Karaoke'} • {selectedBuiltinTrack.bpm} BPM
+                  {sourceTab === 'device' && customDeviceTrack 
+                    ? `${customDeviceTrack.artist} • ${formatSec(customDeviceTrack.duration)}`
+                    : `${selectedBuiltinTrack.categoryLabel || 'Bollywood Romantic / Karaoke'} • ${selectedBuiltinTrack.bpm} BPM`}
                 </p>
               </div>
 
@@ -957,18 +1037,18 @@ export function SingingStudioView({
                   onClick={handleExtractKaraokeDsp}
                   disabled={isExtractingKaraoke || isRecording}
                   className="flex-1 py-3 px-3 bg-gradient-to-r from-[#E91E63] to-[#FF4081] hover:brightness-110 active:scale-95 text-white rounded-2xl text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-pink-500/25 cursor-pointer disabled:opacity-50"
-                  title="Run client-side DSP Mid-Side phase cancellation to remove center vocals"
+                  title="Run client-side DSP Mid-Side phase cancellation to remove center vocals and load lyrics"
                 >
                   {isExtractingKaraoke ? (
                     <>
                       <Loader2 size={14} className="animate-spin text-white" />
-                      <span>REMOVING...</span>
+                      <span>REMOVING VOCALS & LOADING LYRICS...</span>
                     </>
                   ) : (
                     <>
                       <Sparkles size={14} className="text-amber-300" />
-                      <span>AI VOCAL REMOVER</span>
-                      {!isVerified && (
+                      <span>{isKaraokeExtracted ? 'AI VOCAL REMOVER (ACTIVE)' : 'AI VOCAL REMOVER & LOAD LYRICS'}</span>
+                      {!effectiveIsVerified && (
                         <Lock size={11} className="text-white/80 shrink-0 -ml-0.5" />
                       )}
                     </>
@@ -1256,26 +1336,38 @@ export function SingingStudioView({
               <p className="text-[11px] text-[#8F8E9C]">Select a royalty-free instrumental or a song from your device.</p>
             </div>
 
-            {/* Source Switcher */}
-            <div className="flex bg-white/5 p-1 rounded-2xl border border-white/5">
+            {/* Source Switcher & Upload Button */}
+            <div className="flex items-center gap-2 flex-wrap justify-end">
               <button
                 type="button"
-                onClick={() => setSourceTab('builtin')}
-                className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
-                  sourceTab === 'builtin' ? 'bg-[#6355FE] text-white shadow-md' : 'text-[#8F8E9C] hover:text-white'
-                }`}
+                onClick={handlePickDeviceAudio}
+                className="px-3 py-1.5 bg-gradient-to-r from-[#6355FE]/30 to-[#8E7CFF]/30 hover:from-[#6355FE]/40 hover:to-[#8E7CFF]/40 text-[#ECE6FF] border border-[#6355FE]/50 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 active:scale-95 shadow-md"
+                title="Upload an audio file to remove vocals and sing along"
               >
-                6 Built-in Tracks
+                <Upload size={12} className="text-[#8E7CFF]" />
+                <span>Upload Song File</span>
               </button>
-              <button
-                type="button"
-                onClick={() => setSourceTab('device')}
-                className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
-                  sourceTab === 'device' ? 'bg-[#6355FE] text-white shadow-md' : 'text-[#8F8E9C] hover:text-white'
-                }`}
-              >
-                From Phone
-              </button>
+
+              <div className="flex bg-white/5 p-1 rounded-2xl border border-white/5">
+                <button
+                  type="button"
+                  onClick={() => setSourceTab('builtin')}
+                  className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                    sourceTab === 'builtin' ? 'bg-[#6355FE] text-white shadow-md' : 'text-[#8F8E9C] hover:text-white'
+                  }`}
+                >
+                  Built-in Tracks
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSourceTab('device')}
+                  className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${
+                    sourceTab === 'device' ? 'bg-[#6355FE] text-white shadow-md' : 'text-[#8F8E9C] hover:text-white'
+                  }`}
+                >
+                  Uploaded Track
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1330,7 +1422,7 @@ export function SingingStudioView({
           {sourceTab === 'device' && (
             <div className="space-y-3">
               {/* Google 1-Tap Verification Required Banner */}
-              {!isVerified && (
+              {!effectiveIsVerified && (
                 <div className="p-4 bg-gradient-to-r from-[#6355FE]/20 via-[#8E7CFF]/15 to-transparent border border-[#6355FE]/40 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-md">
@@ -1373,14 +1465,16 @@ export function SingingStudioView({
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-black text-white">Monthly Studio Imports</span>
                       <span className="text-[9px] bg-white/10 text-white/90 font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider">
-                        {subscriptionService.getCurrentTier() === 'free' ? 'Muzic Free (5/mo)' : subscriptionService.getCurrentTier() === 'pro' ? 'Muzic Pro (20/mo)' : 'Studio Pass (50/mo)'}
+                        {isAdminMode ? '👑 Admin Mode (Unlimited)' : subscriptionService.getCurrentTier() === 'free' ? 'Muzic Free (5/mo)' : subscriptionService.getCurrentTier() === 'pro' ? 'Muzic Pro (20/mo)' : 'Studio Pass (50/mo)'}
                       </span>
                     </div>
                     <p className="text-[10px] text-[#8F8E9C]">
-                      {uploadQuota.used} of {uploadQuota.limit} phone songs imported this month
-                      {isVerified && currentUser?.email && (
+                      {isAdminMode ? 'Unlimited phone song imports & takes active' : `${uploadQuota.used} of ${uploadQuota.limit} phone songs imported this month`}
+                      {isAdminMode ? (
+                        <span className="text-amber-400 ml-1.5 font-bold">• Admin Unlocked</span>
+                      ) : isVerified && currentUser?.email ? (
                         <span className="text-emerald-400/90 ml-1.5 font-bold">• Verified ({currentUser.email})</span>
-                      )}
+                      ) : null}
                     </p>
                   </div>
                 </div>
@@ -1406,23 +1500,57 @@ export function SingingStudioView({
               </div>
 
               {customDeviceTrack ? (
-                <div className="p-4 bg-[#1C153E] border border-[#6355FE] rounded-2xl flex items-center justify-between">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] shrink-0 border border-[#6355FE]/40">
-                      <FileAudio size={20} />
+                <div className="p-4 bg-[#1C153E] border border-[#6355FE] rounded-2xl space-y-3.5 shadow-lg">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-10 h-10 rounded-xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] shrink-0 border border-[#6355FE]/40">
+                        <FileAudio size={20} />
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[9px] font-black uppercase tracking-wider text-[#8E7CFF]">Uploaded Song</span>
+                          {isKaraokeExtracted && (
+                            <span className="text-[8px] bg-emerald-500/20 text-emerald-300 font-extrabold px-1.5 py-0.5 rounded-full border border-emerald-500/30 uppercase flex items-center gap-1">
+                              <Sparkles size={8} /> Vocals Removed
+                            </span>
+                          )}
+                          {customKaraokeData && (
+                            <span className="text-[8px] bg-blue-500/20 text-blue-300 font-extrabold px-1.5 py-0.5 rounded-full border border-blue-500/30 uppercase">
+                              Lyrics Synced
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-xs font-black text-white truncate mt-0.5">{customDeviceTrack.title}</h3>
+                        <p className="text-[10px] text-[#8F8E9C]">{customDeviceTrack.artist} • {formatSec(customDeviceTrack.duration)}</p>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <span className="text-[9px] font-black uppercase tracking-wider text-[#8E7CFF]">Phone Audio Selected</span>
-                      <h3 className="text-xs font-black text-white truncate">{customDeviceTrack.title}</h3>
-                      <p className="text-[10px] text-[#8F8E9C]">{customDeviceTrack.artist}</p>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={handlePickDeviceAudio}
+                      className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-[10px] font-black uppercase tracking-wider cursor-pointer shrink-0 transition-all active:scale-95"
+                    >
+                      Change Song
+                    </button>
                   </div>
+
+                  {/* Primary Feature Button: Remove Vocals & Update Lyrics in Lyric Box */}
                   <button
                     type="button"
-                    onClick={handlePickDeviceAudio}
-                    className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-[10px] font-black uppercase tracking-wider cursor-pointer"
+                    onClick={handleExtractKaraokeDsp}
+                    disabled={isExtractingKaraoke || isRecording}
+                    className="w-full py-3.5 px-4 bg-gradient-to-r from-pink-600 via-[#8E7CFF] to-[#6355FE] hover:brightness-110 active:scale-[0.99] text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2.5 shadow-xl shadow-[#6355FE]/30 cursor-pointer disabled:opacity-50"
                   >
-                    Change Song
+                    {isExtractingKaraoke ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin text-white" />
+                        <span>Removing Vocals & Fetching Lyrics...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles size={16} className="text-amber-300 animate-pulse" />
+                        <span>{isKaraokeExtracted ? 'Re-Run Vocal Remover & Sync Lyrics' : 'AI Vocal Remover & Load Lyrics'}</span>
+                      </>
+                    )}
                   </button>
                 </div>
               ) : (

@@ -2057,55 +2057,7 @@ export default function App() {
 
 
 
-            {/* TOP-LEVEL CHANNEL SELECTOR: Device Music vs Online & Featured Streams */}
-            <div className={`flex p-1 rounded-2xl w-full relative border ${
-              isDark ? 'bg-white/5 border-white/5' : 'bg-[#EAE6F8] border-[#6355FE]/15 shadow-sm'
-            }`}>
-              <button
-                type="button"
-                onClick={() => setActiveTab('local')}
-                className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider relative z-10 cursor-pointer transition-colors duration-200 flex items-center justify-center gap-2 ${
-                  activeTab === 'local'
-                    ? '!text-white font-black'
-                    : isDark ? 'opacity-40 text-white hover:opacity-80' : 'text-[#585474] hover:text-[#120F26]'
-                }`}
-              >
-                <HardDrive size={14} />
-                <span>Device Music</span>
-                {activeTab === 'local' && (
-                  <motion.div
-                    layoutId="libraryActiveTabPill"
-                    className="absolute inset-0 bg-[#6355FE] rounded-xl -z-10 shadow-md shadow-[#6355FE]/30"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveTab('online');
-                  if (onlineTracks.length === 0) {
-                    fetchOnlineTracks();
-                  }
-                }}
-                className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider relative z-10 cursor-pointer transition-colors duration-200 flex items-center justify-center gap-2 ${
-                  activeTab === 'online'
-                    ? '!text-white font-black'
-                    : isDark ? 'opacity-40 text-white hover:opacity-80' : 'text-[#585474] hover:text-[#120F26]'
-                }`}
-              >
-                <Radio size={14} />
-                <span>Online & Featured</span>
-                {activeTab === 'online' && (
-                  <motion.div
-                    layoutId="libraryActiveTabPill"
-                    className="absolute inset-0 bg-[#6355FE] rounded-xl -z-10 shadow-md shadow-[#6355FE]/30"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </button>
-            </div>
+            {/* TOP-LEVEL CHANNEL SELECTOR: Hidden per user request */}
 
             {activeTab === 'local' ? (
               <div className="space-y-3">
