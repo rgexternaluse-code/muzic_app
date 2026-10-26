@@ -44,7 +44,9 @@ import {
   Smartphone,
   Mic,
   Crown,
-  BookOpen
+  HardDrive,
+  Radio,
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Capacitor } from '@capacitor/core';
@@ -60,7 +62,6 @@ import { PlaylistsView } from './components/PlaylistsView';
 import { SettingsView } from './components/SettingsView';
 import { SingingStudioView } from './components/SingingStudioView';
 import { TrackThumbnail } from './components/TrackThumbnail';
-import { KaraokeLyricsView } from './components/KaraokeLyricsView';
 import { EqualizerModal, EQ_PRESETS, EqPresetKey, FREQ_BANDS } from './components/EqualizerModal';
 import { 
   setupSystemMediaActionListener, 
@@ -69,7 +70,7 @@ import {
   stopSystemMedia,
   requestNotificationPermissionIfNeeded
 } from './services/systemMediaPlayer';
-import { TUM_HI_HO_LYRICS } from './data/instrumentals';
+import { TUM_HI_HO_LYRICS, LUTT_LE_GAYA_LYRICS } from './data/instrumentals';
 
 export const TUM_HI_HO_ONLINE_TRACK: Track = {
   id: 'online_tum_hi_ho',
@@ -83,6 +84,20 @@ export const TUM_HI_HO_ONLINE_TRACK: Track = {
   fileName: 'Tum_Hi_Ho_Aashiqui_2.mp3',
   size: 6300000,
   lyrics: TUM_HI_HO_LYRICS
+};
+
+export const LUTT_LE_GAYA_ONLINE_TRACK: Track = {
+  id: 'online_lutt_le_gaya',
+  title: 'Lutt Le Gaya (Dhurandhar Karaoke)',
+  artist: 'Simran Choudhary • Shashwat Sachdev',
+  album: 'Dhurandhar Movie Soundtrack',
+  duration: 255,
+  url: '/assets/aistudio/Lutt_Le_Gaya_Dhurandhar_320_Kbps_0ceffc43.mp3',
+  cover: appLogo,
+  format: 'KARAOKE',
+  fileName: 'Lutt_Le_Gaya_Dhurandhar.mp3',
+  size: 7800000,
+  lyrics: LUTT_LE_GAYA_LYRICS
 };
 
 // --- Lightweight JSONP Client to bypass CORS on the client side ---
@@ -253,6 +268,7 @@ const TrackItem = memo(({
   isActive, 
   isPlaying, 
   isFavorite,
+  isDark = true,
   onClick, 
   onToggleFavorite, 
   onOpenMenu 
@@ -261,6 +277,7 @@ const TrackItem = memo(({
   isActive: boolean; 
   isPlaying?: boolean; 
   isFavorite?: boolean;
+  isDark?: boolean;
   onClick: () => void;
   onToggleFavorite?: () => void;
   onOpenMenu?: () => void;
@@ -274,12 +291,18 @@ const TrackItem = memo(({
     whileTap={{ scale: 0.985 }}
     className={`flex items-center p-3 rounded-2xl cursor-pointer transition-all duration-300 group border ${
       isActive 
-        ? 'bg-[#6355FE]/20 border-[#6355FE]/40 shadow-xl shadow-[#6355FE]/10' 
-        : 'bg-[#14122B]/40 hover:bg-[#1B183A]/80 border-white/5 hover:border-white/10'
+        ? isDark
+          ? 'bg-[#6355FE]/20 border-[#6355FE]/40 shadow-xl shadow-[#6355FE]/10' 
+          : 'bg-[#6355FE]/15 border-[#6355FE]/40 shadow-xl shadow-[#6355FE]/10'
+        : isDark
+          ? 'bg-[#14122B]/40 hover:bg-[#1B183A]/80 border-white/5 hover:border-white/10'
+          : 'bg-white hover:bg-[#F4F1FD] border-[#6355FE]/12 hover:border-[#6355FE]/25 shadow-sm shadow-[#120F26]/5'
     }`}
   >
     {/* Cover Art Image */}
-    <div className="w-12 h-12 rounded-xl overflow-hidden mr-3.5 shadow-md shrink-0 relative border border-white/10 group-hover:shadow-lg transition-all">
+    <div className={`w-12 h-12 rounded-xl overflow-hidden mr-3.5 shadow-md shrink-0 relative border transition-all ${
+      isDark ? 'border-white/10 group-hover:shadow-lg' : 'border-[#6355FE]/12 group-hover:shadow-lg'
+    }`}>
       <TrackThumbnail
         cover={track.cover}
         title={track.title}
@@ -297,12 +320,16 @@ const TrackItem = memo(({
     {/* Metadata Text Box */}
     <div className="flex-1 min-w-0 pr-2">
       <h3 className={`text-[13.5px] font-black truncate leading-tight transition-colors duration-200 ${
-        isActive ? 'text-white font-black' : 'text-slate-100 group-hover:text-white'
+        isActive 
+          ? isDark ? 'text-white font-black' : 'text-[#6355FE] font-black'
+          : isDark ? 'text-slate-100 group-hover:text-white' : 'text-[#120F26] group-hover:text-[#6355FE]'
       }`}>
         {track.title}
       </h3>
       <p className={`text-[11px] truncate font-bold mt-1 transition-colors duration-200 ${
-        isActive ? 'text-[#8E7CFF]' : 'text-[#8F8E9C]'
+        isActive 
+          ? isDark ? 'text-[#8E7CFF]' : 'text-[#6355FE]'
+          : isDark ? 'text-[#8F8E9C]' : 'text-[#585474]'
       }`}>
         {track.artist}
       </p>
@@ -313,7 +340,11 @@ const TrackItem = memo(({
       {isActive && <SoundWaveIndicator isPlaying={isPlaying} />}
       
       {/* Format Badge (e.g., MP3 or Stream) */}
-      <span className={`text-[9px] font-black tracking-wider px-2 py-0.5 rounded-md bg-white/5 border border-white/5 text-[#8F8E9C] group-hover:text-white transition-colors`}>
+      <span className={`text-[9px] font-black tracking-wider px-2 py-0.5 rounded-md transition-colors ${
+        isDark 
+          ? 'bg-white/5 border border-white/5 text-[#8F8E9C] group-hover:text-white'
+          : 'bg-[#6355FE]/8 border border-[#6355FE]/15 text-[#5B4AE6] group-hover:text-[#6355FE]'
+      }`}>
         {track.format || 'MP3'}
       </span>
 
@@ -323,8 +354,12 @@ const TrackItem = memo(({
           onClick={(e) => { e.stopPropagation(); onToggleFavorite(); }}
           whileTap={{ scale: 0.8 }}
           type="button"
-          className={`p-1.5 rounded-full transition-all cursor-pointer hover:bg-white/10 ${
-            isFavorite ? 'text-pink-500 shadow-[0_0_10px_rgba(236,72,153,0.3)]' : 'text-[#8F8E9C]/40 hover:text-pink-400'
+          className={`p-1.5 rounded-full transition-all cursor-pointer ${
+            isDark ? 'hover:bg-white/10' : 'hover:bg-black/5'
+          } ${
+            isFavorite 
+              ? 'text-pink-500 shadow-[0_0_10px_rgba(236,72,153,0.3)]' 
+              : isDark ? 'text-[#8F8E9C]/40 hover:text-pink-400' : 'text-[#7A7596] hover:text-pink-500'
           }`}
         >
           <Heart size={15} fill={isFavorite ? "currentColor" : "none"} />
@@ -337,7 +372,11 @@ const TrackItem = memo(({
           onClick={(e) => { e.stopPropagation(); onOpenMenu(); }}
           whileTap={{ scale: 0.85 }}
           type="button"
-          className="p-1.5 rounded-full text-[#8F8E9C]/60 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+          className={`p-1.5 rounded-full transition-colors cursor-pointer ${
+            isDark 
+              ? 'text-[#8F8E9C]/60 hover:text-white hover:bg-white/10' 
+              : 'text-[#7A7596] hover:text-[#120F26] hover:bg-black/5'
+          }`}
         >
           <MoreVertical size={16} />
         </motion.button>
@@ -350,13 +389,14 @@ const FolderItem = memo(({
   node, 
   depth, 
   isExpanded, 
+  isDark = true,
   onToggle, 
   currentTrackId, 
   isPlaying,
   favoriteTrackIds,
   onToggleFavorite,
   onOpenMenu,
-  onTrackSelect,
+  onTrackSelect, 
   renderSubfolders 
 }: any) => (
   <div className="w-full">
@@ -364,16 +404,20 @@ const FolderItem = memo(({
       <motion.div 
         onClick={() => onToggle(node.path)}
         whileTap={{ scale: 0.98 }}
-        className="flex items-center py-3 px-4 hover:bg-[var(--m3-surface-variant)]/50 rounded-2xl cursor-pointer transition-colors"
+        className={`flex items-center py-3 px-4 rounded-2xl cursor-pointer transition-colors ${
+          isDark ? 'hover:bg-[var(--m3-surface-variant)]/50' : 'hover:bg-[#EFEAFE]'
+        }`}
         style={{ paddingLeft: `${depth * 16 + 16}px` }}
       >
-        <div className="w-8 h-8 rounded-lg bg-[var(--m3-secondary-container)] flex items-center justify-center mr-3 text-[var(--m3-primary)]">
+        <div className={`w-8 h-8 rounded-lg flex items-center justify-center mr-3 ${
+          isDark ? 'bg-[var(--m3-secondary-container)] text-[var(--m3-primary)]' : 'bg-[#EFEAFE] text-[#6355FE]'
+        }`}>
           {isExpanded ? <ChevronDownIcon size={18} /> : <ChevronRight size={18} />}
         </div>
-        <Folder size={20} className="mr-3 text-[var(--m3-on-surface-variant)]" />
+        <Folder size={20} className={`mr-3 ${isDark ? 'text-[var(--m3-on-surface-variant)]' : 'text-[#585474]'}`} />
         <div className="flex-1 min-w-0">
-          <p className="font-bold text-sm truncate uppercase tracking-wider opacity-80">{node.name}</p>
-          <p className="text-[10px] opacity-40 font-bold">{node.tracks.length} tracks</p>
+          <p className={`font-bold text-sm truncate uppercase tracking-wider ${isDark ? 'text-white opacity-80' : 'text-[#120F26]'}`}>{node.name}</p>
+          <p className={`text-[10px] font-bold ${isDark ? 'opacity-40 text-white' : 'text-[#585474]'}`}>{node.tracks.length} tracks</p>
         </div>
       </motion.div>
     )}
@@ -394,6 +438,7 @@ const FolderItem = memo(({
                 isActive={currentTrackId === track.id} 
                 isPlaying={currentTrackId === track.id && isPlaying}
                 isFavorite={favoriteTrackIds?.includes(track.id)}
+                isDark={isDark}
                 onToggleFavorite={() => onToggleFavorite?.(track.id)}
                 onOpenMenu={() => onOpenMenu?.(track)}
                 onClick={() => onTrackSelect(track)} 
@@ -410,10 +455,11 @@ const RecursiveFolderView = ({
   node, 
   depth = 0, 
   expandedFolders, 
+  isDark = true,
   toggleFolder, 
   currentTrackId, 
   isPlaying, 
-  favoriteTrackIds,
+  favoriteTrackIds, 
   onToggleFavorite,
   onOpenMenu,
   onTrackSelect 
@@ -423,6 +469,7 @@ const RecursiveFolderView = ({
       node={node}
       depth={depth}
       isExpanded={node.name === 'Root' || expandedFolders.has(node.path)}
+      isDark={isDark}
       onToggle={toggleFolder}
       currentTrackId={currentTrackId}
       isPlaying={isPlaying}
@@ -438,6 +485,7 @@ const RecursiveFolderView = ({
               key={sub.path} 
               node={sub} 
               depth={depth + 1} 
+              isDark={isDark}
               expandedFolders={expandedFolders}
               toggleFolder={toggleFolder}
               currentTrackId={currentTrackId}
@@ -474,13 +522,15 @@ const generateStableId = (file: File, folderPath: string): string => {
 
 // --- Sub-components for isolation ---
 
-const ProgressBar = memo(({ current, total, onSeek, formatTime }: any) => {
+const ProgressBar = memo(({ current, total, onSeek, formatTime, isDark = true }: any) => {
   const percentage = total > 0 ? (current / total) * 100 : 0;
   return (
     <div className="w-full space-y-2 group/progress select-none">
       <div className="relative w-full h-2 flex items-center group">
         {/* Progress track background */}
-        <div className="absolute left-0 right-0 h-1.5 bg-[var(--m3-surface-variant)]/60 rounded-full overflow-hidden transition-all duration-200 group-hover:h-2">
+        <div className={`absolute left-0 right-0 h-1.5 rounded-full overflow-hidden transition-all duration-200 group-hover:h-2 ${
+          isDark ? 'bg-white/10' : 'bg-[#6355FE]/15'
+        }`}>
           {/* Dynamic background progress fill */}
           <motion.div 
             className="h-full bg-[var(--m3-primary)] rounded-full mr-auto"
@@ -509,7 +559,9 @@ const ProgressBar = memo(({ current, total, onSeek, formatTime }: any) => {
           whileHover={{ scale: 1.25 }}
         />
       </div>
-      <div className="flex justify-between text-[10px] font-bold opacity-30 tracking-wider">
+      <div className={`flex justify-between text-[10px] font-black tracking-wider ${
+        isDark ? 'text-white/40' : 'text-[#585474]'
+      }`}>
         <span>{formatTime(current)}</span>
         <span>{formatTime(total)}</span>
       </div>
@@ -656,15 +708,17 @@ export default function App() {
     return (saved === 'light' || saved === 'dark') ? saved : 'dark';
   });
 
+  const isDark = theme === 'dark';
+
   useEffect(() => {
     localStorage.setItem('muzic_theme', theme);
     document.documentElement.setAttribute('data-theme', theme);
     if (theme === 'light') {
-      document.documentElement.classList.add('theme-light');
-      document.documentElement.classList.remove('theme-dark');
+      document.documentElement.classList.add('theme-light', 'light');
+      document.documentElement.classList.remove('theme-dark', 'dark');
     } else {
-      document.documentElement.classList.add('theme-dark');
-      document.documentElement.classList.remove('theme-light');
+      document.documentElement.classList.add('theme-dark', 'dark');
+      document.documentElement.classList.remove('theme-light', 'light');
     }
   }, [theme]);
 
@@ -699,7 +753,6 @@ export default function App() {
   const [isOnlineLoading, setIsOnlineLoading] = useState(false);
   const [onlineError, setOnlineError] = useState<string | null>(null);
   const [onlineEngine, setOnlineEngine] = useState<'itunes' | 'audius'>('itunes');
-  const [isNowPlayingLyricsOpen, setIsNowPlayingLyricsOpen] = useState(false);
 
   // --- COMPREHENSIVE BACK NAVIGATION & SWIPE-TO-BACK SYSTEM ---
   const lastBackPressRef = useRef<number>(0);
@@ -708,7 +761,6 @@ export default function App() {
     isEqualizerOpen,
     selectedTrackForMenu,
     showPlayer,
-    isNowPlayingLyricsOpen,
     activePlaylistId,
     activeNavTab,
     searchQuery,
@@ -722,7 +774,6 @@ export default function App() {
       isEqualizerOpen,
       selectedTrackForMenu,
       showPlayer,
-      isNowPlayingLyricsOpen,
       activePlaylistId,
       activeNavTab,
       searchQuery,
@@ -733,7 +784,6 @@ export default function App() {
     isEqualizerOpen,
     selectedTrackForMenu,
     showPlayer,
-    isNowPlayingLyricsOpen,
     activePlaylistId,
     activeNavTab,
     searchQuery,
@@ -758,12 +808,6 @@ export default function App() {
     // 2. If Track Options Bottom Sheet is open, dismiss it
     if (state.selectedTrackForMenu) {
       setSelectedTrackForMenu(null);
-      return;
-    }
-
-    // 2b. If Lyrics drawer is open inside Now Playing, close it first
-    if (state.isNowPlayingLyricsOpen) {
-      setIsNowPlayingLyricsOpen(false);
       return;
     }
 
@@ -1973,10 +2017,14 @@ export default function App() {
                 <button 
                   type="button"
                   onClick={toggleTheme}
-                  title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
-                  className="p-3 bg-[#14122B]/80 rounded-2xl border border-white/10 hover:border-[#6355FE]/40 transition-all flex items-center justify-center cursor-pointer text-[#8F8E9C] hover:text-white group active:scale-95 shadow-sm"
+                  title={isDark ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+                  className={`p-3 rounded-2xl transition-all flex items-center justify-center cursor-pointer group active:scale-95 border ${
+                    isDark
+                      ? 'bg-[#14122B]/80 border-white/10 hover:border-[#6355FE]/40 text-[#8F8E9C] hover:text-white shadow-sm'
+                      : 'bg-white border-[#6355FE]/15 hover:border-[#6355FE]/40 text-[#585474] hover:text-[#120F26] shadow-sm shadow-[#120F26]/5'
+                  }`}
                 >
-                  {theme === 'dark' ? (
+                  {isDark ? (
                     <Sun size={16} className="text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
                   ) : (
                     <Moon size={16} className="text-[#6355FE] group-hover:-rotate-12 transition-transform duration-300" />
@@ -1986,7 +2034,11 @@ export default function App() {
                 <button 
                   type="button"
                   onClick={handleToggleSort} 
-                  className="p-3 bg-[#14122B]/80 rounded-2xl border border-white/10 hover:border-[#6355FE]/40 transition-all flex items-center justify-center group cursor-pointer text-[#8F8E9C] hover:text-white active:scale-95 shadow-sm"
+                  className={`p-3 rounded-2xl transition-all flex items-center justify-center group cursor-pointer active:scale-95 border ${
+                    isDark
+                      ? 'bg-[#14122B]/80 border-white/10 hover:border-[#6355FE]/40 text-[#8F8E9C] hover:text-white shadow-sm'
+                      : 'bg-white border-[#6355FE]/15 hover:border-[#6355FE]/40 text-[#585474] hover:text-[#120F26] shadow-sm shadow-[#120F26]/5'
+                  }`}
                   title={sortBy === 'alphabet' ? 'Sort: Alphabetical' : 'Sort: Latest'}
                 >
                   {sortBy === 'alphabet' ? <LayoutGrid size={16} /> : <Clock size={16} />}
@@ -2005,23 +2057,83 @@ export default function App() {
 
 
 
+            {/* TOP-LEVEL CHANNEL SELECTOR: Device Music vs Online & Featured Streams */}
+            <div className={`flex p-1 rounded-2xl w-full relative border ${
+              isDark ? 'bg-white/5 border-white/5' : 'bg-[#EAE6F8] border-[#6355FE]/15 shadow-sm'
+            }`}>
+              <button
+                type="button"
+                onClick={() => setActiveTab('local')}
+                className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider relative z-10 cursor-pointer transition-colors duration-200 flex items-center justify-center gap-2 ${
+                  activeTab === 'local'
+                    ? '!text-white font-black'
+                    : isDark ? 'opacity-40 text-white hover:opacity-80' : 'text-[#585474] hover:text-[#120F26]'
+                }`}
+              >
+                <HardDrive size={14} />
+                <span>Device Music</span>
+                {activeTab === 'local' && (
+                  <motion.div
+                    layoutId="libraryActiveTabPill"
+                    className="absolute inset-0 bg-[#6355FE] rounded-xl -z-10 shadow-md shadow-[#6355FE]/30"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveTab('online');
+                  if (onlineTracks.length === 0) {
+                    fetchOnlineTracks();
+                  }
+                }}
+                className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider relative z-10 cursor-pointer transition-colors duration-200 flex items-center justify-center gap-2 ${
+                  activeTab === 'online'
+                    ? '!text-white font-black'
+                    : isDark ? 'opacity-40 text-white hover:opacity-80' : 'text-[#585474] hover:text-[#120F26]'
+                }`}
+              >
+                <Radio size={14} />
+                <span>Online & Featured</span>
+                {activeTab === 'online' && (
+                  <motion.div
+                    layoutId="libraryActiveTabPill"
+                    className="absolute inset-0 bg-[#6355FE] rounded-xl -z-10 shadow-md shadow-[#6355FE]/30"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </button>
+            </div>
+
             {activeTab === 'local' ? (
               <div className="space-y-3">
                 {/* Local Search Input Area */}
                 <div className="relative flex items-center w-full group">
-                  <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-40 text-white group-focus-within:opacity-100 group-focus-within:text-[#8E7CFF] transition-all" />
+                  <Search size={15} className={`absolute left-4 top-1/2 -translate-y-1/2 transition-all ${
+                    isDark 
+                      ? 'opacity-40 text-white group-focus-within:opacity-100 group-focus-within:text-[#8E7CFF]' 
+                      : 'text-[#6355FE] opacity-80 group-focus-within:opacity-100 group-focus-within:text-[#6355FE]'
+                  }`} />
                   <input 
                     type="text" 
                     placeholder="Search songs..." 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full pl-11 pr-10 py-3 bg-[#14122B]/70 rounded-2xl text-xs font-bold border border-white/10 focus:bg-[#14122B] focus:border-[#6355FE]/50 focus:shadow-[0_0_20px_rgba(99,85,254,0.15)] transition-all focus:outline-none placeholder:opacity-30 text-white"
+                    className={`w-full pl-11 pr-10 py-3 rounded-2xl text-xs font-bold transition-all focus:outline-none ${
+                      isDark
+                        ? 'bg-[#14122B]/70 border border-white/10 focus:bg-[#14122B] focus:border-[#6355FE]/50 focus:shadow-[0_0_20px_rgba(99,85,254,0.15)] placeholder:opacity-30 text-white'
+                        : 'bg-white border border-[#6355FE]/15 focus:bg-white focus:border-[#6355FE] shadow-sm shadow-[#120F26]/5 focus:shadow-[0_0_20px_rgba(99,85,254,0.15)] placeholder:text-[#7A7596] text-[#120F26]'
+                    }`}
                   />
                   {searchQuery && (
                     <button 
-                      type="button"
+                      type="button" 
                       onClick={() => setSearchQuery('')}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/10 text-white/40 hover:text-white transition-colors"
+                      className={`absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full transition-colors ${
+                        isDark ? 'hover:bg-white/10 text-white/40 hover:text-white' : 'hover:bg-black/5 text-[#7A7596] hover:text-[#120F26]'
+                      }`}
                     >
                       <X size={13} />
                     </button>
@@ -2029,20 +2141,24 @@ export default function App() {
                 </div>
 
                 {/* TABS (Songs vs Folders) */}
-                <div className="flex p-1 bg-white/5 rounded-2xl w-full relative border border-white/5">
+                <div className={`flex p-1 rounded-2xl w-full relative border ${
+                  isDark ? 'bg-white/5 border-white/5' : 'bg-[#EAE6F8] border-[#6355FE]/10'
+                }`}>
                   {(['tracks', 'folders'] as const).map(mode => (
                     <button 
                       key={mode}
                       onClick={() => setViewMode(mode)} 
-                      className={`flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest relative z-10 cursor-pointer transition-colors duration-200 ${
-                        viewMode === mode ? 'text-white' : 'opacity-40 text-white hover:opacity-80'
+                      className={`flex-1 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest relative z-10 cursor-pointer transition-colors duration-200 ${
+                        viewMode === mode 
+                          ? '!text-white font-black' 
+                          : isDark ? 'opacity-40 text-white hover:opacity-80' : 'text-[#585474] hover:text-[#120F26]'
                       }`}
                     >
                       {mode === 'tracks' ? 'Songs' : 'Folders'}
                       {viewMode === mode && (
                         <motion.div
                           layoutId="localViewModePill"
-                          className="absolute inset-0 bg-[#6355FE] rounded-xl -z-10 shadow-md shadow-[#6355FE]/20"
+                          className="absolute inset-0 bg-[#6355FE] rounded-xl -z-10 shadow-md shadow-[#6355FE]/30"
                           transition={{ type: "spring", stiffness: 380, damping: 30 }}
                         />
                       )}
@@ -2055,19 +2171,27 @@ export default function App() {
                 {/* Online Search input line */}
                 <form onSubmit={handleOnlineSearchSubmit} className="relative flex items-center gap-2 w-full">
                   <div className="relative flex-1 group">
-                    <Search size={15} className="absolute left-4 top-1/2 -translate-y-1/2 opacity-40 text-white group-focus-within:opacity-100 group-focus-within:text-[#8E7CFF] transition-all" />
+                    <Search size={15} className={`absolute left-4 top-1/2 -translate-y-1/2 transition-all ${
+                      isDark ? 'opacity-40 text-white group-focus-within:opacity-100 group-focus-within:text-[#8E7CFF]' : 'text-[#6355FE] opacity-80 group-focus-within:opacity-100 group-focus-within:text-[#6355FE]'
+                    }`} />
                     <input 
                       type="text" 
-                      placeholder="Search online..."  
+                      placeholder="Search online streams & songs..."  
                       value={onlineSearchQuery}
                       onChange={(e) => setOnlineSearchQuery(e.target.value)}
-                      className="w-full pl-11 pr-10 py-3 bg-[#14122B]/70 rounded-2xl text-xs font-bold border border-white/10 focus:bg-[#14122B] focus:border-[#6355FE]/50 focus:shadow-[0_0_20px_rgba(99,85,254,0.15)] transition-all focus:outline-none placeholder:opacity-30 text-white"
+                      className={`w-full pl-11 pr-10 py-3 rounded-2xl text-xs font-bold transition-all focus:outline-none ${
+                        isDark
+                          ? 'bg-[#14122B]/70 border border-white/10 focus:bg-[#14122B] focus:border-[#6355FE]/50 focus:shadow-[0_0_20px_rgba(99,85,254,0.15)] placeholder:opacity-30 text-white'
+                          : 'bg-white border border-[#6355FE]/15 focus:bg-white focus:border-[#6355FE] shadow-sm shadow-[#120F26]/5 placeholder:text-[#7A7596] text-[#120F26]'
+                      }`}
                     />
                     {onlineSearchQuery && (
                       <button 
-                        type="button"
+                        type="button" 
                         onClick={() => setOnlineSearchQuery('')}
-                        className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-white/10 text-white/40 hover:text-white transition-colors"
+                        className={`absolute right-3.5 top-1/2 -translate-y-1/2 p-1 rounded-full transition-colors ${
+                          isDark ? 'hover:bg-white/10 text-white/40 hover:text-white' : 'hover:bg-black/5 text-[#7A7596] hover:text-[#120F26]'
+                        }`}
                       >
                         <X size={13} />
                       </button>
@@ -2083,9 +2207,15 @@ export default function App() {
 
                 {/* Stream Engine Selector Slider */}
                 <div className="space-y-2">
-                  <div className="flex gap-2 items-center justify-between bg-white/5 p-1 rounded-2xl border border-white/5">
-                    <span className="text-[9px] font-black uppercase tracking-wider text-[#8F8E9C] pl-2">Source:</span>
-                    <div className="flex p-0.5 bg-white/5 rounded-xl relative">
+                  <div className={`flex gap-2 items-center justify-between p-1 rounded-2xl border ${
+                    isDark ? 'bg-white/5 border-white/5' : 'bg-white border-[#6355FE]/15 shadow-sm'
+                  }`}>
+                    <span className={`text-[9px] font-black uppercase tracking-wider pl-2 ${
+                      isDark ? 'text-[#8F8E9C]' : 'text-[#585474]'
+                    }`}>Source:</span>
+                    <div className={`flex p-0.5 rounded-xl relative ${
+                      isDark ? 'bg-white/5' : 'bg-[#EAE6F8]'
+                    }`}>
                       <button
                         type="button"
                         onClick={() => {
@@ -2093,7 +2223,7 @@ export default function App() {
                           fetchOnlineTracks(onlineSearchQuery, 'itunes');
                         }}
                         className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest relative z-10 cursor-pointer transition-colors duration-200 ${
-                          onlineEngine === 'itunes' ? 'text-white' : 'opacity-40 text-white'
+                          onlineEngine === 'itunes' ? '!text-white' : isDark ? 'opacity-40 text-white' : 'text-[#585474]'
                         }`}
                       >
                         Previews
@@ -2112,7 +2242,7 @@ export default function App() {
                           fetchOnlineTracks(onlineSearchQuery, 'audius');
                         }}
                         className={`px-3 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest relative z-10 cursor-pointer transition-colors duration-200 ${
-                          onlineEngine === 'audius' ? 'text-white' : 'opacity-40 text-white'
+                          onlineEngine === 'audius' ? '!text-white' : isDark ? 'opacity-40 text-white' : 'text-[#585474]'
                         }`}
                       >
                         Full Length
@@ -2139,8 +2269,10 @@ export default function App() {
                         }}
                         className={`px-3.5 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest transition-all cursor-pointer shrink-0 ${
                           (tag === 'trending' && onlineSearchQuery === '') || onlineSearchQuery.toLowerCase() === tag
-                          ? 'bg-[#1C153E] text-[#8E7CFF] border border-[#6355FE]/30 shadow-sm shadow-[#6355FE]/10'
-                          : 'bg-[#14122B]/40 opacity-60 hover:opacity-100 text-[#8F8E9C] hover:bg-[#14122B]'
+                          ? 'bg-[#6355FE] text-white shadow-md shadow-[#6355FE]/20'
+                          : isDark
+                            ? 'bg-[#14122B]/40 opacity-60 hover:opacity-100 text-[#8F8E9C] hover:bg-[#14122B]'
+                            : 'bg-white border border-[#6355FE]/15 text-[#585474] hover:text-[#120F26] shadow-sm'
                         }`}
                       >
                         #{tag}
@@ -2211,6 +2343,7 @@ export default function App() {
                           isActive={player.currentTrack?.id === track.id} 
                           isPlaying={player.currentTrack?.id === track.id && player.isPlaying}
                           isFavorite={favoriteTrackIds.includes(track.id)}
+                          isDark={isDark}
                           onClick={() => selectTrack(track)} 
                           onToggleFavorite={() => toggleFavorite(track.id)}
                           onOpenMenu={() => setSelectedTrackForMenu(track)}
@@ -2299,62 +2432,146 @@ export default function App() {
                       onToggleFavorite={toggleFavorite}
                       onOpenMenu={setSelectedTrackForMenu}
                       onTrackSelect={selectTrack}
+                      isDark={isDark}
                     />
                   ) : null}
                 </>
               ) : (
                 /* ONLINE LIST VIEW */
-                <div className="space-y-3">
-                  {/* Spotlight Banner: Featured Demo Song: Tum Hi Ho */}
-                  <div className="p-4 rounded-3xl bg-gradient-to-br from-[#1C153E] via-[#241A4F] to-[#120F24] border border-[#6355FE]/40 shadow-xl relative overflow-hidden group">
-                    <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-[#6355FE]/20 rounded-full blur-2xl pointer-events-none" />
-                    
-                    <div className="flex items-center justify-between gap-3 relative z-10">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-14 h-14 rounded-2xl overflow-hidden shrink-0 border border-white/10 shadow-lg relative group-hover:scale-105 transition-transform bg-[#0A0818]">
-                          <img src={appLogo} alt="Tum Hi Ho" className="w-full h-full object-cover" />
-                          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                            <Music size={22} className="text-white drop-shadow" />
+                <div className="space-y-4">
+                  {/* Spotlight Banner: Featured Demo Songs */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between px-1">
+                      <span className={`text-[10px] font-black uppercase tracking-widest ${
+                        isDark ? 'text-[#8E7CFF]' : 'text-[#6355FE]'
+                      }`}>
+                        Featured Studio Demos & Karaoke
+                      </span>
+                      <span className={`text-[9px] font-bold ${isDark ? 'text-white/40' : 'text-[#7A7596]'}`}>
+                        2 Tracks Available
+                      </span>
+                    </div>
+
+                    {/* Tum Hi Ho Card */}
+                    <div className={`p-4 rounded-3xl border shadow-xl relative overflow-hidden group transition-all ${
+                      isDark 
+                        ? 'bg-gradient-to-br from-[#1C153E] via-[#241A4F] to-[#120F24] border-[#6355FE]/40' 
+                        : 'bg-gradient-to-br from-[#F5F3FF] via-[#EDE9FE] to-white border-[#6355FE]/20 shadow-[#6355FE]/5'
+                    }`}>
+                      <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-[#6355FE]/20 rounded-full blur-2xl pointer-events-none" />
+                      
+                      <div className="flex items-center justify-between gap-3 relative z-10">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-14 h-14 rounded-2xl overflow-hidden shrink-0 border border-white/10 shadow-lg relative group-hover:scale-105 transition-transform bg-[#0A0818]">
+                            <img src={appLogo} alt="Tum Hi Ho" className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                              <Music size={22} className="text-white drop-shadow" />
+                            </div>
+                          </div>
+                          <div className="text-left min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-500 border border-amber-400/30 flex items-center gap-1">
+                                <Crown size={10} className="text-amber-500 fill-amber-500" /> Karaoke Demo
+                              </span>
+                              <span className={`text-[9px] font-bold uppercase tracking-widest ${isDark ? 'text-white/50' : 'text-[#7A7596]'}`}>Aashiqui 2</span>
+                            </div>
+                            <h3 className={`text-sm font-black mt-1 truncate ${isDark ? 'text-white' : 'text-[#120F26]'}`}>Tum Hi Ho (Learn & Sing Along)</h3>
+                            <p className={`text-[11px] font-bold truncate ${isDark ? 'text-[#8E7CFF]' : 'text-[#6355FE]'}`}>Arijit Singh • Mithoon • 4:22</p>
                           </div>
                         </div>
-                        <div className="text-left min-w-0">
-                          <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30 flex items-center gap-1">
-                              <Crown size={10} className="text-amber-400 fill-amber-400" /> Featured Demo Track
-                            </span>
-                            <span className="text-[9px] font-bold text-white/50 uppercase tracking-widest">Aashiqui 2</span>
-                          </div>
-                          <h3 className="text-sm font-black text-white mt-1 truncate">Tum Hi Ho (Learn & Sing Along)</h3>
-                          <p className="text-[11px] font-bold text-[#8E7CFF] opacity-90 truncate">Arijit Singh • Mithoon • 4:22</p>
-                        </div>
+                      </div>
+
+                      <p className={`text-[11px] mt-2.5 text-left leading-relaxed ${isDark ? 'text-white/70' : 'text-[#585474]'}`}>
+                        Listen to the instrumental track, then jump directly into the Singing Studio to sing along with synchronized karaoke lyrics and record your vocals!
+                      </p>
+
+                      <div className={`flex items-center gap-2 mt-3 pt-2.5 border-t ${isDark ? 'border-white/10' : 'border-[#6355FE]/15'}`}>
+                        <button
+                          type="button"
+                          onClick={() => selectOnlineTrack(TUM_HI_HO_ONLINE_TRACK)}
+                          className="flex-1 py-2 px-3 rounded-xl bg-[#6355FE] hover:bg-[#5244e8] active:scale-95 text-white text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-[#6355FE]/30"
+                        >
+                          <Play size={13} fill="currentColor" />
+                          <span>Play Instrumental</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setActiveNavTab('studio');
+                            showToast('Singing Studio cued with Tum Hi Ho demo!', <Mic size={16} className="text-[#8E7CFF]" />);
+                          }}
+                          className={`py-2 px-3.5 rounded-xl border text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 ${
+                            isDark 
+                              ? 'bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border-amber-400/30' 
+                              : 'bg-amber-400/15 hover:bg-amber-400/25 text-amber-700 border-amber-400/40'
+                          }`}
+                        >
+                          <Mic size={13} className={isDark ? 'text-amber-400' : 'text-amber-600'} />
+                          <span>Sing in Studio</span>
+                        </button>
                       </div>
                     </div>
 
-                    <p className="text-[11px] text-white/70 mt-2.5 text-left leading-relaxed">
-                      Listen and study the complete lyrics online, then jump directly into the Singing Studio demo to sing along and record your vocals over the backing track!
-                    </p>
+                    {/* Lutt Le Gaya Card */}
+                    <div className={`p-4 rounded-3xl border shadow-xl relative overflow-hidden group transition-all ${
+                      isDark 
+                        ? 'bg-gradient-to-br from-[#1E1438] via-[#2A1848] to-[#120F24] border-pink-500/30' 
+                        : 'bg-gradient-to-br from-[#FFF1F2] via-[#FCE7F3] to-white border-pink-500/20 shadow-pink-500/5'
+                    }`}>
+                      <div className="absolute -right-6 -bottom-6 w-32 h-32 bg-pink-500/15 rounded-full blur-2xl pointer-events-none" />
+                      
+                      <div className="flex items-center justify-between gap-3 relative z-10">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-14 h-14 rounded-2xl overflow-hidden shrink-0 border border-white/10 shadow-lg relative group-hover:scale-105 transition-transform bg-[#0A0818]">
+                            <img src={appLogo} alt="Lutt Le Gaya" className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                              <Music size={22} className="text-pink-400 drop-shadow" />
+                            </div>
+                          </div>
+                          <div className="text-left min-w-0">
+                            <div className="flex items-center gap-1.5 flex-wrap">
+                              <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-pink-500/20 text-pink-500 border border-pink-500/30 flex items-center gap-1">
+                                <Sparkles size={10} className="text-pink-500" /> Dhurandhar Hit
+                              </span>
+                              <span className={`text-[9px] font-bold uppercase tracking-widest ${isDark ? 'text-white/50' : 'text-[#7A7596]'}`}>Punjabi / Dance</span>
+                            </div>
+                            <h3 className={`text-sm font-black mt-1 truncate ${isDark ? 'text-white' : 'text-[#120F26]'}`}>Lutt Le Gaya (Dhurandhar)</h3>
+                            <p className="text-[11px] font-bold truncate text-pink-500">Simran Choudhary • Shashwat Sachdev • 4:15</p>
+                          </div>
+                        </div>
+                      </div>
 
-                    <div className="flex items-center gap-2 mt-3 pt-2.5 border-t border-white/10">
-                      <button
-                        type="button"
-                        onClick={() => selectOnlineTrack(TUM_HI_HO_ONLINE_TRACK)}
-                        className="flex-1 py-2 px-3 rounded-xl bg-[#6355FE] hover:bg-[#5244e8] active:scale-95 text-white text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-[#6355FE]/30"
-                      >
-                        <Play size={13} fill="currentColor" />
-                        <span>Listen & Learn</span>
-                      </button>
+                      <p className={`text-[11px] mt-2.5 text-left leading-relaxed ${isDark ? 'text-white/70' : 'text-[#585474]'}`}>
+                        High-energy Punjabi hit from Dhurandhar! Sing with real-time timed lyrics or isolate the karaoke track with our on-device AI vocal remover.
+                      </p>
 
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setActiveNavTab('studio');
-                          showToast('Singing Studio cued with Tum Hi Ho demo!', <Mic size={16} className="text-[#8E7CFF]" />);
-                        }}
-                        className="py-2 px-3.5 rounded-xl bg-amber-400/20 hover:bg-amber-400/30 active:scale-95 text-amber-300 border border-amber-400/30 text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
-                      >
-                        <Mic size={13} className="text-amber-400" />
-                        <span>Sing in Studio</span>
-                      </button>
+                      <div className={`flex items-center gap-2 mt-3 pt-2.5 border-t ${isDark ? 'border-white/10' : 'border-pink-500/15'}`}>
+                        <button
+                          type="button"
+                          onClick={() => selectOnlineTrack(LUTT_LE_GAYA_ONLINE_TRACK)}
+                          className="flex-1 py-2 px-3 rounded-xl bg-gradient-to-r from-pink-600 to-[#6355FE] hover:brightness-110 active:scale-95 text-white text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md shadow-pink-500/25"
+                        >
+                          <Play size={13} fill="currentColor" />
+                          <span>Play Song</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setActiveNavTab('studio');
+                            showToast('Singing Studio cued with Lutt Le Gaya!', <Mic size={16} className="text-pink-400" />);
+                          }}
+                          className={`py-2 px-3.5 rounded-xl border text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 ${
+                            isDark 
+                              ? 'bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 border-pink-500/30' 
+                              : 'bg-pink-500/15 hover:bg-pink-500/25 text-pink-700 border-pink-500/40'
+                          }`}
+                        >
+                          <Mic size={13} className="text-pink-500" />
+                          <span>Sing in Studio</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
 
@@ -2381,6 +2598,7 @@ export default function App() {
                         isActive={player.currentTrack?.id === track.id} 
                         isPlaying={player.currentTrack?.id === track.id && player.isPlaying}
                         isFavorite={favoriteTrackIds.includes(track.id)}
+                        isDark={isDark}
                         onClick={() => selectOnlineTrack(track)} 
                         onToggleFavorite={() => toggleFavorite(track.id)}
                         onOpenMenu={() => setSelectedTrackForMenu(track)}
@@ -2418,6 +2636,7 @@ export default function App() {
           deletePlaylist={deletePlaylist}
           removeTrackFromPlaylist={removeTrackFromPlaylist}
           onBackToLibrary={() => setActiveNavTab('library')}
+          isDark={isDark}
         />
       )}
 
@@ -2454,6 +2673,7 @@ export default function App() {
                         isActive={player.currentTrack?.id === track.id} 
                         isPlaying={player.currentTrack?.id === track.id && player.isPlaying}
                         isFavorite={true}
+                        isDark={isDark}
                         onClick={() => {
                           if (track.folderPath) {
                             selectTrack(track);
@@ -2546,10 +2766,16 @@ export default function App() {
             animate={{ y: 0, opacity: 1 }} 
             exit={{ y: 80, opacity: 0 }}
             onClick={() => setShowPlayer(true)}
-            className="fixed bottom-[96px] left-5 right-5 bg-[#14122B]/95 rounded-[24px] shadow-2xl flex flex-col cursor-pointer z-40 border border-white/10 backdrop-blur-xl overflow-hidden active:scale-[0.99] transition-transform duration-200"
+            className={`fixed bottom-[96px] left-5 right-5 rounded-[24px] shadow-2xl flex flex-col cursor-pointer z-40 backdrop-blur-xl overflow-hidden active:scale-[0.99] transition-transform duration-200 border ${
+              isDark
+                ? 'bg-[#14122B]/95 border-white/10 shadow-black/50'
+                : 'bg-white/95 border-[#6355FE]/20 shadow-[#120F26]/12'
+            }`}
           >
             <div className="flex items-center px-4 pt-3 pb-2">
-              <div className="w-12 h-12 rounded-xl overflow-hidden mr-3 shadow-md shrink-0 border border-white/5 relative">
+              <div className={`w-12 h-12 rounded-xl overflow-hidden mr-3 shadow-md shrink-0 relative border ${
+                isDark ? 'border-white/5' : 'border-[#6355FE]/15'
+              }`}>
                 <TrackThumbnail
                   cover={player.currentTrack.cover}
                   title={player.currentTrack.title}
@@ -2558,13 +2784,17 @@ export default function App() {
                 />
               </div>
               <div className="flex-1 min-w-0 mr-4 text-left">
-                <h4 className="font-extrabold truncate text-[13px] leading-tight text-white">{player.currentTrack.title}</h4>
-                <p className="text-[11px] opacity-60 truncate font-bold uppercase tracking-tight mt-0.5 text-[#8E7CFF]">{player.currentTrack.artist}</p>
+                <h4 className={`font-black truncate text-[13px] leading-tight ${
+                  isDark ? 'text-white' : 'text-[#120F26]'
+                }`}>{player.currentTrack.title}</h4>
+                <p className={`text-[11px] truncate font-bold uppercase tracking-tight mt-0.5 ${
+                  isDark ? 'text-[#8E7CFF]' : 'text-[#6355FE]'
+                }`}>{player.currentTrack.artist}</p>
               </div>
               <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                 <button 
                   onClick={() => player.togglePlay()}
-                  className="w-10 h-10 rounded-full bg-[#6355FE] text-white hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer"
+                  className="w-10 h-10 rounded-full bg-[#6355FE] text-white hover:scale-105 active:scale-95 transition-all flex items-center justify-center cursor-pointer shadow-md shadow-[#6355FE]/30"
                 >
                   {player.isPlaying ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" className="ml-0.5" />}
                 </button>
@@ -2574,9 +2804,9 @@ export default function App() {
             {/* Seeker */}
             <div className="px-5 pb-3 pt-1" onClick={(e) => e.stopPropagation()}>
               <div className="flex items-center gap-3">
-                <span className="text-[8px] font-black opacity-35 w-8 text-left text-white">{formatTime(player.currentTime)}</span>
+                <span className={`text-[8px] font-black w-8 text-left ${isDark ? 'text-white/40' : 'text-[#585474]'}`}>{formatTime(player.currentTime)}</span>
                 <div className="flex-1 relative flex items-center h-2 group">
-                  <div className="absolute left-0 right-0 h-1 bg-white/10 rounded-full overflow-hidden">
+                  <div className={`absolute left-0 right-0 h-1 rounded-full overflow-hidden ${isDark ? 'bg-white/10' : 'bg-[#6355FE]/15'}`}>
                     <div 
                       className="h-full bg-gradient-to-r from-[#6355FE] to-[#8E7CFF]"
                       style={{ width: `${player.duration > 0 ? (player.currentTime / player.duration) * 100 : 0}%` }}
@@ -2592,7 +2822,7 @@ export default function App() {
                     className="absolute z-10 w-full h-2 opacity-0 cursor-pointer appearance-none"
                   />
                 </div>
-                <span className="text-[8px] font-black opacity-35 w-8 text-right text-white">{formatTime(player.duration)}</span>
+                <span className={`text-[8px] font-black w-8 text-right ${isDark ? 'text-white/40' : 'text-[#585474]'}`}>{formatTime(player.duration)}</span>
               </div>
             </div>
           </motion.footer>
@@ -2615,28 +2845,42 @@ export default function App() {
               }
             }}
             transition={{ type: 'spring', damping: 38, stiffness: 280, mass: 0.8 }}
-            className="fixed inset-0 bg-[#0A0818] z-50 flex flex-col px-8 pb-10 overflow-hidden select-none touch-none"
+            className={`fixed inset-0 z-50 flex flex-col px-8 pb-10 overflow-hidden select-none touch-none ${
+              isDark ? 'bg-[#0A0818] text-white' : 'bg-[#F7F6FC] text-[#120F26]'
+            }`}
           >
             {/* Grab / Drag Handle */}
-            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-white/10 rounded-full shrink-0 z-20" />
+            <div className={`absolute top-4 left-1/2 -translate-x-1/2 w-12 h-1.5 rounded-full shrink-0 z-20 ${
+              isDark ? 'bg-white/10' : 'bg-black/15'
+            }`} />
 
-            <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[#6355FE]/20 to-transparent blur-[120px] scale-125 opacity-30" />
+            <div className={`absolute inset-0 -z-10 bg-gradient-to-b from-[#6355FE]/20 to-transparent blur-[120px] scale-125 ${
+              isDark ? 'opacity-30' : 'opacity-15'
+            }`} />
             
             <header className="flex items-center justify-between mt-12 mb-6 shrink-0 z-10">
               <button 
                 onClick={() => setShowPlayer(false)} 
-                className="p-2.5 -ml-2 rounded-full hover:bg-white/5 active:scale-95 transition-all cursor-pointer text-white"
+                className={`p-2.5 -ml-2 rounded-full active:scale-95 transition-all cursor-pointer ${
+                  isDark ? 'hover:bg-white/5 text-white' : 'hover:bg-black/5 text-[#120F26]'
+                }`}
               >
                 <ChevronDown size={20} strokeWidth={3} />
               </button>
               <div className="text-center">
-                <p className="text-[9px] font-black uppercase tracking-[0.3em] text-[#8E7CFF] mb-1">Now Playing</p>
-                <p className="font-extrabold text-[11px] truncate max-w-[180px] opacity-60 text-[#8F8E9C] uppercase tracking-wider">{player.currentTrack.album}</p>
+                <p className={`text-[9px] font-black uppercase tracking-[0.3em] mb-1 ${
+                  isDark ? 'text-[#8E7CFF]' : 'text-[#6355FE]'
+                }`}>Now Playing</p>
+                <p className={`font-extrabold text-[11px] truncate max-w-[180px] uppercase tracking-wider ${
+                  isDark ? 'opacity-60 text-[#8F8E9C]' : 'text-[#585474]'
+                }`}>{player.currentTrack.album}</p>
               </div>
               <motion.button 
                 onClick={() => setIsEqualizerOpen(true)}
                 whileTap={{ scale: 0.9 }} 
-                className="p-2.5 -mr-2 rounded-full hover:bg-white/10 active:scale-95 transition-all cursor-pointer text-[#8E7CFF]"
+                className={`p-2.5 -mr-2 rounded-full active:scale-95 transition-all cursor-pointer ${
+                  isDark ? 'hover:bg-white/10 text-[#8E7CFF]' : 'hover:bg-[#6355FE]/10 text-[#6355FE]'
+                }`}
                 title={`Equalizer Setting: ${currentEqPreset === 'custom' ? 'Custom Tuning' : EQ_PRESETS[currentEqPreset]?.name || currentEqPreset}`}
               >
                 <SlidersHorizontal size={18} strokeWidth={2.5} />
@@ -2691,8 +2935,12 @@ export default function App() {
               </div>
 
               <div className="w-full text-center space-y-1 pt-1 mb-2">
-                <h2 className="text-xl font-black tracking-tight leading-snug px-2 line-clamp-1 text-white">{player.currentTrack.title}</h2>
-                <p className="text-[13px] text-[#8F8E9C] font-bold opacity-60 uppercase tracking-widest mt-0.5">{player.currentTrack.artist}</p>
+                <h2 className={`text-xl font-black tracking-tight leading-snug px-2 line-clamp-1 ${
+                  isDark ? 'text-white' : 'text-[#120F26]'
+                }`}>{player.currentTrack.title}</h2>
+                <p className={`text-[13px] font-bold uppercase tracking-widest mt-0.5 ${
+                  isDark ? 'text-[#8E7CFF]' : 'text-[#6355FE]'
+                }`}>{player.currentTrack.artist}</p>
               </div>
 
               {/* Seeker Progress bar */}
@@ -2702,6 +2950,7 @@ export default function App() {
                   total={player.duration} 
                   onSeek={(e: any) => player.seek(parseFloat(e.target.value))}
                   formatTime={formatTime}
+                  isDark={isDark}
                 />
               </div>
 
@@ -2711,7 +2960,11 @@ export default function App() {
                   <motion.button 
                     onClick={player.toggleShuffle}
                     whileTap={{ scale: 0.9 }}
-                    className={`p-2 transition-all cursor-pointer ${player.shuffle ? 'text-[#8E7CFF] scale-110' : 'opacity-30 hover:opacity-100 text-white'}`}
+                    className={`p-2 transition-all cursor-pointer ${
+                      player.shuffle 
+                        ? isDark ? 'text-[#8E7CFF] scale-110' : 'text-[#6355FE] scale-110' 
+                        : isDark ? 'text-white/40 hover:text-white' : 'text-[#7A7596] hover:text-[#120F26]'
+                    }`}
                   >
                     <Shuffle size={18} strokeWidth={3} />
                   </motion.button>
@@ -2720,7 +2973,9 @@ export default function App() {
                     <motion.button 
                       onClick={player.prevTrack} 
                       whileTap={{ scale: 0.85 }} 
-                      className="p-2.5 rounded-full hover:bg-white/5 active:scale-90 transition-all text-white cursor-pointer"
+                      className={`p-2.5 rounded-full active:scale-90 transition-all cursor-pointer ${
+                        isDark ? 'hover:bg-white/5 text-white' : 'hover:bg-black/5 text-[#120F26]'
+                      }`}
                     >
                       <SkipBack size={20} fill="currentColor" />
                     </motion.button>
@@ -2728,7 +2983,7 @@ export default function App() {
                     <motion.button 
                       onClick={player.togglePlay}
                       whileTap={{ scale: 0.95 }}
-                      className="w-14 h-14 bg-[#6355FE] text-white rounded-2xl flex items-center justify-center shadow-lg shadow-[#6355FE]/20 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                      className="w-14 h-14 bg-[#6355FE] text-white rounded-2xl flex items-center justify-center shadow-lg shadow-[#6355FE]/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
                     >
                       {player.isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" className="ml-0.5" />}
                     </motion.button>
@@ -2736,7 +2991,9 @@ export default function App() {
                     <motion.button 
                       onClick={player.nextTrack} 
                       whileTap={{ scale: 0.85 }} 
-                      className="p-2.5 rounded-full hover:bg-white/5 active:scale-90 transition-all text-white cursor-pointer"
+                      className={`p-2.5 rounded-full active:scale-90 transition-all cursor-pointer ${
+                        isDark ? 'hover:bg-white/5 text-white' : 'hover:bg-black/5 text-[#120F26]'
+                      }`}
                     >
                       <SkipForward size={20} fill="currentColor" />
                     </motion.button>
@@ -2745,13 +3002,17 @@ export default function App() {
                   <motion.button 
                     onClick={player.toggleRepeat}
                     whileTap={{ scale: 0.9 }}
-                    className={`p-2 transition-all cursor-pointer ${player.repeatMode !== 'off' ? 'text-[#8E7CFF] scale-110' : 'opacity-30 hover:opacity-100 text-white'}`}
+                    className={`p-2 transition-all cursor-pointer ${
+                      player.repeatMode !== 'off' 
+                        ? isDark ? 'text-[#8E7CFF] scale-110' : 'text-[#6355FE] scale-110' 
+                        : isDark ? 'opacity-30 hover:opacity-100 text-white' : 'text-[#7A7596] hover:text-[#120F26]'
+                    }`}
                   >
                     {player.repeatMode === 'one' ? <Repeat1 size={20} strokeWidth={3} /> : <Repeat size={20} strokeWidth={3} />}
                   </motion.button>
                 </div>
 
-                <div className="h-[1px] bg-white/5 w-full" />
+                <div className={`h-[1px] w-full ${isDark ? 'bg-white/5' : 'bg-black/5'}`} />
 
                 {/* Sub-Panel Controls (Favorites, Quick-Add Playlist, Equalizer Presets, Moon Sleep Timer) */}
                 <div className="flex items-center justify-around w-full px-2 pt-1">
@@ -2760,8 +3021,14 @@ export default function App() {
                   <motion.button 
                     onClick={() => toggleFavorite(player.currentTrack!.id)}
                     whileTap={{ scale: 0.85 }} 
-                    className={`p-3 rounded-full bg-white/5 border border-white/5 transition-all cursor-pointer ${
-                      favoriteTrackIds.includes(player.currentTrack!.id) ? 'text-pink-500 scale-110 shadow-lg shadow-pink-500/10' : 'text-[#8F8E9C]/60 hover:text-white'
+                    className={`p-3 rounded-full border transition-all cursor-pointer ${
+                      isDark 
+                        ? 'bg-white/5 border-white/5' 
+                        : 'bg-[#6355FE]/10 border-[#6355FE]/15 shadow-sm'
+                    } ${
+                      favoriteTrackIds.includes(player.currentTrack!.id) 
+                        ? 'text-pink-500 scale-110 shadow-lg shadow-pink-500/10' 
+                        : isDark ? 'text-[#8F8E9C]/60 hover:text-white' : 'text-[#585474] hover:text-[#6355FE]'
                     }`}
                     title="Favorite Track"
                   >
@@ -2772,7 +3039,11 @@ export default function App() {
                   <motion.button 
                     onClick={() => { setSelectedTrackForMenu(player.currentTrack); }}
                     whileTap={{ scale: 0.85 }} 
-                    className="p-3 rounded-full bg-white/5 border border-white/5 text-[#8F8E9C]/60 hover:text-white transition-all cursor-pointer"
+                    className={`p-3 rounded-full border transition-all cursor-pointer ${
+                      isDark 
+                        ? 'bg-white/5 border-white/5 text-[#8F8E9C]/60 hover:text-white' 
+                        : 'bg-[#6355FE]/10 border-[#6355FE]/15 text-[#585474] hover:text-[#6355FE]'
+                    }`}
                     title="Add to Playlist"
                   >
                     <ListMusic size={16} />
@@ -2783,8 +3054,14 @@ export default function App() {
                     <motion.button 
                       onClick={cycleEqPreset}
                       whileTap={{ scale: 0.85 }} 
-                      className={`p-3 rounded-full bg-white/5 border border-white/5 transition-all cursor-pointer relative group ${
-                        currentEqPreset !== 'flat' ? 'text-[#8E7CFF] scale-105 shadow-lg shadow-[#6355FE]/20 ring-1 ring-[#8E7CFF]/40' : 'text-[#8F8E9C]/60 hover:text-white'
+                      className={`p-3 rounded-full border transition-all cursor-pointer relative group ${
+                        isDark 
+                          ? 'bg-white/5 border-white/5' 
+                          : 'bg-[#6355FE]/10 border-[#6355FE]/15'
+                      } ${
+                        currentEqPreset !== 'flat' 
+                          ? isDark ? 'text-[#8E7CFF] scale-105 shadow-lg shadow-[#6355FE]/20 ring-1 ring-[#8E7CFF]/40' : 'text-[#6355FE] scale-105 ring-1 ring-[#6355FE]/40'
+                          : isDark ? 'text-[#8F8E9C]/60 hover:text-white' : 'text-[#585474] hover:text-[#6355FE]'
                       }`}
                       title={`Equalizer Setting: ${currentEqPreset === 'custom' ? 'Custom Tuning' : EQ_PRESETS[currentEqPreset]?.name || currentEqPreset} (Tap to cycle preset, click badge to tune)`}
                     >
@@ -2793,7 +3070,9 @@ export default function App() {
                     <button
                       type="button"
                       onClick={() => setIsEqualizerOpen(true)}
-                      className="text-[8px] font-black uppercase text-[#8E7CFF] mt-1 hover:underline tracking-wider cursor-pointer"
+                      className={`text-[8px] font-black uppercase mt-1 hover:underline tracking-wider cursor-pointer ${
+                        isDark ? 'text-[#8E7CFF]' : 'text-[#6355FE]'
+                      }`}
                       title="Open Equalizer Tuning Panel"
                     >
                       {currentEqPreset === 'custom' ? 'Custom' : (EQ_PRESETS[currentEqPreset]?.name.split(' ')[0] || 'EQ')}
@@ -2805,111 +3084,26 @@ export default function App() {
                     <motion.button 
                       onClick={cycleSleepTimer}
                       whileTap={{ scale: 0.85 }} 
-                      className={`p-3 rounded-full bg-white/5 border border-white/5 transition-all cursor-pointer ${
-                        sleepTimerTime !== null ? 'text-amber-400 scale-110 shadow-lg shadow-amber-400/10' : 'text-[#8F8E9C]/60 hover:text-white'
+                      className={`p-3 rounded-full border transition-all cursor-pointer ${
+                        isDark ? 'bg-white/5 border-white/5' : 'bg-[#6355FE]/10 border-[#6355FE]/15'
+                      } ${
+                        sleepTimerTime !== null 
+                          ? 'text-amber-400 scale-110 shadow-lg shadow-amber-400/10' 
+                          : isDark ? 'text-[#8F8E9C]/60 hover:text-white' : 'text-[#585474] hover:text-[#6355FE]'
                       }`}
                       title="Set Sleep Timer"
                     >
                       <Moon size={16} fill={sleepTimerTime !== null ? "currentColor" : "none"} />
                     </motion.button>
                     {sleepTimerTime !== null && (
-                      <span className="text-[8px] font-black text-amber-400 mt-1 uppercase tracking-wider animate-pulse">
+                      <span className="text-[8px] font-black text-amber-500 mt-1 uppercase tracking-wider animate-pulse">
                         {Math.floor(sleepTimerTime / 60)}:{(sleepTimerTime % 60).toString().padStart(2, '0')}
                       </span>
                     )}
                   </div>
 
-                  {/* Lyrics & Sing Along Teleprompter */}
-                  <div className="flex flex-col items-center">
-                    <motion.button 
-                      onClick={() => setIsNowPlayingLyricsOpen(!isNowPlayingLyricsOpen)}
-                      whileTap={{ scale: 0.85 }} 
-                      className={`p-3 rounded-full bg-white/5 border border-white/5 transition-all cursor-pointer relative group ${
-                        isNowPlayingLyricsOpen || player.currentTrack?.lyrics ? 'text-[#8E7CFF] scale-105 shadow-lg shadow-[#6355FE]/20 ring-1 ring-[#8E7CFF]/40' : 'text-[#8F8E9C]/60 hover:text-white'
-                      }`}
-                      title="View Lyrics & Sing Along"
-                    >
-                      <BookOpen size={16} />
-                    </motion.button>
-                    <button
-                      type="button"
-                      onClick={() => setIsNowPlayingLyricsOpen(!isNowPlayingLyricsOpen)}
-                      className="text-[8px] font-black uppercase text-[#8E7CFF] mt-1 hover:underline tracking-wider cursor-pointer"
-                    >
-                      Lyrics
-                    </button>
-                  </div>
-
                 </div>
               </div>
-
-              {/* Expandable Interactive Lyrics & Sing Studio Drawer */}
-              <AnimatePresence>
-                {isNowPlayingLyricsOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 35, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 25, scale: 0.96 }}
-                    transition={{ type: "spring", damping: 25, stiffness: 350 }}
-                    className="absolute inset-x-4 top-20 bottom-24 bg-[#0E0B22]/95 backdrop-blur-2xl rounded-3xl border border-[#6355FE]/40 p-5 flex flex-col z-40 shadow-2xl overflow-hidden"
-                  >
-                    <div className="flex items-center justify-between pb-3 border-b border-white/10 shrink-0">
-                      <div className="flex items-center gap-2">
-                        <BookOpen size={16} className="text-[#8E7CFF]" />
-                        <span className="text-xs font-black uppercase tracking-wider text-white">Song Lyrics & Sing-Along</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setShowPlayer(false);
-                            setIsNowPlayingLyricsOpen(false);
-                            setActiveNavTab('studio');
-                            showToast('Opened in Singing Studio!', <Mic size={16} className="text-[#8E7CFF]" />);
-                          }}
-                          className="px-2.5 py-1 bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center gap-1 border border-amber-400/30 cursor-pointer active:scale-95 transition-all"
-                        >
-                          <Mic size={12} className="text-amber-400" />
-                          <span>Sing in Studio</span>
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setIsNowPlayingLyricsOpen(false)}
-                          className="p-1 rounded-full text-white/50 hover:text-white hover:bg-white/10 cursor-pointer"
-                        >
-                          <X size={16} />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="flex-1 overflow-hidden my-2">
-                      <KaraokeLyricsView
-                        currentTimeSec={player.currentTime}
-                        durationSec={player.duration}
-                        onSeek={(s) => player.seek(s)}
-                        fallbackLyrics={player.currentTrack.lyrics || TUM_HI_HO_LYRICS}
-                        className="h-full"
-                        showControls={true}
-                      />
-                    </div>
-
-                    <div className="pt-3 border-t border-white/10 shrink-0 flex items-center justify-between text-[10px] text-white/50">
-                      <span>Learn & sing along</span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setShowPlayer(false);
-                          setIsNowPlayingLyricsOpen(false);
-                          setActiveNavTab('studio');
-                        }}
-                        className="text-[#8E7CFF] font-bold hover:underline cursor-pointer flex items-center gap-1"
-                      >
-                        Record your voice in Studio →
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
 
             </div>
           </motion.div>
@@ -3064,7 +3258,11 @@ export default function App() {
 
 
       {/* Glowing Bottom Nav bar */}
-      <nav className="fixed bottom-0 left-0 right-0 h-20 bg-[#0E0B20]/95 backdrop-blur-xl border-t border-white/5 flex items-center justify-around px-4 z-40">
+      <nav className={`fixed bottom-0 left-0 right-0 h-20 backdrop-blur-xl border-t flex items-center justify-around px-4 z-40 transition-colors ${
+        isDark 
+          ? 'bg-[#0E0B20]/95 border-white/5 shadow-none' 
+          : 'bg-white/95 border-[#6355FE]/15 shadow-[0_-4px_24px_rgba(99,85,254,0.06)]'
+      }`}>
         {[
           { tab: 'library', icon: Music, label: 'Library' },
           { tab: 'playlists', icon: ListMusic, label: 'Playlists' },
@@ -3084,25 +3282,31 @@ export default function App() {
               className="flex flex-col items-center justify-center gap-1.5 py-2 px-4 rounded-xl relative cursor-pointer group transition-all"
             >
               <div className={`p-1 rounded-lg transition-all relative ${
-                isActive ? 'text-[#8E7CFF] scale-110' : 'text-[#8F8E9C] group-hover:text-white'
+                isActive 
+                  ? isDark ? 'text-[#8E7CFF] scale-110' : 'text-[#6355FE] scale-110' 
+                  : isDark ? 'text-[#8F8E9C] group-hover:text-white' : 'text-[#585474] group-hover:text-[#120F26]'
               }`}>
                 <Icon size={18} fill={isActive && tab === 'favorites' ? 'currentColor' : 'none'} />
                 {isPremium && (
                   <Crown 
                     size={10} 
-                    className="absolute -top-1.5 -right-1.5 text-amber-400 fill-amber-400 drop-shadow-[0_0_5px_rgba(251,191,36,0.9)] animate-pulse" 
+                    className="absolute -top-1.5 -right-1.5 text-amber-500 fill-amber-500 drop-shadow-[0_0_5px_rgba(251,191,36,0.9)] animate-pulse" 
                   />
                 )}
               </div>
               <span className={`text-[8px] font-black uppercase tracking-wider transition-colors ${
-                isActive ? 'text-[#8E7CFF]' : 'text-[#8F8E9C]/60 group-hover:text-white'
+                isActive 
+                  ? isDark ? 'text-[#8E7CFF]' : 'text-[#6355FE]' 
+                  : isDark ? 'text-[#8F8E9C]/60 group-hover:text-white' : 'text-[#585474] group-hover:text-[#120F26]'
               }`}>
                 {label}
               </span>
               {isActive && (
                 <motion.div
                   layoutId="bottomNavGlowIndicator"
-                  className="absolute bottom-1 w-5 h-0.5 bg-[#8E7CFF] rounded-full shadow-[0_0_8px_#8E7CFF]"
+                  className={`absolute bottom-1 w-5 h-0.5 rounded-full shadow-[0_0_8px_#6355FE] ${
+                    isDark ? 'bg-[#8E7CFF]' : 'bg-[#6355FE]'
+                  }`}
                   transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 />
               )}

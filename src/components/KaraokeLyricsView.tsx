@@ -34,6 +34,7 @@ interface KaraokeLyricsViewProps {
   className?: string;
   isCompact?: boolean;
   showControls?: boolean;
+  isDark?: boolean;
 }
 
 export const KaraokeLyricsView: React.FC<KaraokeLyricsViewProps> = ({
@@ -44,7 +45,8 @@ export const KaraokeLyricsView: React.FC<KaraokeLyricsViewProps> = ({
   fallbackLyrics,
   className = '',
   isCompact = false,
-  showControls = true
+  showControls = true,
+  isDark = typeof document !== 'undefined' ? document.documentElement.getAttribute('data-theme') !== 'light' : true
 }) => {
   const [viewMode, setViewMode] = useState<'karaoke-words' | 'full-lyrics'>('karaoke-words');
   const [syncOffset, setSyncOffset] = useState<number>(() => {
@@ -260,7 +262,9 @@ export const KaraokeLyricsView: React.FC<KaraokeLyricsViewProps> = ({
                   onSeek ? 'cursor-pointer hover:bg-white/5 active:scale-[0.99]' : ''
                 } ${
                   isCurrent
-                    ? 'bg-[#1C153E]/90 border border-amber-400/40 shadow-lg shadow-amber-500/10 scale-102'
+                    ? isDark
+                      ? 'bg-[#1C153E]/90 border border-amber-400/40 shadow-lg shadow-amber-500/10 scale-102'
+                      : 'bg-[#EFEAFE] border border-amber-500/50 shadow-lg shadow-amber-500/10 scale-102'
                     : isNext
                       ? 'opacity-80'
                       : isPast
@@ -347,17 +351,25 @@ export const KaraokeLyricsView: React.FC<KaraokeLyricsViewProps> = ({
         )}
 
         {/* Bottom Fade Gradient */}
-        <div className="sticky bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#0A071A] to-transparent pointer-events-none -mb-8 z-10" />
+        <div className={`sticky bottom-0 left-0 right-0 h-8 pointer-events-none -mb-8 z-10 ${
+          isDark 
+            ? 'bg-gradient-to-t from-[#0A071A] to-transparent' 
+            : 'bg-gradient-to-t from-[#F7F6FC] to-transparent'
+        }`} />
       </div>
 
       {/* Footer Helper Note */}
-      <div className="px-4 py-2 bg-[#120F2B]/90 backdrop-blur-md border-t border-white/5 flex items-center justify-between text-[10px] text-white/50 shrink-0">
+      <div className={`px-4 py-2 backdrop-blur-md border-t flex items-center justify-between text-[10px] shrink-0 ${
+        isDark 
+          ? 'bg-[#120F2B]/90 border-white/5 text-white/50' 
+          : 'bg-white/95 border-[#6355FE]/15 text-[#585474]'
+      }`}>
         <span className="flex items-center gap-1">
-          <Music size={11} className="text-[#8E7CFF]" />
+          <Music size={11} className={isDark ? 'text-[#8E7CFF]' : 'text-[#6355FE]'} />
           Synchronized to instrumental tempo
         </span>
         {onSeek && (
-          <span className="text-amber-300/70 font-semibold">
+          <span className={isDark ? 'text-amber-300/70 font-semibold' : 'text-amber-600 font-semibold'}>
             Tap any line to jump & sing
           </span>
         )}

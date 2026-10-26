@@ -821,3 +821,42 @@ export function parseLrcOrTextToKaraoke(
   };
 }
 
+export const LUTT_LE_GAYA_KARAOKE_DATA: SongKaraokeTiming = parseLrcOrTextToKaraoke(
+  255,
+  'Lutt Le Gaya',
+  'Simran Choudhary • Shashwat Sachdev',
+  `Aaja ve, aaja
+Aaja ve, aaja
+Haaye sajan, haaye sajan, haaye sajan, haaye sajan
+Aaja ve, aaja
+Aaja ve, aaja, seene laa jaa
+Haaye, sajan mainu lutt le gaya, haaye
+Haaye, sajan mainu lutt le gaya
+Pyaase labban de rog mukka jaa
+Haaye, sajan mainu lutt le gaya, haaye
+Haaye, sajan mainu lutt le gaya
+Haaye, sajan meri ankhaan tarasdi
+Har imaan mera tutt beh gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Aaja ve, aaja
+Ho, mainu lutt le gaya
+Aaja ve, aaja
+Ho, mainu lutt le gaya
+Takdi ankhiyaan aje na thakiyaan
+Naina vich nasha vass gaya
+Rajj ke peevan tainu, sajna
+Raatan vich na rass gaya, haaye
+Vass na jaavan, vich main saahvan
+Mainu oh khich fer ghutt le gaya
+Haaye, sajan meri ankhaan tarasdi
+Har imaan mera tutt beh gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Aaja ve, aaja`
+);
+

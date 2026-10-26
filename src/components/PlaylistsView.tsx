@@ -21,6 +21,7 @@ interface PlaylistsViewProps {
   deletePlaylist: (id: string) => void;
   removeTrackFromPlaylist: (plId: string, trackId: string) => void;
   onBackToLibrary?: () => void;
+  isDark?: boolean;
 }
 
 export const PlaylistsView: React.FC<PlaylistsViewProps> = ({
@@ -40,6 +41,7 @@ export const PlaylistsView: React.FC<PlaylistsViewProps> = ({
   deletePlaylist,
   removeTrackFromPlaylist,
   onBackToLibrary,
+  isDark = true,
 }) => {
   return (
     <div className="flex-1 flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease-out]">
@@ -138,11 +140,17 @@ export const PlaylistsView: React.FC<PlaylistsViewProps> = ({
                             onClick={() => onTrackSelect(track)}
                             className={`flex items-center p-3 rounded-2xl cursor-pointer transition-all duration-300 border ${
                               isActive 
-                                ? 'bg-[#6355FE]/15 border-[#6355FE]/30 shadow-lg' 
-                                : 'bg-[#14122B]/30 hover:bg-[#1B183A]/70 border-white/5'
+                                ? isDark
+                                  ? 'bg-[#6355FE]/20 border-[#6355FE]/40 shadow-lg' 
+                                  : 'bg-[#6355FE]/15 border-[#6355FE]/40 shadow-lg'
+                                : isDark
+                                  ? 'bg-[#14122B]/40 hover:bg-[#1B183A]/80 border-white/5 hover:border-white/10'
+                                  : 'bg-white hover:bg-[#F4F1FD] border-[#6355FE]/12 hover:border-[#6355FE]/25 shadow-sm shadow-[#120F26]/5'
                             }`}
                           >
-                            <div className="w-11 h-11 rounded-xl overflow-hidden mr-4 shrink-0 border border-white/5">
+                            <div className={`w-11 h-11 rounded-xl overflow-hidden mr-4 shrink-0 border ${
+                              isDark ? 'border-white/5' : 'border-[#6355FE]/12'
+                            }`}>
                               <TrackThumbnail 
                                 cover={track.cover} 
                                 title={track.title} 
@@ -151,8 +159,16 @@ export const PlaylistsView: React.FC<PlaylistsViewProps> = ({
                               />
                             </div>
                             <div className="flex-1 min-w-0 pr-12">
-                              <h3 className={`text-[13px] font-extrabold truncate ${isActive ? 'text-[#ECE6FF]' : 'text-white'}`}>{track.title}</h3>
-                              <p className={`text-[11px] truncate font-bold mt-1 ${isActive ? 'text-[#8E7CFF]' : 'text-[#8F8E9C]'}`}>{track.artist}</p>
+                              <h3 className={`text-[13px] font-extrabold truncate ${
+                                isActive 
+                                  ? isDark ? 'text-[#ECE6FF]' : 'text-[#6355FE]' 
+                                  : isDark ? 'text-white' : 'text-[#120F26]'
+                              }`}>{track.title}</h3>
+                              <p className={`text-[11px] truncate font-bold mt-1 ${
+                                isActive 
+                                  ? isDark ? 'text-[#8E7CFF]' : 'text-[#6355FE]' 
+                                  : isDark ? 'text-[#8F8E9C]' : 'text-[#585474]'
+                              }`}>{track.artist}</p>
                             </div>
                           </div>
 
@@ -189,15 +205,29 @@ export const PlaylistsView: React.FC<PlaylistsViewProps> = ({
                   <div 
                     key={pl.id}
                     onClick={() => setActivePlaylistId(pl.id)}
-                    className="flex items-center justify-between p-4 bg-[#14122B]/30 hover:bg-[#1B183A]/70 rounded-2xl border border-white/5 transition-all cursor-pointer group active:scale-[0.99]"
+                    className={`flex items-center justify-between p-4 rounded-2xl border transition-all cursor-pointer group active:scale-[0.99] ${
+                      isDark 
+                        ? 'bg-[#14122B]/40 hover:bg-[#1B183A]/80 border-white/5' 
+                        : 'bg-white hover:bg-[#F4F1FD] border-[#6355FE]/12 shadow-sm shadow-[#120F26]/5'
+                    }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#1C153E] to-[#2B2651] flex items-center justify-center text-[#8E7CFF] border border-white/5 shadow-inner">
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center border shadow-inner ${
+                        isDark 
+                          ? 'bg-gradient-to-br from-[#1C153E] to-[#2B2651] text-[#8E7CFF] border-white/5' 
+                          : 'bg-gradient-to-br from-[#EFEAFE] to-[#DDD5F8] text-[#6355FE] border-[#6355FE]/15'
+                      }`}>
                         <ListMusic size={22} />
                       </div>
                       <div className="text-left">
-                        <h3 className="font-extrabold text-[14px] leading-tight text-white group-hover:text-[#ECE6FF] transition-colors">{pl.name}</h3>
-                        <p className="text-[11px] font-bold text-[#8F8E9C] uppercase tracking-wider mt-1">
+                        <h3 className={`font-black text-[14px] leading-tight transition-colors ${
+                          isDark 
+                            ? 'text-white group-hover:text-[#ECE6FF]' 
+                            : 'text-[#120F26] group-hover:text-[#6355FE]'
+                        }`}>{pl.name}</h3>
+                        <p className={`text-[11px] font-bold uppercase tracking-wider mt-1 ${
+                          isDark ? 'text-[#8F8E9C]' : 'text-[#585474]'
+                        }`}>
                           {count === 1 ? '1 song' : `${count} songs`}
                         </p>
                       </div>

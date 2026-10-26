@@ -46,7 +46,8 @@ import { VocalSeparationModal } from './VocalSeparationModal';
 import { SubscriptionModal } from './SubscriptionModal';
 import { GoogleVerificationModal } from './GoogleVerificationModal';
 import { KaraokeLyricsView } from './KaraokeLyricsView';
-import { TUM_HI_HO_KARAOKE_DATA, parseLrcOrTextToKaraoke, SongKaraokeTiming } from '../data/karaokeTimings';
+import { TUM_HI_HO_KARAOKE_DATA, LUTT_LE_GAYA_KARAOKE_DATA, parseLrcOrTextToKaraoke, SongKaraokeTiming } from '../data/karaokeTimings';
+import { extractClientSideKaraokeAudio } from '../services/vocalSeparationService';
 import { useAuth } from '../context/AuthContext';
 import { recordCloudStudioUpload } from '../services/firebase';
 
@@ -82,6 +83,10 @@ export function SingingStudioView({
   const [isLyricsEditorOpen, setIsLyricsEditorOpen] = useState<boolean>(false);
   const [tempLyricsDraft, setTempLyricsDraft] = useState<string>('');
   const lyricsFileInputRef = useRef<HTMLInputElement>(null);
+
+  // Client-Side DSP AI Karaoke Extraction State
+  const [isExtractingKaraoke, setIsExtractingKaraoke] = useState(false);
+  const [isKaraokeExtracted, setIsKaraokeExtracted] = useState(false);
 
   // Audio blob cache for procedural synthesis
   const [synthesizedAudioUrls, setSynthesizedAudioUrls] = useState<Record<string, string>>({});
@@ -461,6 +466,59 @@ export function SingingStudioView({
     );
   };
 
+  // Client-Side DSP AI Karaoke Vocal Extraction Handler
+  const handleExtractKaraokeDsp = async () => {
+    // Verification Gate: AI vocal remover is available once Gmail verification is done
+    if (!isVerified) {
+      setAuthModalContext({
+        title: 'Unlock AI Vocal Remover',
+        subtitle: 'Verify with Gmail (100% Free)',
+        reason: 'Sign up or sign in with your Google / Gmail account (100% free forever) to unlock the AI Vocal Remover, isolate karaoke music, and cancel vocals from any song!'
+      });
+      setIsGoogleAuthModalOpen(true);
+      onShowToast(
+        'Gmail verification required for AI Vocal Remover.',
+        <ShieldCheck size={16} className="text-[#8E7CFF]" />,
+        'Google 1-Tap sign-in unlocks instant vocal cancellation'
+      );
+      return;
+    }
+
+    setIsExtractingKaraoke(true);
+    onShowToast('Isolating karaoke music & cancelling center vocals...', <Sparkles size={16} className="text-[#8E7CFF] animate-spin" />);
+    try {
+      const activeUrl = await getActiveBackingUrl();
+      const result = await extractClientSideKaraokeAudio(activeUrl);
+      
+      const currentTitle = sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.title : selectedBuiltinTrack.title;
+      const currentArtist = sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.artist : selectedBuiltinTrack.categoryLabel;
+
+      setCustomDeviceTrack({
+        title: currentTitle.includes('(Karaoke)') ? currentTitle : `${currentTitle} (Karaoke)`,
+        artist: currentArtist,
+        url: result.url,
+        blob: result.blob,
+        duration: result.duration
+      });
+      setSourceTab('device');
+      setIsKaraokeExtracted(true);
+
+      // If Lutt Le Gaya was the selected track, maintain timed lyrics
+      if (selectedBuiltinTrack.id === 'inst_lutt_le_gaya' || currentTitle.toLowerCase().includes('lutt')) {
+        setCustomKaraokeData(LUTT_LE_GAYA_KARAOKE_DATA);
+      } else if (selectedBuiltinTrack.id === 'inst_tum_hi_ho' || currentTitle.toLowerCase().includes('tum hi ho')) {
+        setCustomKaraokeData(TUM_HI_HO_KARAOKE_DATA);
+      }
+
+      onShowToast('Vocals cancelled! Instrumental karaoke ready to sing.', <CheckCircle2 size={16} className="text-emerald-400" />);
+    } catch (err: any) {
+      console.error('Karaoke extraction error:', err);
+      onShowToast('Vocal extraction error: ' + err.message, <AlertCircle size={16} className="text-red-400" />);
+    } finally {
+      setIsExtractingKaraoke(false);
+    }
+  };
+
   // Active karaoke timing and lyrics calculations
   const activeKaraokeData: SongKaraokeTiming = useMemo(() => {
     if (sourceTab === 'device') {
@@ -474,8 +532,11 @@ export function SingingStudioView({
         );
       }
     }
+    if (selectedBuiltinTrack.id === 'inst_lutt_le_gaya' || selectedBuiltinTrack.title.toLowerCase().includes('lutt')) {
+      return LUTT_LE_GAYA_KARAOKE_DATA;
+    }
     return TUM_HI_HO_KARAOKE_DATA;
-  }, [sourceTab, customKaraokeData, customLyricsText, customDeviceTrack]);
+  }, [sourceTab, customKaraokeData, customLyricsText, customDeviceTrack, selectedBuiltinTrack]);
 
   const activeDuration = sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.duration : selectedBuiltinTrack.duration;
   const activeFallbackLyrics = sourceTab === 'device' 
@@ -700,103 +761,98 @@ export function SingingStudioView({
   return (
     <div className="flex-1 flex flex-col overflow-hidden bg-[#0A0818] text-white animate-[fadeIn_0.15s_ease-out]">
       {/* Top Header */}
-      <header className="px-6 pt-10 pb-4 shrink-0 flex items-center justify-between border-b border-white/5 bg-[#0E0B20]/80 backdrop-blur-md">
-        <div className="flex items-center gap-3">
+      {/* Top Header - Reference Design Match */}
+      <header className="px-5 pt-8 pb-3 shrink-0 flex items-center justify-between border-b border-white/5 bg-[#0A0818]/90 backdrop-blur-md">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={onBackToLibrary}
-            className="p-2 -ml-2 rounded-full hover:bg-white/5 active:scale-95 transition-all text-[#8E7CFF] cursor-pointer"
+            className="p-1.5 -ml-1.5 rounded-full hover:bg-white/5 active:scale-95 transition-all text-[#796BFF] cursor-pointer"
             title="Back to Library"
           >
-            <ArrowLeft size={18} />
+            <ArrowLeft size={20} />
           </button>
-          <div>
-            <h1 className="text-xl font-black tracking-tight leading-none text-white flex items-center gap-2">
-              Singing Studio
+          
+          <div className="flex flex-col text-left">
+            <div className="flex items-center gap-2.5">
+              <div className="flex flex-col leading-[1.05]">
+                <span className="text-xl font-black tracking-tight text-white">Singing</span>
+                <span className="text-xl font-black tracking-tight text-white">Studio</span>
+              </div>
+              
               {isRecording ? (
-                <span className="text-[9px] bg-red-500/20 text-red-400 border border-red-500/30 font-black px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1 animate-pulse">
+                <span className="text-[9px] bg-red-500/20 text-red-400 border border-red-500/30 font-black px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 animate-pulse">
                   <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
                   Live Rec ({formatSec(recordingSeconds)})
                 </span>
               ) : !isVerified ? (
-                <span className="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
-                  <Sparkles size={11} className="text-amber-400" />
-                  Demo Mode
+                <span className="bg-[#2D1E10] border border-[#B38734]/80 text-[#FFBE3B] px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider flex items-center gap-1 shadow-sm">
+                  <Sparkles size={10} className="text-[#FFBE3B]" />
+                  <span>DEMO MODE</span>
                 </span>
               ) : (
-                <span className="text-[9px] bg-[#6355FE]/20 text-[#8E7CFF] border border-[#6355FE]/30 font-bold px-2 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
+                <span className="bg-[#1C1642] border border-[#6355FE]/50 text-[#8E7CFF] px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                  Studio Ready
+                  <span>STUDIO READY</span>
                 </span>
               )}
-            </h1>
-            <p className="text-[10px] font-bold text-[#8E7CFF] uppercase tracking-widest mt-1">
-              Dual-Track Vocal Recording & Audio Mixer
+            </div>
+            
+            <p className="text-[9px] font-black text-[#6355FE] uppercase tracking-wider mt-1">
+              DUAL-TRACK VOCAL RECORDING & AUDIO MIXER
             </p>
           </div>
         </div>
 
-        {/* Studio Utilities */}
-          {isVerified ? (
-            <>
-        <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => setIsGoogleAuthModalOpen(true)}
-                className="p-2.5 rounded-2xl border transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95 shadow-sm bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:border-emerald-500"
-                title={`Verified: ${currentUser?.email}`}
-              >
-                {currentUser?.photoURL ? (
-                  <img src={currentUser.photoURL} alt="Verified" className="w-3.5 h-3.5 rounded-full object-cover" />
-                ) : (
-                  <ShieldCheck size={14} className="text-emerald-400" />
-                )}
-                <span className="hidden sm:inline text-[10px] uppercase tracking-wider">
-                  Verified
-                </span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setIsVocalSepModalOpen(true)}
-                className="p-2.5 bg-[#1C153E] text-[#8E7CFF] hover:text-white rounded-2xl border border-[#6355FE]/30 hover:border-[#6355FE] transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95 shadow-sm"
-                title="AI Stem Separation"
-              >
-                <Sparkles size={14} className="text-[#8E7CFF]" />
-                <span className="hidden sm:inline text-[10px] uppercase tracking-wider">AI Stems</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setIsSubscriptionModalOpen(true)}
-                className="p-2.5 bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-amber-300 hover:text-amber-200 rounded-2xl border border-amber-500/30 transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95 shadow-sm"
-                title="Studio Pro"
-              >
-                <Crown size={14} className="text-amber-400" />
-                <span className="hidden sm:inline text-[10px] uppercase tracking-wider">Pro</span>
-              </button>
-            </div>
-            </>
-          ) : (
+        {/* Header Right Action */}
+        {isVerified ? (
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => {
-                setAuthModalContext({
-                  title: 'Studio Verification',
-                  subtitle: 'Google 1-Tap Account Verification',
-                  reason: undefined
-                });
-                setIsGoogleAuthModalOpen(true);
-              }}
-              className="py-2 px-3 bg-white hover:bg-neutral-100 text-neutral-900 rounded-2xl text-xs font-black tracking-wider uppercase cursor-pointer shadow-md flex items-center gap-1.5 active:scale-95 transition-all"
+              onClick={() => setIsGoogleAuthModalOpen(true)}
+              className="p-2.5 rounded-2xl border transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95 shadow-sm bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:border-emerald-500"
+              title={`Verified: ${currentUser?.email}`}
             >
-              <ShieldCheck size={14} className="text-emerald-600" />
-              <span>Verify with Gmail</span>
+              {currentUser?.photoURL ? (
+                <img src={currentUser.photoURL} alt="Verified" className="w-3.5 h-3.5 rounded-full object-cover" />
+              ) : (
+                <ShieldCheck size={14} className="text-emerald-400" />
+              )}
+              <span className="hidden sm:inline text-[10px] uppercase tracking-wider">
+                Verified
+              </span>
             </button>
+
+            <button
+              type="button"
+              onClick={() => setIsVocalSepModalOpen(true)}
+              className="p-2.5 bg-[#1C153E] text-[#8E7CFF] hover:text-white rounded-2xl border border-[#6355FE]/30 hover:border-[#6355FE] transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95 shadow-sm"
+              title="AI Stem Separation"
+            >
+              <Sparkles size={14} className="text-[#8E7CFF]" />
+              <span className="hidden sm:inline text-[10px] uppercase tracking-wider">AI Stems</span>
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              setAuthModalContext({
+                title: 'Studio Verification',
+                subtitle: 'Google 1-Tap Account Verification',
+                reason: undefined
+              });
+              setIsGoogleAuthModalOpen(true);
+            }}
+            className="bg-white hover:bg-neutral-100 active:scale-95 text-neutral-900 rounded-2xl px-3.5 py-2 shadow-xl flex items-center gap-2 border border-white/20 transition-all cursor-pointer shrink-0"
+          >
+            <ShieldCheck size={15} className="text-emerald-500 shrink-0" />
+            <div className="flex flex-col text-left leading-[1.05]">
+              <span className="text-[10px] font-black tracking-wider uppercase text-neutral-900">VERIFY</span>
+              <span className="text-[10px] font-black tracking-wider uppercase text-neutral-900">WITH GMAIL</span>
             </div>
-          )}
-        
+          </button>
+        )}
       </header>
 
       {/* Main Content Area */}
@@ -807,29 +863,33 @@ export function SingingStudioView({
           /* DEMO MODE: Focused on 1 background music & mic to sing      */
           /* Hides all extra phone uploads, multi-tracks, mixer & export */
           /* ========================================================== */
-          <div className="space-y-5 animate-[fadeIn_0.2s_ease-out]">
-            {/* Demo Status Banner */}
+          <div className="space-y-4 animate-[fadeIn_0.2s_ease-out]">
+            {/* Demo Status Banner - Reference Image Match */}
             {!hasCompletedDemo ? (
-              <div className="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-[#1C153E] via-[#2A1E5C] to-[#1C153E] border border-[#6355FE]/40 shadow-xl space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-[#6355FE]/30 flex items-center justify-center text-amber-300 border border-amber-400/30 shadow-md">
-                      <Sparkles size={16} />
-                    </div>
-                    <div>
-                      <span className="text-[9px] font-black uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
-                        Free Singing Studio Demo
-                        <span className="bg-amber-400/20 text-amber-300 px-1.5 py-0.5 rounded-full text-[8px] font-extrabold border border-amber-400/30">1 FREE TAKE</span>
-                      </span>
-                      <h3 className="text-xs font-black text-white">Sing along to backing music with your mic!</h3>
-                    </div>
+              <div className="p-5 rounded-[28px] bg-[#120F2B]/90 border border-[#6355FE]/35 shadow-2xl space-y-3.5">
+                <div className="flex items-start gap-3">
+                  <div className="w-11 h-11 rounded-2xl bg-[#1D1642] border border-[#6355FE]/40 flex items-center justify-center text-amber-400 shrink-0 shadow-inner mt-0.5">
+                    <Sparkles size={20} className="text-amber-400" />
                   </div>
-                  <span className="text-[10px] font-black text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">
-                    Demo Ready
-                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-[9px] font-black uppercase tracking-wider text-amber-400">
+                        FREE SINGING STUDIO DEMO
+                      </span>
+                      <span className="bg-[#48281A] border border-amber-500/40 text-amber-300 text-[8px] font-black px-2 py-0.5 rounded-full uppercase">
+                        1 FREE TAKE
+                      </span>
+                      <span className="bg-[#0B3332] border border-emerald-500/30 text-emerald-400 text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase ml-auto">
+                        Demo Ready
+                      </span>
+                    </div>
+                    <h3 className="text-sm font-black text-white leading-snug mt-1">
+                      Sing along to backing music with your mic!
+                    </h3>
+                  </div>
                 </div>
 
-                <p className="text-[11px] text-white/80 leading-relaxed font-medium">
+                <p className="text-[11px] text-[#A6A2C5] font-medium leading-relaxed">
                   We've cued up the background music below. Tap the red button to record your demo take. Sing directly into your microphone to hear how your voice mixes with the song!
                 </p>
               </div>
@@ -869,43 +929,116 @@ export function SingingStudioView({
               </div>
             )}
 
-            {/* DEMO STEP 1: Background Music */}
-            <section className="bg-[#14122B]/70 border border-white/10 rounded-3xl p-5 space-y-3 shadow-xl">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <span className="text-[9px] font-black uppercase tracking-wider text-[#8E7CFF] flex items-center gap-1.5">
-                    <Disc3 size={13} />
-                    Demo Backing Music
-                  </span>
-                  <h3 className="text-xs font-black text-white">{selectedBuiltinTrack.title}</h3>
-                  <p className="text-[10px] text-[#8F8E9C]">{selectedBuiltinTrack.genre} • {selectedBuiltinTrack.tempo} BPM Instrumental</p>
+            {/* DEMO STEP 1: Background Music - Reference Image Match */}
+            <section className="bg-[#120F2B]/90 border border-[#6355FE]/35 rounded-[28px] p-5 space-y-4 shadow-2xl">
+              {/* Card Header Metadata */}
+              <div className="space-y-1 text-left">
+                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-wider text-[#796BFF]">
+                  <Disc3 size={14} className="text-[#796BFF]" />
+                  <span>DEMO BACKING MUSIC</span>
+                  {isKaraokeExtracted && (
+                    <span className="text-[8px] bg-emerald-500/20 text-emerald-300 font-extrabold px-1.5 py-0.5 rounded-full border border-emerald-500/30 uppercase flex items-center gap-1 ml-auto">
+                      <Sparkles size={9} /> Karaoke Isolated
+                    </span>
+                  )}
                 </div>
+                <h3 className="text-sm font-black text-white leading-tight">
+                  {sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.title : selectedBuiltinTrack.title}
+                </h3>
+                <p className="text-[10px] font-bold text-[#8F8E9C]">
+                  {selectedBuiltinTrack.categoryLabel || 'Bollywood Romantic / Karaoke'} • {selectedBuiltinTrack.bpm} BPM
+                </p>
+              </div>
+
+              {/* Action Buttons: Pink AI VOCAL REMOVER and Purple Listen Track */}
+              <div className="flex items-center gap-2.5">
+                <button
+                  type="button"
+                  onClick={handleExtractKaraokeDsp}
+                  disabled={isExtractingKaraoke || isRecording}
+                  className="flex-1 py-3 px-3 bg-gradient-to-r from-[#E91E63] to-[#FF4081] hover:brightness-110 active:scale-95 text-white rounded-2xl text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-pink-500/25 cursor-pointer disabled:opacity-50"
+                  title="Run client-side DSP Mid-Side phase cancellation to remove center vocals"
+                >
+                  {isExtractingKaraoke ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin text-white" />
+                      <span>REMOVING...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles size={14} className="text-amber-300" />
+                      <span>AI VOCAL REMOVER</span>
+                      {!isVerified && (
+                        <Lock size={11} className="text-white/80 shrink-0 -ml-0.5" />
+                      )}
+                    </>
+                  )}
+                </button>
 
                 <button
                   type="button"
                   onClick={toggleBackingPreview}
                   disabled={isSynthesizing || isRecording}
-                  className="px-3.5 py-2 bg-[#6355FE] hover:bg-[#7265FF] text-white rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer shadow-md disabled:opacity-40 active:scale-95"
+                  className="flex-1 py-3 px-3 bg-[#6355FE] hover:bg-[#7265FF] active:scale-95 text-white rounded-2xl text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#6355FE]/30 cursor-pointer disabled:opacity-40"
                 >
                   {isSynthesizing ? (
-                    <Loader2 size={13} className="animate-spin text-white" />
+                    <Loader2 size={14} className="animate-spin text-white" />
                   ) : isBackingPreviewPlaying ? (
                     <>
-                      <Pause size={13} fill="currentColor" />
+                      <Pause size={14} fill="currentColor" />
                       <span>Pause Track</span>
                     </>
                   ) : (
                     <>
-                      <Play size={13} fill="currentColor" />
+                      <Play size={14} fill="currentColor" />
                       <span>Listen Track</span>
                     </>
                   )}
                 </button>
               </div>
 
-              {/* Progress bar */}
-              <div className="p-3 bg-black/25 rounded-2xl border border-white/5 space-y-1.5">
-                <div className="flex items-center justify-between text-[10px] text-white/50 font-bold">
+              {/* Demo Track Quick Switcher: ♫ TUM HI vs ♫ LUTT LE */}
+              <div className="flex gap-2 p-1.5 bg-[#0B091D] rounded-2xl border border-white/5">
+                {BUILTIN_INSTRUMENTAL_CATALOG.slice(0, 2).map((track, idx) => {
+                  const isCurrent = (sourceTab === 'builtin' && selectedBuiltinTrack.id === track.id) ||
+                    (sourceTab === 'device' && customDeviceTrack?.title.includes(track.title.split(' ')[0]));
+                  const shortLabel = idx === 0 ? 'TUM HI' : 'LUTT LE';
+                  return (
+                    <button
+                      key={track.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedBuiltinTrack(track);
+                        setSourceTab('builtin');
+                        setCustomDeviceTrack(null);
+                        setIsKaraokeExtracted(false);
+                        if (track.id === 'inst_lutt_le_gaya') {
+                          setCustomKaraokeData(LUTT_LE_GAYA_KARAOKE_DATA);
+                        } else {
+                          setCustomKaraokeData(TUM_HI_HO_KARAOKE_DATA);
+                        }
+                        if (isBackingPreviewPlaying) {
+                          backingAudioRef.current?.pause();
+                          setIsBackingPreviewPlaying(false);
+                        }
+                        onShowToast(`Selected "${track.title}"`, <Music size={14} className="text-[#8E7CFF]" />);
+                      }}
+                      className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                        isCurrent
+                          ? 'bg-[#6355FE] text-white shadow-md'
+                          : 'text-[#706B8F] hover:text-white hover:bg-white/5'
+                      }`}
+                    >
+                      <Music size={13} />
+                      <span>{shortLabel}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Progress & Seeker Bar Container */}
+              <div className="p-4 bg-[#0B091D]/90 rounded-2xl border border-white/5 space-y-2.5">
+                <div className="flex items-center justify-between text-xs font-bold text-[#8F8E9C]">
                   <span>{isBackingPreviewPlaying ? 'Playing' : 'Ready'}</span>
                   <span>{formatSec(backingCurrentTime)} / {formatSec(selectedBuiltinTrack.duration)}</span>
                 </div>
@@ -1446,9 +1579,25 @@ export function SingingStudioView({
                   </span>
                 </div>
               </div>
-              <span className="text-[10px] font-bold text-white/50">
-                {formatSec(backingCurrentTime)} / {formatSec(sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.duration : selectedBuiltinTrack.duration)}
-              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleExtractKaraokeDsp}
+                  disabled={isExtractingKaraoke || isRecording}
+                  className="px-2.5 py-1.5 bg-gradient-to-r from-pink-600 to-[#6355FE] hover:brightness-110 text-white rounded-xl text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer shadow-sm active:scale-95 disabled:opacity-50"
+                  title="Run client-side DSP Mid-Side phase cancellation to remove center vocals"
+                >
+                  {isExtractingKaraoke ? (
+                    <Loader2 size={12} className="animate-spin text-white" />
+                  ) : (
+                    <Sparkles size={12} className="text-amber-300" />
+                  )}
+                  <span>{isExtractingKaraoke ? 'Extracting...' : 'AI Vocal Remover'}</span>
+                </button>
+                <span className="text-[10px] font-bold text-white/50">
+                  {formatSec(backingCurrentTime)} / {formatSec(sourceTab === 'device' && customDeviceTrack ? customDeviceTrack.duration : selectedBuiltinTrack.duration)}
+                </span>
+              </div>
             </div>
 
             <input
@@ -1741,6 +1890,14 @@ export function SingingStudioView({
         isOpen={isVocalSepModalOpen}
         onClose={() => setIsVocalSepModalOpen(false)}
         tracks={libraryTracks}
+        onRequestVerification={() => {
+          setAuthModalContext({
+            title: 'Unlock AI Vocal Remover',
+            subtitle: 'Verify with Gmail (100% Free)',
+            reason: 'Sign in with your Google account (100% free) to unlock AI vocal removal and extract karaoke from any song.'
+          });
+          setIsGoogleAuthModalOpen(true);
+        }}
         onSelectSeparatedTrack={(track) => {
           setCustomDeviceTrack({
             title: track.title,

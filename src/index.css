@@ -6,6 +6,8 @@
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 }
 
+@custom-variant dark (&:where([data-theme="dark"], .theme-dark, .dark, .dark *));
+
 :root {
   --m3-primary: #6355FE;
   --m3-on-primary: #FFFFFF;
@@ -20,6 +22,195 @@
   --m3-surface-variant: #14122B;
   --m3-on-surface-variant: #B9B6CE;
   --m3-outline: #2B2651;
+}
+
+/* ==========================================================================
+   EXPLICIT DARK THEME BASE STYLES
+   ========================================================================== */
+[data-theme="dark"],
+.theme-dark,
+.dark {
+  color-scheme: dark;
+  --m3-surface: #0A0818;
+  --m3-on-surface: #F5F4F9;
+  --m3-surface-variant: #14122B;
+  --m3-on-surface-variant: #B9B6CE;
+  --m3-outline: #2B2651;
+}
+
+[data-theme="dark"] body,
+.theme-dark body,
+.dark body {
+  background-color: #0A0818 !important;
+  color: #F5F4F9 !important;
+}
+
+[data-theme="dark"] .bg-\[\#0A0818\],
+.theme-dark .bg-\[\#0A0818\],
+.dark .bg-\[\#0A0818\] {
+  background-color: #0A0818 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .bg-\[\#080714\],
+.theme-dark .bg-\[\#080714\],
+.dark .bg-\[\#080714\] {
+  background-color: #080714 !important;
+}
+
+[data-theme="dark"] .bg-\[\#0E0B20\],
+.theme-dark .bg-\[\#0E0B20\],
+[data-theme="dark"] .bg-\[\#0E0B20\]\/95,
+.theme-dark .bg-\[\#0E0B20\]\/95,
+.dark .bg-\[\#0E0B20\],
+.dark .bg-\[\#0E0B20\]\/95 {
+  background-color: rgba(14, 11, 32, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .bg-\[\#14122B\],
+.theme-dark .bg-\[\#14122B\],
+.dark .bg-\[\#14122B\] {
+  background-color: #14122B !important;
+}
+
+[data-theme="dark"] .bg-\[\#14122B\]\/10,
+.theme-dark .bg-\[\#14122B\]\/10,
+.dark .bg-\[\#14122B\]\/10 {
+  background-color: rgba(20, 18, 43, 0.1) !important;
+}
+
+[data-theme="dark"] .bg-\[\#14122B\]\/20,
+.theme-dark .bg-\[\#14122B\]\/20,
+.dark .bg-\[\#14122B\]\/20 {
+  background-color: rgba(20, 18, 43, 0.2) !important;
+}
+
+[data-theme="dark"] .bg-\[\#14122B\]\/30,
+.theme-dark .bg-\[\#14122B\]\/30,
+.dark .bg-\[\#14122B\]\/30 {
+  background-color: rgba(20, 18, 43, 0.3) !important;
+}
+
+[data-theme="dark"] .bg-\[\#14122B\]\/40,
+.theme-dark .bg-\[\#14122B\]\/40,
+.dark .bg-\[\#14122B\]\/40 {
+  background-color: rgba(20, 18, 43, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .bg-\[\#14122B\]\/50,
+.theme-dark .bg-\[\#14122B\]\/50,
+.dark .bg-\[\#14122B\]\/50 {
+  background-color: rgba(20, 18, 43, 0.5) !important;
+}
+
+[data-theme="dark"] .bg-\[\#14122B\]\/60,
+.theme-dark .bg-\[\#14122B\]\/60,
+.dark .bg-\[\#14122B\]\/60 {
+  background-color: rgba(20, 18, 43, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .bg-\[\#14122B\]\/70,
+.theme-dark .bg-\[\#14122B\]\/70,
+.dark .bg-\[\#14122B\]\/70 {
+  background-color: rgba(20, 18, 43, 0.7) !important;
+}
+
+[data-theme="dark"] .bg-\[\#14122B\]\/80,
+.theme-dark .bg-\[\#14122B\]\/80,
+.dark .bg-\[\#14122B\]\/80 {
+  background-color: rgba(20, 18, 43, 0.8) !important;
+}
+
+[data-theme="dark"] .bg-\[\#14122B\]\/90,
+.theme-dark .bg-\[\#14122B\]\/90,
+.dark .bg-\[\#14122B\]\/90,
+[data-theme="dark"] .bg-\[\#14122B\]\/95,
+.theme-dark .bg-\[\#14122B\]\/95,
+.dark .bg-\[\#14122B\]\/95 {
+  background-color: rgba(20, 18, 43, 0.95) !important;
+}
+
+[data-theme="dark"] .bg-\[\#1B183A\],
+.theme-dark .bg-\[\#1B183A\],
+.dark .bg-\[\#1B183A\] {
+  background-color: #1B183A !important;
+}
+
+[data-theme="dark"] .bg-\[\#1C153E\],
+.theme-dark .bg-\[\#1C153E\],
+.dark .bg-\[\#1C153E\] {
+  background-color: #1C153E !important;
+}
+
+[data-theme="dark"] .bg-\[\#1D163F\],
+.theme-dark .bg-\[\#1D163F\],
+.dark .bg-\[\#1D163F\] {
+  background-color: #1D163F !important;
+}
+
+[data-theme="dark"] .bg-\[\#2B2651\],
+.theme-dark .bg-\[\#2B2651\],
+.dark .bg-\[\#2B2651\] {
+  background-color: #2B2651 !important;
+}
+
+/* Dark mode border resets */
+[data-theme="dark"] .border-white\/5, .theme-dark .border-white\/5, .dark .border-white\/5 { border-color: rgba(255, 255, 255, 0.05) !important; }
+[data-theme="dark"] .border-white\/10, .theme-dark .border-white\/10, .dark .border-white\/10 { border-color: rgba(255, 255, 255, 0.10) !important; }
+[data-theme="dark"] .border-white\/15, .theme-dark .border-white\/15, .dark .border-white\/15 { border-color: rgba(255, 255, 255, 0.15) !important; }
+[data-theme="dark"] .border-white\/20, .theme-dark .border-white\/20, .dark .border-white\/20 { border-color: rgba(255, 255, 255, 0.20) !important; }
+
+/* Dark mode white background overlay resets */
+[data-theme="dark"] .bg-white\/5, .theme-dark .bg-white\/5, .dark .bg-white\/5 { background-color: rgba(255, 255, 255, 0.05) !important; }
+[data-theme="dark"] .bg-white\/10, .theme-dark .bg-white\/10, .dark .bg-white\/10 { background-color: rgba(255, 255, 255, 0.10) !important; }
+[data-theme="dark"] .bg-white\/15, .theme-dark .bg-white\/15, .dark .bg-white\/15 { background-color: rgba(255, 255, 255, 0.15) !important; }
+
+/* Dark mode text opacities */
+[data-theme="dark"] .text-white, .theme-dark .text-white, .dark .text-white { color: #FFFFFF !important; }
+[data-theme="dark"] .text-white\/90, .theme-dark .text-white\/90, .dark .text-white\/90 { color: rgba(255, 255, 255, 0.9) !important; }
+[data-theme="dark"] .text-white\/80, .theme-dark .text-white\/80, .dark .text-white\/80 { color: rgba(255, 255, 255, 0.8) !important; }
+[data-theme="dark"] .text-white\/70, .theme-dark .text-white\/70, .dark .text-white\/70 { color: rgba(255, 255, 255, 0.7) !important; }
+[data-theme="dark"] .text-white\/60, .theme-dark .text-white\/60, .dark .text-white\/60 { color: rgba(255, 255, 255, 0.6) !important; }
+[data-theme="dark"] .text-white\/50, .theme-dark .text-white\/50, .dark .text-white\/50 { color: rgba(255, 255, 255, 0.5) !important; }
+[data-theme="dark"] .text-white\/40, .theme-dark .text-white\/40, .dark .text-white\/40 { color: rgba(255, 255, 255, 0.4) !important; }
+[data-theme="dark"] .text-white\/30, .theme-dark .text-white\/30, .dark .text-white\/30 { color: rgba(255, 255, 255, 0.3) !important; }
+
+[data-theme="dark"] .text-slate-100, .theme-dark .text-slate-100, .dark .text-slate-100 { color: #F1F5F9 !important; }
+[data-theme="dark"] .text-\[\#8F8E9C\], .theme-dark .text-\[\#8F8E9C\], .dark .text-\[\#8F8E9C\] { color: #8F8E9C !important; }
+[data-theme="dark"] .text-\[\#8E7CFF\], .theme-dark .text-\[\#8E7CFF\], .dark .text-\[\#8E7CFF\] { color: #8E7CFF !important; }
+[data-theme="dark"] .text-\[\#ECE6FF\], .theme-dark .text-\[\#ECE6FF\], .dark .text-\[\#ECE6FF\] { color: #ECE6FF !important; }
+[data-theme="dark"] .text-\[\#B9B6CE\], .theme-dark .text-\[\#B9B6CE\], .dark .text-\[\#B9B6CE\] { color: #B9B6CE !important; }
+
+/* Dark mode inputs */
+[data-theme="dark"] input[type="text"],
+.theme-dark input[type="text"],
+.dark input[type="text"] {
+  background-color: rgba(20, 18, 43, 0.4) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+[data-theme="dark"] input::placeholder,
+.theme-dark input::placeholder,
+.dark input::placeholder {
+  color: rgba(143, 142, 156, 0.5) !important;
+}
+
+[data-theme="dark"] .glass, .theme-dark .glass, .dark .glass {
+  background-color: rgba(20, 18, 43, 0.75) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px 0 rgba(10, 8, 24, 0.37) !important;
+}
+
+[data-theme="dark"] .m3-card, .theme-dark .m3-card, .dark .m3-card {
+  background-color: rgba(20, 18, 43, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
 }
 
 @layer base {
@@ -75,15 +266,20 @@
 }
 
 /* ==========================================================================
-   LIGHT THEME STYLING
+   PREMIUM HIGH-CONTRAST LIGHT THEME STYLING
    ========================================================================== */
 [data-theme="light"],
 .theme-light {
   color-scheme: light;
+  --m3-primary: #6355FE;
+  --m3-on-primary: #FFFFFF;
+  --m3-primary-container: #EFEAFE;
+  --m3-on-primary-container: #1C153E;
+  --m3-secondary: #5B4AE6;
   --m3-surface: #F7F6FC;
   --m3-on-surface: #120F26;
   --m3-surface-variant: #FFFFFF;
-  --m3-on-surface-variant: #45415E;
+  --m3-on-surface-variant: #585474;
   --m3-outline: #DCD8F2;
 }
 
@@ -97,6 +293,7 @@
 [data-theme="light"] .bg-\[\#0A0818\],
 .theme-light .bg-\[\#0A0818\] {
   background-color: #F7F6FC !important;
+  color: #120F26 !important;
 }
 
 [data-theme="light"] .bg-\[\#080714\],
@@ -107,33 +304,35 @@
 [data-theme="light"] .bg-\[\#0E0B20\],
 .theme-light .bg-\[\#0E0B20\],
 [data-theme="light"] .bg-\[\#0E0B20\]\/95,
-.theme-light .bg-\[\#0E0B20\]\/95 {
+.theme-light .bg-\[\#0E0B20\]\/95,
+[data-theme="light"] .bg-\[\#0E0B22\]\/95,
+.theme-light .bg-\[\#0E0B22\]\/95 {
   background-color: rgba(255, 255, 255, 0.96) !important;
+  box-shadow: 0 -4px 20px rgba(99, 85, 254, 0.08) !important;
 }
 
+/* Base Card Backgrounds */
 [data-theme="light"] .bg-\[\#14122B\],
 .theme-light .bg-\[\#14122B\] {
   background-color: #FFFFFF !important;
+  box-shadow: 0 4px 16px -2px rgba(99, 85, 254, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04) !important;
 }
 
+[data-theme="light"] .bg-\[\#14122B\]\/30,
+.theme-light .bg-\[\#14122B\]\/30,
 [data-theme="light"] .bg-\[\#14122B\]\/40,
-.theme-light .bg-\[\#14122B\]\/40 {
-  background-color: rgba(255, 255, 255, 0.75) !important;
-}
-
+.theme-light .bg-\[\#14122B\]\/40,
+[data-theme="light"] .bg-\[\#14122B\]\/50,
+.theme-light .bg-\[\#14122B\]\/50,
 [data-theme="light"] .bg-\[\#14122B\]\/60,
-.theme-light .bg-\[\#14122B\]\/60 {
-  background-color: rgba(255, 255, 255, 0.85) !important;
-}
-
+.theme-light .bg-\[\#14122B\]\/60,
 [data-theme="light"] .bg-\[\#14122B\]\/70,
-.theme-light .bg-\[\#14122B\]\/70 {
-  background-color: rgba(255, 255, 255, 0.90) !important;
-}
-
+.theme-light .bg-\[\#14122B\]\/70,
 [data-theme="light"] .bg-\[\#14122B\]\/80,
 .theme-light .bg-\[\#14122B\]\/80 {
-  background-color: rgba(255, 255, 255, 0.94) !important;
+  background-color: #FFFFFF !important;
+  border-color: rgba(99, 85, 254, 0.12) !important;
+  box-shadow: 0 4px 16px -2px rgba(99, 85, 254, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03) !important;
 }
 
 [data-theme="light"] .bg-\[\#14122B\]\/90,
@@ -141,6 +340,15 @@
 [data-theme="light"] .bg-\[\#14122B\]\/95,
 .theme-light .bg-\[\#14122B\]\/95 {
   background-color: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: 0 16px 36px -6px rgba(35, 25, 75, 0.15) !important;
+  border-color: rgba(99, 85, 254, 0.18) !important;
+}
+
+[data-theme="light"] .hover\:bg-\[\#1B183A\]\/80:hover,
+.theme-light .hover\:bg-\[\#1B183A\]\/80:hover,
+[data-theme="light"] .hover\:bg-\[\#1B183A\]\/70:hover,
+.theme-light .hover\:bg-\[\#1B183A\]\/70:hover {
+  background-color: #F4F1FD !important;
 }
 
 [data-theme="light"] .bg-\[\#1B183A\],
@@ -163,25 +371,84 @@
   background-color: #DDD5F8 !important;
 }
 
-/* Text replacements */
+/* Active Track Card highlighting in light mode */
+[data-theme="light"] .bg-\[\#6355FE\]\/20,
+.theme-light .bg-\[\#6355FE\]\/20,
+[data-theme="light"] .bg-\[\#6355FE\]\/15,
+.theme-light .bg-\[\#6355FE\]\/15 {
+  background-color: #EFEAFE !important;
+  border-color: rgba(99, 85, 254, 0.40) !important;
+  box-shadow: 0 8px 24px -4px rgba(99, 85, 254, 0.18) !important;
+}
+
+/* High-Contrast Typographic System in Light Mode */
+/* Fix previously washed out text-slate-100, text-slate-200, etc. */
+[data-theme="light"] .text-slate-100,
+.theme-light .text-slate-100,
+[data-theme="light"] .text-slate-200,
+.theme-light .text-slate-200,
+[data-theme="light"] .text-slate-300,
+.theme-light .text-slate-300 {
+  color: #120F26 !important;
+}
+
+[data-theme="light"] .group:hover .group-hover\:text-white,
+.theme-light .group:hover .group-hover\:text-white {
+  color: #6355FE !important;
+}
+
 [data-theme="light"] .text-\[\#ECE6FF\],
 .theme-light .text-\[\#ECE6FF\] {
-  color: #1A1633 !important;
+  color: #120F26 !important;
 }
 
 [data-theme="light"] .text-\[\#8F8E9C\],
-.theme-light .text-\[\#8F8E9C\] {
-  color: #635F7E !important;
+.theme-light .text-\[\#8F8E9C\],
+[data-theme="light"] .text-\[\#8F8E9C\]\/60,
+.theme-light .text-\[\#8F8E9C\]\/60,
+[data-theme="light"] .text-\[\#8F8E9C\]\/70,
+.theme-light .text-\[\#8F8E9C\]\/70 {
+  color: #585474 !important;
+}
+
+[data-theme="light"] .text-\[\#8F8E9C\]\/40,
+.theme-light .text-\[\#8F8E9C\]\/40 {
+  color: #747091 !important;
 }
 
 [data-theme="light"] .text-\[\#B9B6CE\],
 .theme-light .text-\[\#B9B6CE\] {
-  color: #55506E !important;
+  color: #4A4666 !important;
 }
 
-/* Invert text-white for general content in light mode, preserving buttons with colored bg */
-[data-theme="light"] .text-white:not(button.bg-\[\#6355FE\] *):not(.bg-\[\#6355FE\] *):not(.bg-\[\#7265FF\] *):not(.bg-red-500 *):not(.bg-emerald-500 *),
-.theme-light .text-white:not(button.bg-\[\#6355FE\] *):not(.bg-\[\#6355FE\] *):not(.bg-\[\#7265FF\] *):not(.bg-red-500 *):not(.bg-emerald-500 *) {
+/* Secondary accent in light mode */
+[data-theme="light"] .text-\[\#8E7CFF\],
+.theme-light .text-\[\#8E7CFF\] {
+  color: #5B4AE6 !important;
+}
+
+/* Active primary pills, colored badges, and buttons MUST retain clean white text */
+[data-theme="light"] .bg-\[\#6355FE\],
+.theme-light .bg-\[\#6355FE\],
+[data-theme="light"] .bg-\[\#7265FF\],
+.theme-light .bg-\[\#7265FF\],
+[data-theme="light"] .bg-gradient-to-r.from-\[\#6355FE\],
+.theme-light .bg-gradient-to-r.from-\[\#6355FE\] {
+  color: #FFFFFF !important;
+}
+
+[data-theme="light"] .bg-\[\#6355FE\] *,
+.theme-light .bg-\[\#6355FE\] *,
+[data-theme="light"] .bg-\[\#7265FF\] *,
+.theme-light .bg-\[\#7265FF\] *,
+[data-theme="light"] .bg-gradient-to-r.from-\[\#6355FE\] *,
+.theme-light .bg-gradient-to-r.from-\[\#6355FE\] * {
+  color: #FFFFFF !important;
+}
+
+/* Text white rule: Invert text-white only for elements on neutral backgrounds */
+[data-theme="light"] .text-white:not(.bg-\[\#6355FE\]):not(.bg-\[\#6355FE\] *):not(.bg-\[\#7265FF\]):not(.bg-\[\#7265FF\] *):not(.bg-gradient-to-r *):not(.bg-red-500 *):not(.bg-emerald-500 *):not(.bg-amber-500 *):not(.bg-pink-500 *),
+.theme-light .text-white:not(.bg-\[\#6355FE\]):not(.bg-\[\#6355FE\] *):not(.bg-\[\#7265FF\]):not(.bg-\[\#7265FF\] *):not(.bg-gradient-to-r *):not(.bg-red-500 *):not(.bg-emerald-500 *):not(.bg-amber-500 *):not(.bg-pink-500 *) {
   color: #120F26;
 }
 
@@ -190,32 +457,64 @@
 [data-theme="light"] .text-white\/70, .theme-light .text-white\/70 { color: rgba(18, 15, 38, 0.7) !important; }
 [data-theme="light"] .text-white\/60, .theme-light .text-white\/60 { color: rgba(18, 15, 38, 0.6) !important; }
 [data-theme="light"] .text-white\/50, .theme-light .text-white\/50 { color: rgba(18, 15, 38, 0.5) !important; }
-[data-theme="light"] .text-white\/40, .theme-light .text-white\/40 { color: rgba(18, 15, 38, 0.4) !important; }
-[data-theme="light"] .text-white\/35, .theme-light .text-white\/35 { color: rgba(18, 15, 38, 0.35) !important; }
-[data-theme="light"] .text-white\/30, .theme-light .text-white\/30 { color: rgba(18, 15, 38, 0.3) !important; }
+[data-theme="light"] .text-white\/40, .theme-light .text-white\/40 { color: rgba(18, 15, 38, 0.45) !important; }
+[data-theme="light"] .text-white\/35, .theme-light .text-white\/35 { color: rgba(18, 15, 38, 0.4) !important; }
+[data-theme="light"] .text-white\/30, .theme-light .text-white\/30 { color: rgba(18, 15, 38, 0.35) !important; }
 
-/* Borders and transparent white surfaces */
-[data-theme="light"] .border-white\/5, .theme-light .border-white\/5 { border-color: rgba(99, 85, 254, 0.08) !important; }
-[data-theme="light"] .border-white\/10, .theme-light .border-white\/10 { border-color: rgba(99, 85, 254, 0.12) !important; }
-[data-theme="light"] .border-white\/15, .theme-light .border-white\/15 { border-color: rgba(99, 85, 254, 0.16) !important; }
-[data-theme="light"] .border-white\/20, .theme-light .border-white\/20 { border-color: rgba(99, 85, 254, 0.20) !important; }
+/* Inactive Segmented Controls in Light Mode */
+[data-theme="light"] .opacity-40.text-white,
+.theme-light .opacity-40.text-white {
+  opacity: 1 !important;
+  color: #585474 !important;
+}
 
-[data-theme="light"] .bg-white\/5, .theme-light .bg-white\/5 { background-color: rgba(99, 85, 254, 0.06) !important; }
+/* Borders and Surfaces */
+[data-theme="light"] .border-white\/5, .theme-light .border-white\/5 { border-color: rgba(99, 85, 254, 0.10) !important; }
+[data-theme="light"] .border-white\/10, .theme-light .border-white\/10 { border-color: rgba(99, 85, 254, 0.15) !important; }
+[data-theme="light"] .border-white\/15, .theme-light .border-white\/15 { border-color: rgba(99, 85, 254, 0.18) !important; }
+[data-theme="light"] .border-white\/20, .theme-light .border-white\/20 { border-color: rgba(99, 85, 254, 0.22) !important; }
+
+[data-theme="light"] .bg-white\/5, .theme-light .bg-white\/5 { background-color: rgba(99, 85, 254, 0.07) !important; }
 [data-theme="light"] .bg-white\/10, .theme-light .bg-white\/10 { background-color: rgba(99, 85, 254, 0.10) !important; }
 [data-theme="light"] .bg-white\/15, .theme-light .bg-white\/15 { background-color: rgba(99, 85, 254, 0.14) !important; }
 
+/* Input fields & search bar */
+[data-theme="light"] input[type="text"],
+.theme-light input[type="text"] {
+  background-color: #FFFFFF !important;
+  border-color: rgba(99, 85, 254, 0.18) !important;
+  color: #120F26 !important;
+  box-shadow: 0 2px 8px rgba(99, 85, 254, 0.05) !important;
+}
+
+[data-theme="light"] input::placeholder,
+.theme-light input::placeholder {
+  color: #7D799A !important;
+  opacity: 1 !important;
+}
+
+/* Glass & Card overrides */
 [data-theme="light"] .glass, .theme-light .glass {
-  background-color: rgba(255, 255, 255, 0.88) !important;
-  border-color: rgba(99, 85, 254, 0.12) !important;
-  box-shadow: 0 10px 30px -5px rgba(99, 85, 254, 0.08) !important;
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(99, 85, 254, 0.15) !important;
+  box-shadow: 0 10px 30px -5px rgba(99, 85, 254, 0.10) !important;
 }
 
 [data-theme="light"] .m3-card, .theme-light .m3-card {
   background-color: #FFFFFF !important;
-  border-color: rgba(99, 85, 254, 0.10) !important;
-  box-shadow: 0 12px 28px -6px rgba(25, 18, 55, 0.06) !important;
+  border-color: rgba(99, 85, 254, 0.12) !important;
+  box-shadow: 0 12px 28px -6px rgba(25, 18, 55, 0.07) !important;
 }
 
+/* Format MP3 Badge in Light Mode */
+[data-theme="light"] span.bg-white\/5,
+.theme-light span.bg-white\/5 {
+  background-color: #F1EEFB !important;
+  border-color: rgba(99, 85, 254, 0.16) !important;
+  color: #5B4AE6 !important;
+}
+
+/* Scrollbar in Light Mode */
 [data-theme="light"] ::-webkit-scrollbar-thumb,
 .theme-light ::-webkit-scrollbar-thumb {
   background: #C4BCF0;

@@ -4,6 +4,7 @@
  */
 
 import { SeparationJob, SeparationJobStatus } from '../types/studio';
+import { audioBufferToWavBlob } from '../data/instrumentals';
 
 /**
  * Online AI Vocal Separation Service Boundary
@@ -156,3 +157,104 @@ export class VocalSeparationService {
 }
 
 export const vocalSeparationService = new VocalSeparationService();
+
+/**
+ * Real-Time Client-Side Vocal Suppression / Karaoke Extractor
+ * Uses Mid-Side Phase Inversion & Stereo Demixing with Bass Bypass (0ms latency, zero cloud cost).
+ * Cancels out center-panned lead vocals while preserving stereo instruments and low-end bass/kick drums.
+ */
+export async function extractClientSideKaraokeAudio(
+  audioInput: Blob | string
+): Promise<{ blob: Blob; url: string; duration: number }> {
+  let arrayBuffer: ArrayBuffer;
+  if (typeof audioInput === 'string') {
+    const res = await fetch(audioInput);
+    arrayBuffer = await res.arrayBuffer();
+  } else {
+    arrayBuffer = await audioInput.arrayBuffer();
+  }
+
+  const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+  const audioCtx = new AudioContextClass();
+  const decodedBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+  const numChannels = decodedBuffer.numberOfChannels;
+  const sampleRate = decodedBuffer.sampleRate;
+  const length = decodedBuffer.length;
+  const duration = decodedBuffer.duration;
+
+  if (numChannels < 2) {
+    // If mono, apply vocal frequency attenuation notch
+    const offlineCtx = new OfflineAudioContext(1, length, sampleRate);
+    const source = offlineCtx.createBufferSource();
+    source.buffer = decodedBuffer;
+
+    const notch = offlineCtx.createBiquadFilter();
+    notch.type = 'notch';
+    notch.frequency.value = 1800;
+    notch.Q.value = 1.2;
+
+    source.connect(notch);
+    notch.connect(offlineCtx.destination);
+    source.start();
+
+    const rendered = await offlineCtx.startRendering();
+    const blob = audioBufferToWavBlob(rendered);
+    return { blob, url: URL.createObjectURL(blob), duration };
+  }
+
+  // High-fidelity Stereo Mid-Side Vocal Cancellation
+  const offlineCtx = new OfflineAudioContext(2, length, sampleRate);
+  const source = offlineCtx.createBufferSource();
+  source.buffer = decodedBuffer;
+
+  const splitter = offlineCtx.createChannelSplitter(2);
+  source.connect(splitter);
+
+  // Left minus Right (L - R)
+  const diffMerger = offlineCtx.createChannelMerger(2);
+  
+  const gainL = offlineCtx.createGain();
+  gainL.gain.value = 0.9;
+  splitter.connect(gainL, 0); // L
+  
+  const invGainR = offlineCtx.createGain();
+  invGainR.gain.value = -0.9;
+  splitter.connect(invGainR, 1); // -R
+  
+  gainL.connect(diffMerger, 0, 0); // L to Left
+  invGainR.connect(diffMerger, 0, 0); // -R to Left (so Left = L - R)
+
+  // Right minus Left (R - L)
+  const gainR = offlineCtx.createGain();
+  gainR.gain.value = 0.9;
+  splitter.connect(gainR, 1); // R
+
+  const invGainL = offlineCtx.createGain();
+  invGainL.gain.value = -0.9;
+  splitter.connect(invGainL, 0); // -L
+
+  gainR.connect(diffMerger, 0, 1); // R to Right
+  invGainL.connect(diffMerger, 0, 1); // -L to Right (so Right = R - L)
+
+  // Bass & Kick Drum Bypass (< 140 Hz center preservation)
+  const lowPassL = offlineCtx.createBiquadFilter();
+  lowPassL.type = 'lowpass';
+  lowPassL.frequency.value = 140;
+  splitter.connect(lowPassL, 0);
+
+  const lowPassR = offlineCtx.createBiquadFilter();
+  lowPassR.type = 'lowpass';
+  lowPassR.frequency.value = 140;
+  splitter.connect(lowPassR, 1);
+
+  lowPassL.connect(diffMerger, 0, 0);
+  lowPassR.connect(diffMerger, 0, 1);
+
+  diffMerger.connect(offlineCtx.destination);
+  source.start();
+
+  const rendered = await offlineCtx.startRendering();
+  const blob = audioBufferToWavBlob(rendered);
+  return { blob, url: URL.createObjectURL(blob), duration };
+}

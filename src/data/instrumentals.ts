@@ -54,6 +54,50 @@ Zindagi ab tum hee ho
 O-o-o, chain bhee, mera dard bhee
 Meri aashiqui ab tum hee ho`;
 
+export const LUTT_LE_GAYA_LYRICS = `Aaja ve, aaja
+Aaja ve, aaja
+Haaye sajan, haaye sajan, haaye sajan, haaye sajan
+Aaja ve, aaja
+
+Aaja ve, aaja, seene laa jaa
+Haaye, sajan mainu lutt le gaya, haaye
+Haaye, sajan mainu lutt le gaya
+Pyaase labban de rog mukka jaa
+Haaye, sajan mainu lutt le gaya, haaye
+Haaye, sajan mainu lutt le gaya
+Haaye, sajan meri ankhaan tarasdi
+Har imaan mera tutt beh gaya
+
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+
+Aaja ve, aaja
+Ho, mainu lutt le gaya
+Aaja ve, aaja (Haaye, sajan)
+Ho, mainu lutt le gaya
+Aaja ve, aaja
+Aaja ve, aaja
+
+Takdi ankhiyaan aje na thakiyaan
+Naina vich nasha vass gaya
+Rajj ke peevan tainu, sajna
+Raatan vich na rass gaya, haaye
+Vass na jaavan, vich main saahvan
+Mainu oh khich fer ghutt le gaya
+Haaye, sajan meri ankhaan tarasdi
+Har imaan mera tutt beh gaya
+
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+
+Aaja ve, aaja
+Aaja ve, aaja
+Haaye sajan, haaye sajan, haaye sajan, haaye sajan`;
+
 export const BUILTIN_INSTRUMENTAL_CATALOG: InstrumentalTrack[] = [
   {
     id: 'inst_tum_hi_ho',
@@ -68,6 +112,20 @@ export const BUILTIN_INSTRUMENTAL_CATALOG: InstrumentalTrack[] = [
     rightsStatus: 'user-local',
     tags: ['Aashiqui 2', 'Arijit Singh', 'Karaoke', 'Demo Song', 'Lyrics Included'],
     lyrics: TUM_HI_HO_LYRICS
+  },
+  {
+    id: 'inst_lutt_le_gaya',
+    title: 'Lutt Le Gaya (Dhurandhar)',
+    category: 'punjabi-1',
+    categoryLabel: 'Punjabi Dance / Dhurandhar',
+    styleDescription: 'High energy Punjabi dance anthem by Simran Choudhary & Shashwat Sachdev from Dhurandhar. Studio track with vocal suppression & synchronized lyrics.',
+    duration: 255,
+    bpm: 112,
+    key: 'F# Minor',
+    previewUrl: '/assets/aistudio/Lutt_Le_Gaya_Dhurandhar_320_Kbps_0ceffc43.mp3',
+    rightsStatus: 'user-local',
+    tags: ['Dhurandhar', 'Simran Choudhary', 'Punjabi', 'Bollywood', 'Karaoke Ready'],
+    lyrics: LUTT_LE_GAYA_LYRICS
   },
   {
     id: 'inst_bollywood_1',
