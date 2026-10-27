@@ -217,21 +217,6 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
             </div>
           </div>
 
-          {/* Credential Helper Note */}
-          {/*  <div className="p-3 bg-white/5 rounded-2xl border border-white/5 flex items-center justify-between text-[10px] text-white/60">
-              <div className="flex items-center gap-1.5">
-                <Sparkles size={12} className="text-amber-400 shrink-0" />
-                <span>Dev credentials: <strong className="text-white">admin</strong> / <strong className="text-white">admin179</strong></span>
-              </div>
-              <button
-                type="button"
-                onClick={handleFillDemo}
-                className="text-[#8E7CFF] hover:underline font-bold text-[10px] cursor-pointer"
-              >
-                Fill Demo
-              </button>
-            </div> */}
-
           {/* Action Buttons */}
           <div className="pt-2 flex items-center gap-3">
             <button

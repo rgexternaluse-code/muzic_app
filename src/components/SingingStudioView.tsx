@@ -45,6 +45,7 @@ import { Track } from '../types';
 import { VocalSeparationModal } from './VocalSeparationModal';
 import { SubscriptionModal } from './SubscriptionModal';
 import { GoogleVerificationModal } from './GoogleVerificationModal';
+import { MicrophonePermissionModal } from './MicrophonePermissionModal';
 import { KaraokeLyricsView } from './KaraokeLyricsView';
 import { TUM_HI_HO_KARAOKE_DATA, LUTT_LE_GAYA_KARAOKE_DATA, parseLrcOrTextToKaraoke, SongKaraokeTiming } from '../data/karaokeTimings';
 import { extractClientSideKaraokeAudio } from '../services/vocalSeparationService';
@@ -57,13 +58,15 @@ interface SingingStudioViewProps {
   onBackToLibrary: () => void;
   onPauseMainPlayer: () => void;
   onShowToast: (message: string, icon?: React.ReactNode, subtitle?: string) => void;
+  theme?: 'dark' | 'light';
 }
 
 export function SingingStudioView({
   libraryTracks,
   onBackToLibrary,
   onPauseMainPlayer,
-  onShowToast
+  onShowToast,
+  theme = 'dark'
 }: SingingStudioViewProps) {
   // Track Selection Source: Built-in Catalog vs Device Audio
   const [sourceTab, setSourceTab] = useState<'builtin' | 'device'>('builtin');
@@ -104,6 +107,12 @@ export function SingingStudioView({
   const recordingTimerRef = useRef<any>(null);
   const [vuLevel, setVuLevel] = useState(0); // 0.0 to 1.0 for live VU visualizer meter
   const [micPermissionDenied, setMicPermissionDenied] = useState(false);
+
+  // Microphone Permission Modal State (Explicit check before singing)
+  const [isMicPermissionModalOpen, setIsMicPermissionModalOpen] = useState(false);
+  const [isRequestingMic, setIsRequestingMic] = useState(false);
+  const [micModalError, setMicModalError] = useState<string | null>(null);
+  const [hasMicPermissionGranted, setHasMicPermissionGranted] = useState(false);
 
   // Recorded Take Data
   const [recordedVoiceBlob, setRecordedVoiceBlob] = useState<Blob | null>(null);
@@ -179,6 +188,26 @@ export function SingingStudioView({
   useEffect(() => {
     onPauseMainPlayer();
   }, [onPauseMainPlayer]);
+
+  // Check initial microphone permission state if query API is supported
+  useEffect(() => {
+    if (typeof navigator !== 'undefined' && navigator.permissions?.query) {
+      navigator.permissions.query({ name: 'microphone' as any })
+        .then((perm) => {
+          if (perm.state === 'granted') {
+            setHasMicPermissionGranted(true);
+            setMicPermissionDenied(false);
+          } else if (perm.state === 'denied') {
+            setMicPermissionDenied(true);
+          }
+          perm.onchange = () => {
+            setHasMicPermissionGranted(perm.state === 'granted');
+            if (perm.state === 'granted') setMicPermissionDenied(false);
+          };
+        })
+        .catch(() => {});
+    }
+  }, []);
 
   // Clean up recording timer and audio URLs on unmount
   useEffect(() => {
@@ -610,7 +639,7 @@ export function SingingStudioView({
     ? (customLyricsText || (customDeviceTrack ? `Sing along to ${customDeviceTrack.title}` : ''))
     : selectedBuiltinTrack.lyrics;
 
-  // --- RECORDING WORKFLOW ---
+  // --- RECORDING WORKFLOW (Enforces microphone access check before singing) ---
 
   const handleStartRecording = async () => {
     onPauseMainPlayer();
@@ -631,6 +660,42 @@ export function SingingStudioView({
       return;
     }
 
+    // Explicit check: Microphone permission must be requested and granted before singing
+    if (!hasMicPermissionGranted) {
+      setMicModalError(null);
+      setIsMicPermissionModalOpen(true);
+      return;
+    }
+
+    await executeStartRecording();
+  };
+
+  const handleGrantMicPermissionAndStart = async () => {
+    setIsRequestingMic(true);
+    setMicModalError(null);
+    try {
+      const hasMic = await studioEngine.requestMicrophonePermission();
+      if (!hasMic) {
+        setIsRequestingMic(false);
+        setMicPermissionDenied(true);
+        setMicModalError('Microphone permission was denied by your browser or system. Please enable microphone permissions in your browser or device settings.');
+        return;
+      }
+
+      setHasMicPermissionGranted(true);
+      setMicPermissionDenied(false);
+      setIsMicPermissionModalOpen(false);
+      setIsRequestingMic(false);
+
+      // Immediately launch synchronized singing take!
+      await executeStartRecording();
+    } catch (err: any) {
+      setIsRequestingMic(false);
+      setMicModalError(err?.message || 'Could not access device microphone. Please try again.');
+    }
+  };
+
+  const executeStartRecording = async () => {
     // Stop previews
     if (isBackingPreviewPlaying) {
       backingAudioRef.current?.pause();
@@ -640,18 +705,10 @@ export function SingingStudioView({
     setIsCombinedPreviewPlaying(false);
 
     try {
-      // 1. Verify mic permission
-      const hasMic = await studioEngine.requestMicrophonePermission();
-      if (!hasMic) {
-        setMicPermissionDenied(true);
-        onShowToast('Microphone permission required for vocal recording.', <MicOff size={16} className="text-red-400" />);
-        return;
-      }
-
-      // 2. Prepare backing audio URL
+      // 1. Prepare backing audio URL
       const backingUrl = await getActiveBackingUrl();
 
-      // 3. Start synchronized recording
+      // 2. Start synchronized recording
       await studioEngine.startRecording(backingUrl, (level) => {
         setVuLevel(level);
       });
@@ -670,12 +727,19 @@ export function SingingStudioView({
       }, 100);
 
       onShowToast(
-        !isVerified ? 'Demo recording started! Sing into microphone.' : 'Recording started! Sing into microphone.',
+        !effectiveIsVerified ? 'Demo recording started! Sing into microphone.' : 'Recording started! Sing into microphone.',
         <Mic size={16} className="text-red-400 animate-pulse" />
       );
     } catch (err: any) {
       setIsRecording(false);
-      onShowToast('Could not start recording: ' + (err.message || 'Error'), <AlertCircle size={16} className="text-red-400" />);
+      if (err?.name === 'NotAllowedError' || err?.message?.includes('Permission denied')) {
+        setHasMicPermissionGranted(false);
+        setMicPermissionDenied(true);
+        setIsMicPermissionModalOpen(true);
+        setMicModalError('Microphone permission is required to sing. Please allow access.');
+      } else {
+        onShowToast('Could not start recording: ' + (err.message || 'Error'), <AlertCircle size={16} className="text-red-400" />);
+      }
     }
   };
 
@@ -1158,11 +1222,30 @@ export function SingingStudioView({
                     Music plays in sync while your microphone captures your live singing.
                   </p>
                 </div>
-                {isRecording && (
-                  <span className="text-xs font-black text-red-400 bg-red-400/20 px-3 py-1 rounded-full border border-red-400/30 animate-pulse">
-                    {formatSec(recordingSeconds)} REC
-                  </span>
-                )}
+                <div className="flex items-center gap-2 shrink-0">
+                  {hasMicPermissionGranted ? (
+                    <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                      <CheckCircle2 size={11} /> Mic Ready
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMicModalError(null);
+                        setIsMicPermissionModalOpen(true);
+                      }}
+                      className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1 hover:bg-amber-500/30 transition-all cursor-pointer"
+                      title="Request microphone permission"
+                    >
+                      <Mic size={11} /> Permission Required
+                    </button>
+                  )}
+                  {isRecording && (
+                    <span className="text-xs font-black text-red-400 bg-red-400/20 px-3 py-1 rounded-full border border-red-400/30 animate-pulse">
+                      {formatSec(recordingSeconds)} REC
+                    </span>
+                  )}
+                </div>
               </div>
 
               {micPermissionDenied && (
@@ -1751,11 +1834,30 @@ export function SingingStudioView({
               </h2>
               <p className="text-[11px] text-[#8F8E9C]">Backing track plays in sync while your microphone captures vocals.</p>
             </div>
-            {isRecording && (
-              <span className="text-xs font-black text-red-400 bg-red-400/20 px-3 py-1 rounded-full border border-red-400/30 animate-pulse">
-                {formatSec(recordingSeconds)} REC
-              </span>
-            )}
+            <div className="flex items-center gap-2 shrink-0">
+              {hasMicPermissionGranted ? (
+                <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                  <CheckCircle2 size={11} /> Mic Ready
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMicModalError(null);
+                    setIsMicPermissionModalOpen(true);
+                  }}
+                  className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1 hover:bg-amber-500/30 transition-all cursor-pointer"
+                  title="Request microphone permission"
+                >
+                  <Mic size={11} /> Permission Required
+                </button>
+              )}
+              {isRecording && (
+                <span className="text-xs font-black text-red-400 bg-red-400/20 px-3 py-1 rounded-full border border-red-400/30 animate-pulse">
+                  {formatSec(recordingSeconds)} REC
+                </span>
+              )}
+            </div>
           </div>
 
           {micPermissionDenied && (
@@ -2058,6 +2160,16 @@ export function SingingStudioView({
         customTitle={authModalContext.title}
         customSubtitle={authModalContext.subtitle}
         customReason={authModalContext.reason}
+      />
+
+      {/* Explicit Microphone Permission Modal */}
+      <MicrophonePermissionModal
+        isOpen={isMicPermissionModalOpen}
+        onClose={() => setIsMicPermissionModalOpen(false)}
+        onGrantPermission={handleGrantMicPermissionAndStart}
+        isRequesting={isRequestingMic}
+        permissionError={micModalError}
+        theme={theme}
       />
     </div>
   );

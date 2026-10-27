@@ -2685,6 +2685,7 @@ export default function App() {
           onBackToLibrary={() => setActiveNavTab('library')}
           onPauseMainPlayer={() => player.setIsPlaying(false)}
           onShowToast={showToast}
+          theme={theme}
         />
       )}
 
