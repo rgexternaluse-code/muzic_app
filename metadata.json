@@ -1,7 +1,9 @@
 {
   "name": "Muzic",
   "description": "A high-fidelity Material 3 music player with immersive animations, smooth playback, and local file management.",
-  "requestFramePermissions": [],
+  "requestFramePermissions": [
+    "microphone"
+  ],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
   ]

@@ -1,8 +1,4 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
+import { Capacitor } from '@capacitor/core';
 import { StudioMixerSettings, CombinedMixResult } from '../types/studio';
 import { audioBufferToWavBlob } from '../data/instrumentals';
 
@@ -38,28 +34,61 @@ export class AudioStudioEngine {
   }
 
   /**
-   * Request microphone permission with high-fidelity studio constraints
+   * Request microphone permission with resilient fallback constraints for Web & APK
    */
   public async requestMicrophonePermission(): Promise<boolean> {
     try {
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        throw new Error('Microphone audio recording is not supported in this browser or WebView environment.');
+      // 1. Android Native APK: Request RECORD_AUDIO OS runtime permission if on native platform
+      if (Capacitor.isNativePlatform()) {
+        try {
+          const plugins = (Capacitor as any).Plugins;
+          if (plugins?.NativeAudioScanner?.requestRecordAudioPermission) {
+            const res = await plugins.NativeAudioScanner.requestRecordAudioPermission();
+            if (res && res.granted === false) {
+              console.warn('Native Android microphone permission was not granted by user.');
+              return false;
+            }
+          }
+        } catch (nativeErr) {
+          console.warn('Native permission check non-blocking note:', nativeErr);
+        }
       }
 
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          echoCancellation: false, // Turn off aggressive DSP for vocal singing fidelity
-          noiseSuppression: false,
-          autoGainControl: false,
-          channelCount: 2
-        }
-      });
+      // 2. Validate browser / WebView mediaDevices API
+      if (!navigator?.mediaDevices?.getUserMedia) {
+        console.warn('Microphone audio recording is not supported in this environment.');
+        return false;
+      }
 
-      // Quick test then release until actual recording starts
-      stream.getTracks().forEach(t => t.stop());
-      return true;
+      // 3. Acquire stream using robust, progressive constraints
+      let stream: MediaStream | null = null;
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false
+          }
+        });
+      } catch (e1) {
+        try {
+          // Standard audio: true works across Web, iOS, and Android WebViews
+          stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        } catch (e2: any) {
+          console.warn('Microphone access was not granted by user or system:', e2?.name || e2?.message || e2);
+          return false;
+        }
+      }
+
+      if (stream && stream.active) {
+        // Keep active stream reference so startRecording reuses it without double prompting
+        this.mediaStream = stream;
+        return true;
+      }
+
+      return false;
     } catch (err: any) {
-      console.warn('Microphone permission request failed:', err);
+      console.warn('Microphone permission request failed:', err?.name || err?.message || err);
       return false;
     }
   }
@@ -75,14 +104,31 @@ export class AudioStudioEngine {
     this.recordedChunks = [];
     this.onMeterLevelCallback = onMeterLevel || null;
 
-    // 1. Acquire microphone stream
-    this.mediaStream = await navigator.mediaDevices.getUserMedia({
-      audio: {
-        echoCancellation: false,
-        noiseSuppression: false,
-        autoGainControl: false
+    // 1. Acquire microphone stream (reuse existing valid active stream if available, or acquire fresh)
+    if (!this.mediaStream || !this.mediaStream.active || this.mediaStream.getAudioTracks().length === 0 || this.mediaStream.getAudioTracks()[0].readyState === 'ended') {
+      if (!navigator?.mediaDevices?.getUserMedia) {
+        throw new Error('Microphone audio recording is not supported in this environment.');
       }
-    });
+      try {
+        this.mediaStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false
+          }
+        });
+      } catch (e1) {
+        try {
+          this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        } catch (e2: any) {
+          throw new Error('Microphone permission was denied. Please allow microphone access to record.');
+        }
+      }
+    }
+
+    if (!this.mediaStream) {
+      throw new Error('Microphone stream is unavailable.');
+    }
 
     // 2. Setup Analyser for real-time visualizer
     const sourceNode = ctx.createMediaStreamSource(this.mediaStream);

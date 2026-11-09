@@ -197,12 +197,14 @@ export function SingingStudioView({
           if (perm.state === 'granted') {
             setHasMicPermissionGranted(true);
             setMicPermissionDenied(false);
-          } else if (perm.state === 'denied') {
-            setMicPermissionDenied(true);
           }
           perm.onchange = () => {
-            setHasMicPermissionGranted(perm.state === 'granted');
-            if (perm.state === 'granted') setMicPermissionDenied(false);
+            if (perm.state === 'granted') {
+              setHasMicPermissionGranted(true);
+              setMicPermissionDenied(false);
+            } else if (perm.state === 'denied') {
+              setHasMicPermissionGranted(false);
+            }
           };
         })
         .catch(() => {});
