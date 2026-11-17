@@ -2537,24 +2537,7 @@ export default function App() {
                           onOpenMenu={() => setSelectedTrackForMenu(track)}
                         />
                       ))
-                    ) : isScanning ? (
-                      <div className="flex flex-col items-center justify-center py-16 px-6 bg-[#14122B]/80 border border-[#6355FE]/40 rounded-3xl text-center space-y-4 shadow-xl">
-                        <div className="w-16 h-16 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/20">
-                          <Loader2 size={32} className="animate-spin text-[#8E7CFF]" />
-                        </div>
-                        <div className="space-y-1 max-w-xs">
-                          <h3 className="font-black text-sm text-white">Scanning Audio Files ({scanProgress}%)</h3>
-                          <p className="text-[11px] font-semibold text-[#8F8E9C]">Searching device folders & extracting ID3 track artwork...</p>
-                        </div>
-                        <div className="w-full max-w-xs h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                          <motion.div 
-                            className="h-full bg-gradient-to-r from-[#6355FE] via-[#8E7CFF] to-[#A798FF]" 
-                            animate={{ width: `${scanProgress}%` }} 
-                            transition={{ duration: 0.3 }} 
-                          />
-                        </div>
-                      </div>
-                    ) : (
+                    ) : !isScanning ? (
                       <div className="flex flex-col items-center justify-center py-12 px-6 bg-[#14122B]/60 border border-white/10 rounded-3xl text-center space-y-4 shadow-xl">
                         <div className="w-16 h-16 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/20">
                           <FolderPlus size={32} />
@@ -2603,7 +2586,7 @@ export default function App() {
                           </button>
                         </div>
                       </div>
-                    )
+                    ) : null
                   ) : viewMode === 'folders' ? (
                     <RecursiveFolderView 
                       node={folderTree} 
@@ -3345,9 +3328,9 @@ export default function App() {
         isPlaying={player.isPlaying}
       />
 
-      {/* Scanning UI - Floating Toast Banner */}
+      {/* Scanning UI - Floating Toast Banner (only shown when outside Local Library to avoid duplicate loaders) */}
       <AnimatePresence>
-        {isScanning && (
+        {isScanning && !(activeNavTab === 'library' && activeTab === 'local') && (
           <motion.div 
             initial={{ opacity: 0, y: -40, scale: 0.95 }} 
             animate={{ opacity: 1, y: 0, scale: 1 }} 

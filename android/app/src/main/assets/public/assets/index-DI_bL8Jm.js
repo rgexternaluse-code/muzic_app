@@ -22151,7 +22151,7 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
   });
 };
 const App$1 = registerPlugin("App", {
-  web: () => __vitePreload(() => import("./web-CVHVpkmY.js"), true ? [] : void 0).then((m2) => new m2.AppWeb())
+  web: () => __vitePreload(() => import("./web-C5X3Zg6i.js"), true ? [] : void 0).then((m2) => new m2.AppWeb())
 });
 class FilePickerWeb extends WebPlugin {
   constructor() {
@@ -87334,25 +87334,7 @@ function App() {
               },
               track.id
             );
-          }) : isScanning ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center py-16 px-6 bg-[#14122B]/80 border border-[#6355FE]/40 rounded-3xl text-center space-y-4 shadow-xl", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/20", children: /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 32, className: "animate-spin text-[#8E7CFF]" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1 max-w-xs", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "font-black text-sm text-white", children: [
-                "Scanning Audio Files (",
-                scanProgress,
-                "%)"
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] font-semibold text-[#8F8E9C]", children: "Searching device folders & extracting ID3 track artwork..." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-full max-w-xs h-2 bg-white/5 rounded-full overflow-hidden border border-white/5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              motion.div,
-              {
-                className: "h-full bg-gradient-to-r from-[#6355FE] via-[#8E7CFF] to-[#A798FF]",
-                animate: { width: `${scanProgress}%` },
-                transition: { duration: 0.3 }
-              }
-            ) })
-          ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center py-12 px-6 bg-[#14122B]/60 border border-white/10 rounded-3xl text-center space-y-4 shadow-xl", children: [
+          }) : !isScanning ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col items-center justify-center py-12 px-6 bg-[#14122B]/60 border border-white/10 rounded-3xl text-center space-y-4 shadow-xl", children: [
             /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-16 h-16 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/20", children: /* @__PURE__ */ jsxRuntimeExports.jsx(FolderPlus, { size: 32 }) }),
             /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1 max-w-xs", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "font-black text-sm text-white", children: "No Music Files Loaded" }),
@@ -87400,7 +87382,7 @@ function App() {
                 }
               )
             ] })
-          ] }) : viewMode === "folders" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
+          ] }) : null : viewMode === "folders" ? /* @__PURE__ */ jsxRuntimeExports.jsx(
             RecursiveFolderView,
             {
               node: folderTree,
@@ -88015,7 +87997,7 @@ function App() {
         isPlaying: player.isPlaying
       }
     ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: isScanning && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: isScanning && !(activeNavTab === "library" && activeTab === "local") && /* @__PURE__ */ jsxRuntimeExports.jsxs(
       motion.div,
       {
         initial: { opacity: 0, y: -40, scale: 0.95 },
