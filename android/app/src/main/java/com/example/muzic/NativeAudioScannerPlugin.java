@@ -40,6 +40,10 @@ import java.io.File;
         @Permission(
             strings = { Manifest.permission.READ_EXTERNAL_STORAGE },
             alias = "audioStorage"
+        ),
+        @Permission(
+            strings = { Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS },
+            alias = "recordAudio"
         )
     }
 )
@@ -81,6 +85,33 @@ public class NativeAudioScannerPlugin extends Plugin {
     @PermissionCallback
     private void permissionCallback(PluginCall call) {
         boolean granted = hasAudioPermission();
+        JSObject ret = new JSObject();
+        ret.put("granted", granted);
+        call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void checkRecordAudioPermission(PluginCall call) {
+        boolean granted = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
+        JSObject ret = new JSObject();
+        ret.put("granted", granted);
+        call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void requestRecordAudioPermission(PluginCall call) {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            JSObject ret = new JSObject();
+            ret.put("granted", true);
+            call.resolve(ret);
+            return;
+        }
+        requestPermissionForAlias("recordAudio", call, "recordAudioCallback");
+    }
+
+    @PermissionCallback
+    private void recordAudioCallback(PluginCall call) {
+        boolean granted = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
         JSObject ret = new JSObject();
         ret.put("granted", granted);
         call.resolve(ret);

@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.getcapacitor.JSObject;
@@ -24,6 +26,7 @@ import com.getcapacitor.annotation.Permission;
 )
 public class SystemMediaPlayerPlugin extends Plugin {
     private static final String TAG = "SystemMediaPlayerPlugin";
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public void load() {
@@ -35,7 +38,7 @@ public class SystemMediaPlayerPlugin extends Plugin {
                 if (position != null) {
                     data.put("position", position);
                 }
-                notifyListeners("mediaAction", data);
+                mainHandler.post(() -> notifyListeners("mediaAction", data, true));
             });
             Log.d(TAG, "SystemMediaPlayerPlugin loaded and listener registered");
         } catch (Exception e) {
@@ -69,22 +72,22 @@ public class SystemMediaPlayerPlugin extends Plugin {
         Boolean isPlaying = call.getBoolean("isPlaying", false);
         Double positionSec = call.getDouble("position", 0.0);
 
-        long durationMs = Math.round(durationSec * 1000);
-        long positionMs = Math.round(positionSec * 1000);
+        long durationMs = Math.round((durationSec != null ? durationSec : 0.0) * 1000);
+        long positionMs = Math.round((positionSec != null ? positionSec : 0.0) * 1000);
+        boolean playing = Boolean.TRUE.equals(isPlaying);
 
-        ensureServiceStarted();
-
-        // If service instance already created, call update directly; otherwise post after short delay
         MediaPlaybackService service = MediaPlaybackService.getInstance();
         if (service != null) {
-            service.updateTrack(title, artist, album, durationMs, artwork, isPlaying, positionMs);
+            service.updateTrack(title, artist, album, durationMs, artwork, playing, positionMs);
         } else {
-            getActivity().getWindow().getDecorView().postDelayed(() -> {
+            MediaPlaybackService.setPendingTrack(title, artist, album, durationMs, artwork, playing, positionMs);
+            ensureServiceStarted();
+            mainHandler.postDelayed(() -> {
                 MediaPlaybackService svc = MediaPlaybackService.getInstance();
                 if (svc != null) {
-                    svc.updateTrack(title, artist, album, durationMs, artwork, isPlaying, positionMs);
+                    svc.updateTrack(title, artist, album, durationMs, artwork, playing, positionMs);
                 }
-            }, 100);
+            }, 150);
         }
 
         call.resolve();
@@ -96,12 +99,16 @@ public class SystemMediaPlayerPlugin extends Plugin {
         Double positionSec = call.getDouble("position", 0.0);
         Double durationSec = call.getDouble("duration", 0.0);
 
-        long positionMs = Math.round(positionSec * 1000);
-        long durationMs = Math.round(durationSec * 1000);
+        boolean playing = Boolean.TRUE.equals(isPlaying);
+        long positionMs = Math.round((positionSec != null ? positionSec : 0.0) * 1000);
+        long durationMs = Math.round((durationSec != null ? durationSec : 0.0) * 1000);
 
         MediaPlaybackService service = MediaPlaybackService.getInstance();
         if (service != null) {
-            service.updatePlaybackState(isPlaying, positionMs, durationMs);
+            service.updatePlaybackState(playing, positionMs, durationMs);
+        } else if (playing) {
+            MediaPlaybackService.setPendingPlaybackState(playing, positionMs, durationMs);
+            ensureServiceStarted();
         }
 
         call.resolve();

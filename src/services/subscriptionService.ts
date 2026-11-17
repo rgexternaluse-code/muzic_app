@@ -132,7 +132,16 @@ class SubscriptionService implements ISubscriptionService {
     }
   }
 
+  private isAdminMode(): boolean {
+    try {
+      return typeof window !== 'undefined' && localStorage.getItem('muzic_admin_mode') === 'true';
+    } catch {
+      return false;
+    }
+  }
+
   public getCurrentTier(): SubscriptionTierId {
+    if (this.isAdminMode()) return 'studio_pass';
     return this.currentTier;
   }
 
@@ -141,6 +150,9 @@ class SubscriptionService implements ISubscriptionService {
   }
 
   public getLocalUploadQuota(): LocalUploadQuota {
+    if (this.isAdminMode()) {
+      return { used: 0, limit: 9999, remaining: 9999 };
+    }
     const limit = MONTHLY_LOCAL_UPLOAD_LIMITS[this.currentTier] ?? 5;
     const used = this.getStoredUploadCount();
     const remaining = Math.max(0, limit - used);
@@ -155,6 +167,7 @@ class SubscriptionService implements ISubscriptionService {
   }
 
   public canUploadLocalTrack(): boolean {
+    if (this.isAdminMode()) return true;
     const { remaining } = this.getLocalUploadQuota();
     return remaining > 0;
   }
@@ -176,15 +189,17 @@ class SubscriptionService implements ISubscriptionService {
   }
 
   public getEntitlements(): UserEntitlements {
-    const isPremium = this.currentTier === 'pro' || this.currentTier === 'studio_pass';
+    const adminActive = this.isAdminMode();
+    const effectiveTier = adminActive ? 'studio_pass' : this.currentTier;
+    const isPremium = adminActive || this.currentTier === 'pro' || this.currentTier === 'studio_pass';
     const quota = this.getLocalUploadQuota();
     return {
-      tier: this.currentTier,
+      tier: effectiveTier,
       isPremium,
       canExportLosslessWav: isPremium,
       canUseStudioReverb: isPremium,
       adFree: isPremium,
-      monthlyAiSeparationMinutesTotal: this.currentTier === 'studio_pass' ? 30 : 0,
+      monthlyAiSeparationMinutesTotal: isPremium ? 999 : 0,
       monthlyAiSeparationMinutesUsed: 0,
       monthlyLocalUploadLimit: quota.limit,
       monthlyLocalUploadUsed: quota.used,

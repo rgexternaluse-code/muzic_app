@@ -93,6 +93,13 @@ export async function setupSystemMediaActionListener(
   }
 }
 
+let lastSyncedState = {
+  isPlaying: false,
+  position: -1,
+  duration: 0,
+  timestamp: 0
+};
+
 export async function syncTrackToSystemMedia(
   track: Track | null,
   isPlaying: boolean,
@@ -105,27 +112,30 @@ export async function syncTrackToSystemMedia(
 
   requestNotificationPermissionIfNeeded().catch(() => {});
 
+  const resolvedDuration = duration > 0 ? duration : (track.duration || 0);
+  const resolvedPosition = Math.max(0, position);
+
+  lastSyncedState = {
+    isPlaying,
+    position: resolvedPosition,
+    duration: resolvedDuration,
+    timestamp: Date.now()
+  };
+
   try {
     await SystemMediaPlayer.updateTrack({
       title: track.title || 'Unknown Title',
       artist: track.artist || 'Unknown Artist',
       album: track.album || 'Muzic',
-      duration: duration > 0 ? duration : (track.duration || 0),
+      duration: resolvedDuration,
       artwork: track.cover || null,
       isPlaying,
-      position: Math.max(0, position)
+      position: resolvedPosition
     });
   } catch (err) {
     console.warn('SystemMediaPlayer updateTrack error:', err);
   }
 }
-
-let lastSyncedState = {
-  isPlaying: false,
-  position: -1,
-  duration: 0,
-  timestamp: 0
-};
 
 export async function syncPlaybackStateToSystemMedia(
   isPlaying: boolean,

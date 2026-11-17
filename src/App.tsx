@@ -152,10 +152,33 @@ function useMusicPlayer(tracks: Track[]) {
   const [repeatMode, setRepeatMode] = useState<'off' | 'all' | 'one'>('off');
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const isSwitchingTrackRef = useRef<boolean>(false);
+  const switchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const currentTrack = useMemo(() => tracks[currentTrackIndex] || null, [tracks, currentTrackIndex]);
 
+  const markSwitchingTrack = useCallback(() => {
+    isSwitchingTrackRef.current = true;
+    if (switchTimeoutRef.current) {
+      clearTimeout(switchTimeoutRef.current);
+    }
+    switchTimeoutRef.current = setTimeout(() => {
+      isSwitchingTrackRef.current = false;
+      switchTimeoutRef.current = null;
+    }, 600);
+  }, []);
+
   useEffect(() => {
+    return () => {
+      if (switchTimeoutRef.current) {
+        clearTimeout(switchTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  // Ensure track source swaps don't let transient browser <audio> pause events stall playback
+  useEffect(() => {
+    markSwitchingTrack();
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.play().catch(e => console.error("Playback failed", e));
@@ -163,33 +186,99 @@ function useMusicPlayer(tracks: Track[]) {
         audioRef.current.pause();
       }
     }
-  }, [isPlaying, currentTrackIndex]);
+  }, [isPlaying, currentTrackIndex, currentTrack?.url, markSwitchingTrack]);
 
-  const togglePlay = () => setIsPlaying(!isPlaying);
+  const playTrack = useCallback(() => {
+    setIsPlaying(true);
+    if (audioRef.current && audioRef.current.paused) {
+      audioRef.current.play().catch(e => console.error("Playback failed", e));
+    }
+  }, []);
 
-  const nextTrack = () => {
-    if (repeatMode === 'one') {
-      if (audioRef.current) audioRef.current.currentTime = 0;
-      audioRef.current?.play();
+  const pauseTrack = useCallback(() => {
+    isSwitchingTrackRef.current = false;
+    setIsPlaying(false);
+    if (audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
+    }
+  }, []);
+
+  const togglePlay = useCallback(() => {
+    if (isPlaying) {
+      pauseTrack();
+    } else {
+      playTrack();
+    }
+  }, [isPlaying, playTrack, pauseTrack]);
+
+  const nextTrack = useCallback(() => {
+    if (tracks.length === 0) return;
+    markSwitchingTrack();
+
+    if (tracks.length === 1) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(e => console.error("Playback failed", e));
+      }
+      setCurrentTime(0);
+      setIsPlaying(true);
       return;
     }
 
     if (shuffle) {
-      const nextIndex = Math.floor(Math.random() * tracks.length);
+      let nextIndex = Math.floor(Math.random() * tracks.length);
+      if (nextIndex === currentTrackIndex) {
+        nextIndex = (currentTrackIndex + 1) % tracks.length;
+      }
       setCurrentTrackIndex(nextIndex);
     } else {
       setCurrentTrackIndex(p => (p + 1) % tracks.length);
     }
-  };
+    setCurrentTime(0);
+    setIsPlaying(true);
+  }, [tracks.length, shuffle, currentTrackIndex, markSwitchingTrack]);
 
-  const prevTrack = () => {
+  const prevTrack = useCallback(() => {
+    if (tracks.length === 0) return;
+    markSwitchingTrack();
+
+    if (tracks.length === 1) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(e => console.error("Playback failed", e));
+      }
+      setCurrentTime(0);
+      setIsPlaying(true);
+      return;
+    }
+
     if (shuffle) {
-      const nextIndex = Math.floor(Math.random() * tracks.length);
+      let nextIndex = Math.floor(Math.random() * tracks.length);
+      if (nextIndex === currentTrackIndex) {
+        nextIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+      }
       setCurrentTrackIndex(nextIndex);
     } else {
       setCurrentTrackIndex(p => (p - 1 + tracks.length) % tracks.length);
     }
-  };
+    setCurrentTime(0);
+    setIsPlaying(true);
+  }, [tracks.length, shuffle, currentTrackIndex, markSwitchingTrack]);
+
+  const handleTrackEnded = useCallback(() => {
+    if (tracks.length === 0) return;
+    markSwitchingTrack();
+    if (repeatMode === 'one') {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(e => console.error("Repeat playback failed", e));
+      }
+      setCurrentTime(0);
+      setIsPlaying(true);
+      return;
+    }
+    nextTrack();
+  }, [tracks.length, repeatMode, nextTrack, markSwitchingTrack]);
 
   const toggleShuffle = () => setShuffle(!shuffle);
   const toggleRepeat = () => {
@@ -197,13 +286,14 @@ function useMusicPlayer(tracks: Track[]) {
     const nextIndex = (modes.indexOf(repeatMode) + 1) % modes.length;
     setRepeatMode(modes[nextIndex]);
   };
-  const seek = (time: number) => {
+  const seek = useCallback((time: number) => {
     if (audioRef.current) {
-      audioRef.current.currentTime = time;
-      setCurrentTime(time);
-      syncPlaybackStateToSystemMedia(isPlaying, time, duration, true);
+      const clamped = Math.max(0, Number.isFinite(time) ? time : 0);
+      audioRef.current.currentTime = clamped;
+      setCurrentTime(clamped);
+      syncPlaybackStateToSystemMedia(isPlaying, clamped, duration, true);
     }
-  };
+  }, [isPlaying, duration]);
 
   const onTimeUpdate = () => {
     if (audioRef.current) {
@@ -218,9 +308,12 @@ function useMusicPlayer(tracks: Track[]) {
     setCurrentTrackIndex,
     isPlaying,
     setIsPlaying,
+    playTrack,
+    pauseTrack,
     togglePlay,
     nextTrack,
     prevTrack,
+    handleTrackEnded,
     currentTime,
     duration,
     volume,
@@ -228,6 +321,7 @@ function useMusicPlayer(tracks: Track[]) {
     seek,
     onTimeUpdate,
     audioRef,
+    isSwitchingTrackRef,
     shuffle,
     repeatMode,
     toggleShuffle,
@@ -1294,9 +1388,15 @@ export default function App() {
   }, [player.isPlaying]);
 
   // --- Media Session & Lockscreen Controls Integration ---
+  const isNativeAndroid = Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android';
+  const lastMediaSessionActionAtRef = useRef<number>(0);
+
   const callbacksRef = useRef({
     isPlaying: player.isPlaying,
     setIsPlaying: player.setIsPlaying,
+    playTrack: player.playTrack,
+    pauseTrack: player.pauseTrack,
+    togglePlay: player.togglePlay,
     prevTrack: player.prevTrack,
     nextTrack: player.nextTrack,
     seek: player.seek,
@@ -1309,6 +1409,9 @@ export default function App() {
     callbacksRef.current = {
       isPlaying: player.isPlaying,
       setIsPlaying: player.setIsPlaying,
+      playTrack: player.playTrack,
+      pauseTrack: player.pauseTrack,
+      togglePlay: player.togglePlay,
       prevTrack: player.prevTrack,
       nextTrack: player.nextTrack,
       seek: player.seek,
@@ -1318,6 +1421,9 @@ export default function App() {
   }, [
     player.isPlaying,
     player.setIsPlaying,
+    player.playTrack,
+    player.pauseTrack,
+    player.togglePlay,
     player.prevTrack,
     player.nextTrack,
     player.seek,
@@ -1325,119 +1431,237 @@ export default function App() {
     player.duration
   ]);
 
-  // Set action handlers once on mount (Native Android System Media + Web MediaSession)
+  const registerWebMediaSessionHandlers = useCallback(() => {
+    if (isNativeAndroid || !('mediaSession' in navigator)) {
+      return;
+    }
+
+    const safeSetHandler = (action: MediaSessionAction, handler: MediaSessionActionHandler | null) => {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch {
+        // Ignore unsupported MediaSession actions on specific browsers
+      }
+    };
+
+    safeSetHandler('play', () => {
+      lastMediaSessionActionAtRef.current = Date.now();
+      callbacksRef.current.playTrack();
+    });
+    safeSetHandler('pause', () => {
+      lastMediaSessionActionAtRef.current = Date.now();
+      callbacksRef.current.pauseTrack();
+    });
+    safeSetHandler('stop', () => {
+      lastMediaSessionActionAtRef.current = Date.now();
+      callbacksRef.current.pauseTrack();
+      callbacksRef.current.seek(0);
+    });
+    safeSetHandler('previoustrack', () => {
+      lastMediaSessionActionAtRef.current = Date.now();
+      callbacksRef.current.prevTrack();
+    });
+    safeSetHandler('nexttrack', () => {
+      lastMediaSessionActionAtRef.current = Date.now();
+      callbacksRef.current.nextTrack();
+    });
+    safeSetHandler('seekto', (details) => {
+      if (details.seekTime !== undefined) {
+        callbacksRef.current.seek(details.seekTime);
+      }
+    });
+    safeSetHandler('seekbackward', (details) => {
+      const offset = details.seekOffset || 10;
+      callbacksRef.current.seek(Math.max(0, callbacksRef.current.currentTime - offset));
+    });
+    safeSetHandler('seekforward', (details) => {
+      const offset = details.seekOffset || 10;
+      const maxDur = callbacksRef.current.duration || Infinity;
+      callbacksRef.current.seek(Math.min(maxDur, callbacksRef.current.currentTime + offset));
+    });
+  }, [isNativeAndroid]);
+
+  // Set action handlers (Native Android System Media + Web MediaSession + Keyboard media key fallback)
   useEffect(() => {
     let removeNativeListener: (() => void) | undefined;
 
-    // 1. Android Native System Media Player (Notification controls, Lock-screen, Headset buttons)
-    setupSystemMediaActionListener((event) => {
-      switch (event.action) {
-        case 'play':
-          callbacksRef.current.setIsPlaying(true);
-          break;
-        case 'pause':
-          callbacksRef.current.setIsPlaying(false);
-          break;
-        case 'next':
-          callbacksRef.current.nextTrack();
-          break;
-        case 'previous':
-          callbacksRef.current.prevTrack();
-          break;
-        case 'seekTo':
-          if (event.position !== undefined) {
-            callbacksRef.current.seek(event.position);
+    if (isNativeAndroid) {
+      // 1. Android Native System Media Player (Bluetooth AVRCP, wired headset hook, lockscreen, notification)
+      setupSystemMediaActionListener((event) => {
+        switch (event.action) {
+          case 'play':
+            callbacksRef.current.playTrack();
+            break;
+          case 'pause':
+            callbacksRef.current.pauseTrack();
+            break;
+          case 'next':
+            callbacksRef.current.nextTrack();
+            break;
+          case 'previous':
+            callbacksRef.current.prevTrack();
+            break;
+          case 'seekTo':
+            if (event.position !== undefined) {
+              callbacksRef.current.seek(event.position);
+            }
+            break;
+          case 'stop':
+            callbacksRef.current.pauseTrack();
+            break;
+        }
+      }).then((cleanup) => {
+        removeNativeListener = cleanup;
+      });
+    } else {
+      // 2. Web MediaSession API (Desktop & mobile browsers)
+      registerWebMediaSessionHandlers();
+    }
+
+    // 3. Hardware / Bluetooth keyboard media key fallback (Web browsers)
+    const handleMediaKeyDown = (e: KeyboardEvent) => {
+      if (isNativeAndroid) return;
+      const key = e.key;
+      const isMediaKey =
+        key === 'MediaPlayPause' ||
+        key === 'MediaPlay' ||
+        key === 'MediaPause' ||
+        key === 'MediaTrackNext' ||
+        key === 'MediaTrackPrevious' ||
+        key === 'MediaStop';
+
+      if (!isMediaKey) return;
+
+      // Avoid double-toggling if browser MediaSession already handled this key press within 300ms
+      const recentlyHandledByMediaSession = Date.now() - lastMediaSessionActionAtRef.current < 300;
+      e.preventDefault();
+
+      switch (key) {
+        case 'MediaPlayPause':
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.togglePlay();
           }
           break;
-        case 'stop':
-          callbacksRef.current.setIsPlaying(false);
+        case 'MediaPlay':
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.playTrack();
+          }
+          break;
+        case 'MediaPause':
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.pauseTrack();
+          }
+          break;
+        case 'MediaTrackNext':
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.nextTrack();
+          }
+          break;
+        case 'MediaTrackPrevious':
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.prevTrack();
+          }
+          break;
+        case 'MediaStop':
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.pauseTrack();
+          }
           break;
       }
-    }).then((cleanup) => {
-      removeNativeListener = cleanup;
-    });
+    };
 
-    // 2. Web MediaSession API Fallback
-    if ('mediaSession' in navigator) {
-      try {
-        navigator.mediaSession.setActionHandler('play', () => {
-          callbacksRef.current.setIsPlaying(true);
-        });
-        navigator.mediaSession.setActionHandler('pause', () => {
-          callbacksRef.current.setIsPlaying(false);
-        });
-        navigator.mediaSession.setActionHandler('previoustrack', () => {
-          callbacksRef.current.prevTrack();
-        });
-        navigator.mediaSession.setActionHandler('nexttrack', () => {
-          callbacksRef.current.nextTrack();
-        });
-
-        // Seek actions for full control accuracy
-        navigator.mediaSession.setActionHandler('seekto', (details) => {
-          if (details.seekTime !== undefined) {
-            callbacksRef.current.seek(details.seekTime);
-          }
-        });
-        navigator.mediaSession.setActionHandler('seekbackward', (details) => {
-          const offset = details.seekOffset || 10;
-          callbacksRef.current.seek(Math.max(0, callbacksRef.current.currentTime - offset));
-        });
-        navigator.mediaSession.setActionHandler('seekforward', (details) => {
-          const offset = details.seekOffset || 10;
-          callbacksRef.current.seek(Math.min(callbacksRef.current.duration, callbacksRef.current.currentTime + offset));
-        });
-      } catch (e) {
-        console.warn("Failed to set advanced MediaSession action handlers:", e);
-      }
+    if (!isNativeAndroid) {
+      window.addEventListener('keydown', handleMediaKeyDown);
     }
 
     return () => {
       if (removeNativeListener) {
         removeNativeListener();
       }
-      if ('mediaSession' in navigator) {
-        navigator.mediaSession.setActionHandler('play', null);
-        navigator.mediaSession.setActionHandler('pause', null);
-        navigator.mediaSession.setActionHandler('previoustrack', null);
-        navigator.mediaSession.setActionHandler('nexttrack', null);
-        navigator.mediaSession.setActionHandler('seekto', null);
-        navigator.mediaSession.setActionHandler('seekbackward', null);
-        navigator.mediaSession.setActionHandler('seekforward', null);
+      if (!isNativeAndroid) {
+        window.removeEventListener('keydown', handleMediaKeyDown);
+      }
+      if (!isNativeAndroid && 'mediaSession' in navigator) {
+        const actions: MediaSessionAction[] = [
+          'play',
+          'pause',
+          'stop',
+          'previoustrack',
+          'nexttrack',
+          'seekto',
+          'seekbackward',
+          'seekforward'
+        ];
+        actions.forEach((act) => {
+          try {
+            navigator.mediaSession.setActionHandler(act, null);
+          } catch {
+            // Ignore unsupported action cleanup
+          }
+        });
       }
     };
-  }, []);
+  }, [isNativeAndroid, registerWebMediaSessionHandlers]);
 
   // Sync track metadata & playState to Android Native System Media and Web MediaSession
   useEffect(() => {
     const track = player.currentTrack;
     if (!track) {
       stopSystemMedia();
+      if (!isNativeAndroid && 'mediaSession' in navigator) {
+        try {
+          navigator.mediaSession.metadata = null;
+          navigator.mediaSession.playbackState = 'none';
+        } catch {
+          // Ignore
+        }
+      }
       return;
     }
 
-    // Default high-quality cover if none provided
-    const defaultCover = 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=512&h=512&fit=crop';
-    const artworkUrl = (track.cover && (track.cover.startsWith('http://') || track.cover.startsWith('https://') || track.cover.startsWith('data:') || track.cover.startsWith('content:'))) 
-      ? track.cover 
-      : defaultCover;
+    if (!isNativeAndroid && 'mediaSession' in navigator) {
+      const resolveArtworkUrl = (rawUrl?: string): string => {
+        const fallbackPath = '/icon-512.png';
+        if (!rawUrl || !rawUrl.trim()) {
+          try {
+            return new URL(fallbackPath, window.location.href).href;
+          } catch {
+            return fallbackPath;
+          }
+        }
+        if (
+          rawUrl.startsWith('http://') ||
+          rawUrl.startsWith('https://') ||
+          rawUrl.startsWith('data:') ||
+          rawUrl.startsWith('blob:') ||
+          rawUrl.startsWith('content:')
+        ) {
+          return rawUrl;
+        }
+        try {
+          return new URL(rawUrl, window.location.href).href;
+        } catch {
+          return rawUrl;
+        }
+      };
 
-    // Web MediaSession
-    if ('mediaSession' in navigator) {
+      const artworkUrl = resolveArtworkUrl(track.cover);
       try {
         navigator.mediaSession.metadata = new (window as any).MediaMetadata({
-          title: track.title,
-          artist: track.artist,
+          title: track.title || 'Unknown Title',
+          artist: track.artist || 'Unknown Artist',
           album: track.album || 'Muzic',
           artwork: [
-            { src: artworkUrl, sizes: '96x96', type: 'image/jpeg' },
-            { src: artworkUrl, sizes: '128x128', type: 'image/jpeg' },
-            { src: artworkUrl, sizes: '192x192', type: 'image/jpeg' },
-            { src: artworkUrl, sizes: '256x256', type: 'image/jpeg' },
-            { src: artworkUrl, sizes: '384x384', type: 'image/jpeg' },
-            { src: artworkUrl, sizes: '512x512', type: 'image/jpeg' }
+            { src: artworkUrl, sizes: '96x96' },
+            { src: artworkUrl, sizes: '128x128' },
+            { src: artworkUrl, sizes: '192x192' },
+            { src: artworkUrl, sizes: '256x256' },
+            { src: artworkUrl, sizes: '384x384' },
+            { src: artworkUrl, sizes: '512x512' }
           ]
         });
+        navigator.mediaSession.playbackState = player.isPlaying ? 'playing' : 'paused';
+        registerWebMediaSessionHandlers();
       } catch (e) {
         console.error("Setting MediaSession metadata failed:", e);
       }
@@ -1445,15 +1669,19 @@ export default function App() {
 
     // Android Native System Media Player
     syncTrackToSystemMedia(track, player.isPlaying, player.currentTime, player.duration);
-  }, [player.currentTrack]);
+  }, [player.currentTrack, isNativeAndroid, registerWebMediaSessionHandlers]);
 
   // Sync playback state (Play/Pause)
   useEffect(() => {
-    if ('mediaSession' in navigator) {
-      navigator.mediaSession.playbackState = player.isPlaying ? 'playing' : 'paused';
+    if (!isNativeAndroid && 'mediaSession' in navigator) {
+      navigator.mediaSession.playbackState = player.currentTrack
+        ? (player.isPlaying ? 'playing' : 'paused')
+        : 'none';
     }
-    syncPlaybackStateToSystemMedia(player.isPlaying, player.currentTime, player.duration, true);
-  }, [player.isPlaying]);
+    if (player.currentTrack) {
+      syncPlaybackStateToSystemMedia(player.isPlaying, player.currentTime, player.duration, true);
+    }
+  }, [player.isPlaying, player.currentTrack, isNativeAndroid]);
 
   // Sync playback progress/position state
   useEffect(() => {
@@ -1463,11 +1691,11 @@ export default function App() {
     const currentPos = player.currentTime;
 
     if (currentDuration > 0 && currentPos >= 0 && currentPos <= currentDuration) {
-      if ('mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
+      if (!isNativeAndroid && 'mediaSession' in navigator && 'setPositionState' in navigator.mediaSession) {
         try {
           navigator.mediaSession.setPositionState({
             duration: currentDuration,
-            playbackRate: 1,
+            playbackRate: player.isPlaying ? 1 : 0,
             position: currentPos
           });
         } catch (e) {
@@ -1476,7 +1704,7 @@ export default function App() {
       }
       syncPlaybackStateToSystemMedia(player.isPlaying, currentPos, currentDuration);
     }
-  }, [player.currentTime, player.duration, player.currentTrack, player.isPlaying]);
+  }, [player.currentTime, player.duration, player.currentTrack, player.isPlaying, isNativeAndroid]);
 
   useEffect(() => {
     db.tracks.toArray().then(async saved => { 
@@ -1989,9 +2217,17 @@ export default function App() {
         src={player.currentTrack?.url} 
         onTimeUpdate={player.onTimeUpdate} 
         onLoadedMetadata={player.onTimeUpdate}
-        onEnded={player.nextTrack}
+        onEnded={player.handleTrackEnded}
         onPlay={() => player.setIsPlaying(true)}
-        onPause={() => player.setIsPlaying(false)}
+        onPlaying={() => {
+          player.isSwitchingTrackRef.current = false;
+        }}
+        onPause={(e) => {
+          const el = e.currentTarget;
+          if (!el.ended && !player.isSwitchingTrackRef.current) {
+            player.setIsPlaying(false);
+          }
+        }}
       />
 
       {/* Decorative Blur Accent Dots */}
@@ -2057,55 +2293,7 @@ export default function App() {
 
 
 
-            {/* TOP-LEVEL CHANNEL SELECTOR: Device Music vs Online & Featured Streams */}
-            <div className={`flex p-1 rounded-2xl w-full relative border ${
-              isDark ? 'bg-white/5 border-white/5' : 'bg-[#EAE6F8] border-[#6355FE]/15 shadow-sm'
-            }`}>
-              <button
-                type="button"
-                onClick={() => setActiveTab('local')}
-                className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider relative z-10 cursor-pointer transition-colors duration-200 flex items-center justify-center gap-2 ${
-                  activeTab === 'local'
-                    ? '!text-white font-black'
-                    : isDark ? 'opacity-40 text-white hover:opacity-80' : 'text-[#585474] hover:text-[#120F26]'
-                }`}
-              >
-                <HardDrive size={14} />
-                <span>Device Music</span>
-                {activeTab === 'local' && (
-                  <motion.div
-                    layoutId="libraryActiveTabPill"
-                    className="absolute inset-0 bg-[#6355FE] rounded-xl -z-10 shadow-md shadow-[#6355FE]/30"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setActiveTab('online');
-                  if (onlineTracks.length === 0) {
-                    fetchOnlineTracks();
-                  }
-                }}
-                className={`flex-1 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider relative z-10 cursor-pointer transition-colors duration-200 flex items-center justify-center gap-2 ${
-                  activeTab === 'online'
-                    ? '!text-white font-black'
-                    : isDark ? 'opacity-40 text-white hover:opacity-80' : 'text-[#585474] hover:text-[#120F26]'
-                }`}
-              >
-                <Radio size={14} />
-                <span>Online & Featured</span>
-                {activeTab === 'online' && (
-                  <motion.div
-                    layoutId="libraryActiveTabPill"
-                    className="absolute inset-0 bg-[#6355FE] rounded-xl -z-10 shadow-md shadow-[#6355FE]/30"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </button>
-            </div>
+            {/* TOP-LEVEL CHANNEL SELECTOR: Hidden per user request */}
 
             {activeTab === 'local' ? (
               <div className="space-y-3">
@@ -2349,24 +2537,7 @@ export default function App() {
                           onOpenMenu={() => setSelectedTrackForMenu(track)}
                         />
                       ))
-                    ) : isScanning ? (
-                      <div className="flex flex-col items-center justify-center py-16 px-6 bg-[#14122B]/80 border border-[#6355FE]/40 rounded-3xl text-center space-y-4 shadow-xl">
-                        <div className="w-16 h-16 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/20">
-                          <Loader2 size={32} className="animate-spin text-[#8E7CFF]" />
-                        </div>
-                        <div className="space-y-1 max-w-xs">
-                          <h3 className="font-black text-sm text-white">Scanning Audio Files ({scanProgress}%)</h3>
-                          <p className="text-[11px] font-semibold text-[#8F8E9C]">Searching device folders & extracting ID3 track artwork...</p>
-                        </div>
-                        <div className="w-full max-w-xs h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
-                          <motion.div 
-                            className="h-full bg-gradient-to-r from-[#6355FE] via-[#8E7CFF] to-[#A798FF]" 
-                            animate={{ width: `${scanProgress}%` }} 
-                            transition={{ duration: 0.3 }} 
-                          />
-                        </div>
-                      </div>
-                    ) : (
+                    ) : !isScanning ? (
                       <div className="flex flex-col items-center justify-center py-12 px-6 bg-[#14122B]/60 border border-white/10 rounded-3xl text-center space-y-4 shadow-xl">
                         <div className="w-16 h-16 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-lg shadow-[#6355FE]/20">
                           <FolderPlus size={32} />
@@ -2415,7 +2586,7 @@ export default function App() {
                           </button>
                         </div>
                       </div>
-                    )
+                    ) : null
                   ) : viewMode === 'folders' ? (
                     <RecursiveFolderView 
                       node={folderTree} 
@@ -2733,6 +2904,7 @@ export default function App() {
           onBackToLibrary={() => setActiveNavTab('library')}
           onPauseMainPlayer={() => player.setIsPlaying(false)}
           onShowToast={showToast}
+          theme={theme}
         />
       )}
 
@@ -3156,9 +3328,9 @@ export default function App() {
         isPlaying={player.isPlaying}
       />
 
-      {/* Scanning UI - Floating Toast Banner */}
+      {/* Scanning UI - Floating Toast Banner (only shown when outside Local Library to avoid duplicate loaders) */}
       <AnimatePresence>
-        {isScanning && (
+        {isScanning && !(activeNavTab === 'library' && activeTab === 'local') && (
           <motion.div 
             initial={{ opacity: 0, y: -40, scale: 0.95 }} 
             animate={{ opacity: 1, y: 0, scale: 1 }} 
