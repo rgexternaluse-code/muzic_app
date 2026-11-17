@@ -5,11 +5,15 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
 import android.media.MediaMetadata;
 import android.media.session.MediaSession;
 import android.media.session.PlaybackState;
@@ -19,8 +23,11 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.util.Base64;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -40,6 +47,8 @@ public class MediaPlaybackService extends Service {
     public static final String ACTION_NEXT = "com.example.muzic.ACTION_NEXT";
     public static final String ACTION_STOP = "com.example.muzic.ACTION_STOP";
 
+    private static final long HEADSET_HOOK_MULTI_TAP_DELAY_MS = 380L;
+
     public interface MediaActionListener {
         void onMediaAction(String action, Double position);
     }
@@ -47,8 +56,24 @@ public class MediaPlaybackService extends Service {
     private static MediaActionListener actionListener;
     private static MediaPlaybackService instance;
 
+    // Pending buffers so updates issued before onCreate() finishes are never dropped
+    private static boolean hasPendingTrack = false;
+    private static String pendingTitle = null;
+    private static String pendingArtist = null;
+    private static String pendingAlbum = null;
+    private static long pendingDurationMs = 0L;
+    private static String pendingArtworkUrl = null;
+    private static boolean pendingTrackIsPlaying = false;
+    private static long pendingTrackPositionMs = 0L;
+
+    private static boolean hasPendingPlaybackState = false;
+    private static boolean pendingStateIsPlaying = false;
+    private static long pendingStatePositionMs = 0L;
+    private static long pendingStateDurationMs = 0L;
+
     private MediaSession mediaSession;
     private NotificationManager notificationManager;
+    private PowerManager.WakeLock wakeLock;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -61,6 +86,37 @@ public class MediaPlaybackService extends Service {
     private String currentArtworkUrl = null;
     private Bitmap currentArtworkBitmap = null;
     private boolean isForeground = false;
+    private boolean noisyReceiverRegistered = false;
+
+    private int headsetHookTapCount = 0;
+    private final Runnable headsetHookTapRunnable = () -> {
+        int taps = headsetHookTapCount;
+        headsetHookTapCount = 0;
+        if (taps <= 0) {
+            return;
+        }
+        Log.d(TAG, "Headset hook resolved taps=" + taps);
+        if (taps == 1) {
+            togglePlayPauseFromHardware();
+        } else if (taps == 2) {
+            triggerAction("next", null);
+        } else {
+            triggerAction("previous", null);
+        }
+    };
+
+    private final BroadcastReceiver becomingNoisyReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null && AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
+                Log.d(TAG, "Audio becoming noisy (Bluetooth/headphone disconnected) - pausing playback");
+                if (isPlaying) {
+                    updatePlaybackState(false, currentPositionMs, currentDurationMs);
+                    triggerAction("pause", null);
+                }
+            }
+        }
+    };
 
     public static void setActionListener(MediaActionListener listener) {
         actionListener = listener;
@@ -70,13 +126,62 @@ public class MediaPlaybackService extends Service {
         return instance;
     }
 
+    public static synchronized void setPendingTrack(
+        String title,
+        String artist,
+        String album,
+        long durationMs,
+        String artworkUrl,
+        boolean playing,
+        long positionMs
+    ) {
+        hasPendingTrack = true;
+        pendingTitle = title;
+        pendingArtist = artist;
+        pendingAlbum = album;
+        pendingDurationMs = durationMs;
+        pendingArtworkUrl = artworkUrl;
+        pendingTrackIsPlaying = playing;
+        pendingTrackPositionMs = positionMs;
+    }
+
+    public static synchronized void setPendingPlaybackState(boolean playing, long positionMs, long durationMs) {
+        hasPendingPlaybackState = true;
+        pendingStateIsPlaying = playing;
+        pendingStatePositionMs = positionMs;
+        pendingStateDurationMs = durationMs;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        initWakeLock();
         createNotificationChannel();
         setupMediaSession();
+        registerNoisyReceiver();
+
+        // Flush any buffered track / state sent before onCreate() completed
+        synchronized (MediaPlaybackService.class) {
+            if (hasPendingTrack) {
+                hasPendingTrack = false;
+                updateTrack(
+                    pendingTitle,
+                    pendingArtist,
+                    pendingAlbum,
+                    pendingDurationMs,
+                    pendingArtworkUrl,
+                    pendingTrackIsPlaying,
+                    pendingTrackPositionMs
+                );
+            }
+            if (hasPendingPlaybackState) {
+                hasPendingPlaybackState = false;
+                updatePlaybackState(pendingStateIsPlaying, pendingStatePositionMs, pendingStateDurationMs);
+            }
+        }
+
         try {
             Notification notification = buildNotification();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -95,6 +200,67 @@ public class MediaPlaybackService extends Service {
         Log.d(TAG, "MediaPlaybackService created");
     }
 
+    private void initWakeLock() {
+        try {
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            if (pm != null) {
+                wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "muzic:MediaPlaybackWakeLock");
+                wakeLock.setReferenceCounted(false);
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "WakeLock init failed: " + e.getMessage());
+        }
+    }
+
+    private void syncWakeLock(boolean playing) {
+        try {
+            if (wakeLock == null) return;
+            if (playing) {
+                if (!wakeLock.isHeld()) {
+                    // Hold wake lock while playing so Bluetooth background skips stay responsive
+                    wakeLock.acquire(4 * 60 * 60 * 1000L);
+                }
+            } else {
+                if (wakeLock.isHeld()) {
+                    wakeLock.release();
+                }
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "WakeLock sync failed: " + e.getMessage());
+        }
+    }
+
+    private void pulseWakeLockBriefly() {
+        try {
+            if (wakeLock != null && !wakeLock.isHeld()) {
+                wakeLock.acquire(3000L);
+            }
+        } catch (Exception ignored) {}
+    }
+
+    private void registerNoisyReceiver() {
+        if (noisyReceiverRegistered) return;
+        try {
+            IntentFilter filter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(becomingNoisyReceiver, filter, Context.RECEIVER_EXPORTED);
+            } else {
+                registerReceiver(becomingNoisyReceiver, filter);
+            }
+            noisyReceiverRegistered = true;
+        } catch (Exception e) {
+            Log.w(TAG, "Failed to register becomingNoisyReceiver: " + e.getMessage());
+        }
+    }
+
+    private void unregisterNoisyReceiver() {
+        if (!noisyReceiverRegistered) return;
+        try {
+            unregisterReceiver(becomingNoisyReceiver);
+        } catch (Exception ignored) {}
+        noisyReceiverRegistered = false;
+    }
+
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
@@ -111,6 +277,18 @@ public class MediaPlaybackService extends Service {
         }
     }
 
+    private long getSupportedActions() {
+        return PlaybackState.ACTION_PLAY
+            | PlaybackState.ACTION_PAUSE
+            | PlaybackState.ACTION_PLAY_PAUSE
+            | PlaybackState.ACTION_SKIP_TO_NEXT
+            | PlaybackState.ACTION_SKIP_TO_PREVIOUS
+            | PlaybackState.ACTION_SEEK_TO
+            | PlaybackState.ACTION_FAST_FORWARD
+            | PlaybackState.ACTION_REWIND
+            | PlaybackState.ACTION_STOP;
+    }
+
     private void setupMediaSession() {
         mediaSession = new MediaSession(this, "MuzicMediaSession");
         mediaSession.setFlags(
@@ -118,16 +296,56 @@ public class MediaPlaybackService extends Service {
             MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS
         );
 
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+            .build();
+        mediaSession.setPlaybackToLocal(audioAttributes);
+
+        try {
+            Intent mbrIntent = new Intent(this, MediaButtonReceiver.class);
+            mbrIntent.setAction(Intent.ACTION_MEDIA_BUTTON);
+            int mbrFlags = PendingIntent.FLAG_UPDATE_CURRENT;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                mbrFlags |= PendingIntent.FLAG_MUTABLE;
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                mbrFlags |= PendingIntent.FLAG_IMMUTABLE;
+            }
+            PendingIntent mbrPendingIntent = PendingIntent.getBroadcast(this, 100, mbrIntent, mbrFlags);
+            mediaSession.setMediaButtonReceiver(mbrPendingIntent);
+        } catch (Exception e) {
+            Log.w(TAG, "Failed setting MediaButtonReceiver on session: " + e.getMessage());
+        }
+
         mediaSession.setCallback(new MediaSession.Callback() {
+            @Override
+            @SuppressWarnings("deprecation")
+            public boolean onMediaButtonEvent(Intent mediaButtonIntent) {
+                if (mediaButtonIntent != null && Intent.ACTION_MEDIA_BUTTON.equals(mediaButtonIntent.getAction())) {
+                    KeyEvent keyEvent = null;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        keyEvent = mediaButtonIntent.getParcelableExtra(Intent.EXTRA_KEY_EVENT, KeyEvent.class);
+                    } else {
+                        keyEvent = mediaButtonIntent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+                    }
+                    if (keyEvent != null && handleMediaKeyEvent(keyEvent)) {
+                        return true;
+                    }
+                }
+                return super.onMediaButtonEvent(mediaButtonIntent);
+            }
+
             @Override
             public void onPlay() {
                 Log.d(TAG, "MediaSession: onPlay");
+                updatePlaybackState(true, currentPositionMs, currentDurationMs);
                 triggerAction("play", null);
             }
 
             @Override
             public void onPause() {
                 Log.d(TAG, "MediaSession: onPause");
+                updatePlaybackState(false, currentPositionMs, currentDurationMs);
                 triggerAction("pause", null);
             }
 
@@ -144,11 +362,32 @@ public class MediaPlaybackService extends Service {
             }
 
             @Override
+            public void onFastForward() {
+                Log.d(TAG, "MediaSession: onFastForward");
+                long targetMs = currentPositionMs + 10000L;
+                if (currentDurationMs > 0) {
+                    targetMs = Math.min(currentDurationMs, targetMs);
+                }
+                currentPositionMs = targetMs;
+                updatePlaybackState(isPlaying, targetMs, currentDurationMs);
+                triggerAction("seekTo", targetMs / 1000.0);
+            }
+
+            @Override
+            public void onRewind() {
+                Log.d(TAG, "MediaSession: onRewind");
+                long targetMs = Math.max(0L, currentPositionMs - 10000L);
+                currentPositionMs = targetMs;
+                updatePlaybackState(isPlaying, targetMs, currentDurationMs);
+                triggerAction("seekTo", targetMs / 1000.0);
+            }
+
+            @Override
             public void onSeekTo(long pos) {
                 Log.d(TAG, "MediaSession: onSeekTo " + pos);
-                currentPositionMs = pos;
-                updatePlaybackState(isPlaying, pos, currentDurationMs);
-                triggerAction("seekTo", pos / 1000.0);
+                currentPositionMs = Math.max(0L, pos);
+                updatePlaybackState(isPlaying, currentPositionMs, currentDurationMs);
+                triggerAction("seekTo", currentPositionMs / 1000.0);
             }
 
             @Override
@@ -157,15 +396,131 @@ public class MediaPlaybackService extends Service {
                 triggerAction("stop", null);
                 stopPlayback();
             }
-        });
+        }, mainHandler);
 
+        // Publish an initial PlaybackState immediately so Android routes hardware media buttons here
+        PlaybackState initialState = new PlaybackState.Builder()
+            .setActions(getSupportedActions())
+            .setState(PlaybackState.STATE_PAUSED, 0L, 0.0f, SystemClock.elapsedRealtime())
+            .build();
+        mediaSession.setPlaybackState(initialState);
         mediaSession.setActive(true);
     }
 
-    private void triggerAction(String action, Double position) {
-        if (actionListener != null) {
-            actionListener.onMediaAction(action, position);
+    private void togglePlayPauseFromHardware() {
+        if (isPlaying) {
+            updatePlaybackState(false, currentPositionMs, currentDurationMs);
+            triggerAction("pause", null);
+        } else {
+            updatePlaybackState(true, currentPositionMs, currentDurationMs);
+            triggerAction("play", null);
         }
+    }
+
+    public boolean handleMediaKeyEvent(KeyEvent event) {
+        if (event == null) {
+            return false;
+        }
+        int keyCode = event.getKeyCode();
+        if (!isMediaKeyCode(keyCode)) {
+            return false;
+        }
+
+        // Consume both ACTION_DOWN and ACTION_UP so WebView does not drop or double-handle events
+        if (event.getAction() != KeyEvent.ACTION_DOWN || event.getRepeatCount() > 0) {
+            return true;
+        }
+
+        Log.d(TAG, "handleMediaKeyEvent keyCode=" + keyCode);
+        pulseWakeLockBriefly();
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_HEADSETHOOK:
+                headsetHookTapCount++;
+                mainHandler.removeCallbacks(headsetHookTapRunnable);
+                if (headsetHookTapCount >= 3) {
+                    headsetHookTapCount = 0;
+                    triggerAction("previous", null);
+                } else {
+                    mainHandler.postDelayed(headsetHookTapRunnable, HEADSET_HOOK_MULTI_TAP_DELAY_MS);
+                }
+                return true;
+
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                togglePlayPauseFromHardware();
+                return true;
+
+            case KeyEvent.KEYCODE_MEDIA_PLAY:
+                updatePlaybackState(true, currentPositionMs, currentDurationMs);
+                triggerAction("play", null);
+                return true;
+
+            case KeyEvent.KEYCODE_MEDIA_PAUSE:
+                updatePlaybackState(false, currentPositionMs, currentDurationMs);
+                triggerAction("pause", null);
+                return true;
+
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+                triggerAction("next", null);
+                return true;
+
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                triggerAction("previous", null);
+                return true;
+
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD: {
+                long targetMs = currentPositionMs + 10000L;
+                if (currentDurationMs > 0) {
+                    targetMs = Math.min(currentDurationMs, targetMs);
+                }
+                currentPositionMs = targetMs;
+                updatePlaybackState(isPlaying, targetMs, currentDurationMs);
+                triggerAction("seekTo", targetMs / 1000.0);
+                return true;
+            }
+
+            case KeyEvent.KEYCODE_MEDIA_REWIND: {
+                long targetMs = Math.max(0L, currentPositionMs - 10000L);
+                currentPositionMs = targetMs;
+                updatePlaybackState(isPlaying, targetMs, currentDurationMs);
+                triggerAction("seekTo", targetMs / 1000.0);
+                return true;
+            }
+
+            case KeyEvent.KEYCODE_MEDIA_STOP:
+                triggerAction("stop", null);
+                stopPlayback();
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    public static boolean isMediaKeyCode(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_HEADSETHOOK:
+            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+            case KeyEvent.KEYCODE_MEDIA_PLAY:
+            case KeyEvent.KEYCODE_MEDIA_PAUSE:
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+            case KeyEvent.KEYCODE_MEDIA_STOP:
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private void triggerAction(final String action, final Double position) {
+        pulseWakeLockBriefly();
+        mainHandler.post(() -> {
+            if (actionListener != null) {
+                actionListener.onMediaAction(action, position);
+            }
+        });
     }
 
     @Override
@@ -175,16 +530,14 @@ public class MediaPlaybackService extends Service {
             Log.d(TAG, "onStartCommand action: " + action);
             switch (action) {
                 case ACTION_TOGGLE:
-                    if (isPlaying) {
-                        triggerAction("pause", null);
-                    } else {
-                        triggerAction("play", null);
-                    }
+                    togglePlayPauseFromHardware();
                     break;
                 case ACTION_PLAY:
+                    updatePlaybackState(true, currentPositionMs, currentDurationMs);
                     triggerAction("play", null);
                     break;
                 case ACTION_PAUSE:
+                    updatePlaybackState(false, currentPositionMs, currentDurationMs);
                     triggerAction("pause", null);
                     break;
                 case ACTION_PREV:
@@ -214,9 +567,14 @@ public class MediaPlaybackService extends Service {
         this.currentTitle = (title != null && !title.isEmpty()) ? title : "Unknown Title";
         this.currentArtist = (artist != null && !artist.isEmpty()) ? artist : "Unknown Artist";
         this.currentAlbum = (album != null && !album.isEmpty()) ? album : "Muzic";
-        this.currentDurationMs = durationMs;
+        this.currentDurationMs = Math.max(0L, durationMs);
         this.isPlaying = playing;
-        this.currentPositionMs = positionMs;
+        this.currentPositionMs = Math.max(0L, positionMs);
+        syncWakeLock(playing);
+
+        if (mediaSession != null && !mediaSession.isActive()) {
+            mediaSession.setActive(true);
+        }
 
         // Check if artwork changed
         boolean artworkChanged = (artworkUrl != null && !artworkUrl.equals(currentArtworkUrl)) ||
@@ -232,26 +590,23 @@ public class MediaPlaybackService extends Service {
 
     public void updatePlaybackState(boolean playing, long positionMs, long durationMs) {
         this.isPlaying = playing;
-        this.currentPositionMs = positionMs;
+        this.currentPositionMs = Math.max(0L, positionMs);
         if (durationMs > 0) {
             this.currentDurationMs = durationMs;
         }
+        syncWakeLock(playing);
 
         if (mediaSession != null) {
-            long actions = PlaybackState.ACTION_PLAY
-                | PlaybackState.ACTION_PAUSE
-                | PlaybackState.ACTION_PLAY_PAUSE
-                | PlaybackState.ACTION_SKIP_TO_NEXT
-                | PlaybackState.ACTION_SKIP_TO_PREVIOUS
-                | PlaybackState.ACTION_SEEK_TO
-                | PlaybackState.ACTION_STOP;
-
+            if (!mediaSession.isActive()) {
+                mediaSession.setActive(true);
+            }
             PlaybackState.Builder stateBuilder = new PlaybackState.Builder()
-                .setActions(actions)
+                .setActions(getSupportedActions())
                 .setState(
                     playing ? PlaybackState.STATE_PLAYING : PlaybackState.STATE_PAUSED,
-                    positionMs,
-                    playing ? 1.0f : 0.0f
+                    this.currentPositionMs,
+                    playing ? 1.0f : 0.0f,
+                    SystemClock.elapsedRealtime()
                 );
 
             mediaSession.setPlaybackState(stateBuilder.build());
@@ -342,21 +697,13 @@ public class MediaPlaybackService extends Service {
 
             mediaSession.setMetadata(metaBuilder.build());
 
-            // Also set playback state
-            long actions = PlaybackState.ACTION_PLAY
-                | PlaybackState.ACTION_PAUSE
-                | PlaybackState.ACTION_PLAY_PAUSE
-                | PlaybackState.ACTION_SKIP_TO_NEXT
-                | PlaybackState.ACTION_SKIP_TO_PREVIOUS
-                | PlaybackState.ACTION_SEEK_TO
-                | PlaybackState.ACTION_STOP;
-
             PlaybackState.Builder stateBuilder = new PlaybackState.Builder()
-                .setActions(actions)
+                .setActions(getSupportedActions())
                 .setState(
                     isPlaying ? PlaybackState.STATE_PLAYING : PlaybackState.STATE_PAUSED,
                     currentPositionMs,
-                    isPlaying ? 1.0f : 0.0f
+                    isPlaying ? 1.0f : 0.0f,
+                    SystemClock.elapsedRealtime()
                 );
 
             mediaSession.setPlaybackState(stateBuilder.build());
@@ -475,6 +822,10 @@ public class MediaPlaybackService extends Service {
     public void stopPlayback() {
         Log.d(TAG, "stopPlayback called - clearing notification and releasing session");
         isPlaying = false;
+        mainHandler.removeCallbacks(headsetHookTapRunnable);
+        headsetHookTapCount = 0;
+        syncWakeLock(false);
+
         try {
             if (mediaSession != null) {
                 mediaSession.setActive(false);
@@ -511,6 +862,10 @@ public class MediaPlaybackService extends Service {
     @Override
     public void onDestroy() {
         Log.d(TAG, "MediaPlaybackService onDestroy called");
+        mainHandler.removeCallbacks(headsetHookTapRunnable);
+        unregisterNoisyReceiver();
+        syncWakeLock(false);
+
         try {
             if (mediaSession != null) {
                 mediaSession.setActive(false);

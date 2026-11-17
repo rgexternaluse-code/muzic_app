@@ -22151,7 +22151,7 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
   });
 };
 const App$1 = registerPlugin("App", {
-  web: () => __vitePreload(() => import("./web-BUwKnZpN.js"), true ? [] : void 0).then((m2) => new m2.AppWeb())
+  web: () => __vitePreload(() => import("./web-CVHVpkmY.js"), true ? [] : void 0).then((m2) => new m2.AppWeb())
 });
 class FilePickerWeb extends WebPlugin {
   constructor() {
@@ -85245,31 +85245,39 @@ async function setupSystemMediaActionListener(onAction) {
     };
   }
 }
+let lastSyncedState = {
+  isPlaying: false,
+  position: -1,
+  timestamp: 0
+};
 async function syncTrackToSystemMedia(track, isPlaying, position, duration) {
   if (Capacitor.getPlatform() !== "android" || !track) {
     return;
   }
   requestNotificationPermissionIfNeeded().catch(() => {
   });
+  const resolvedDuration = duration > 0 ? duration : track.duration || 0;
+  const resolvedPosition = Math.max(0, position);
+  lastSyncedState = {
+    isPlaying,
+    position: resolvedPosition,
+    duration: resolvedDuration,
+    timestamp: Date.now()
+  };
   try {
     await SystemMediaPlayer.updateTrack({
       title: track.title || "Unknown Title",
       artist: track.artist || "Unknown Artist",
       album: track.album || "Muzic",
-      duration: duration > 0 ? duration : track.duration || 0,
+      duration: resolvedDuration,
       artwork: track.cover || null,
       isPlaying,
-      position: Math.max(0, position)
+      position: resolvedPosition
     });
   } catch (err) {
     console.warn("SystemMediaPlayer updateTrack error:", err);
   }
 }
-let lastSyncedState = {
-  isPlaying: false,
-  position: -1,
-  timestamp: 0
-};
 async function syncPlaybackStateToSystemMedia(isPlaying, position, duration, force = false) {
   if (Capacitor.getPlatform() !== "android") {
     return;
@@ -85370,8 +85378,28 @@ function useMusicPlayer(tracks) {
   const [shuffle, setShuffle] = reactExports.useState(false);
   const [repeatMode, setRepeatMode] = reactExports.useState("off");
   const audioRef = reactExports.useRef(null);
+  const isSwitchingTrackRef = reactExports.useRef(false);
+  const switchTimeoutRef = reactExports.useRef(null);
   const currentTrack = reactExports.useMemo(() => tracks[currentTrackIndex] || null, [tracks, currentTrackIndex]);
+  const markSwitchingTrack = reactExports.useCallback(() => {
+    isSwitchingTrackRef.current = true;
+    if (switchTimeoutRef.current) {
+      clearTimeout(switchTimeoutRef.current);
+    }
+    switchTimeoutRef.current = setTimeout(() => {
+      isSwitchingTrackRef.current = false;
+      switchTimeoutRef.current = null;
+    }, 600);
+  }, []);
   reactExports.useEffect(() => {
+    return () => {
+      if (switchTimeoutRef.current) {
+        clearTimeout(switchTimeoutRef.current);
+      }
+    };
+  }, []);
+  reactExports.useEffect(() => {
+    markSwitchingTrack();
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.play().catch((e2) => console.error("Playback failed", e2));
@@ -85379,43 +85407,103 @@ function useMusicPlayer(tracks) {
         audioRef.current.pause();
       }
     }
-  }, [isPlaying, currentTrackIndex]);
-  const togglePlay = () => setIsPlaying(!isPlaying);
-  const nextTrack = () => {
-    var _a2;
-    if (repeatMode === "one") {
-      if (audioRef.current) audioRef.current.currentTime = 0;
-      (_a2 = audioRef.current) == null ? void 0 : _a2.play();
+  }, [isPlaying, currentTrackIndex, currentTrack == null ? void 0 : currentTrack.url, markSwitchingTrack]);
+  const playTrack = reactExports.useCallback(() => {
+    setIsPlaying(true);
+    if (audioRef.current && audioRef.current.paused) {
+      audioRef.current.play().catch((e2) => console.error("Playback failed", e2));
+    }
+  }, []);
+  const pauseTrack = reactExports.useCallback(() => {
+    isSwitchingTrackRef.current = false;
+    setIsPlaying(false);
+    if (audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
+    }
+  }, []);
+  const togglePlay = reactExports.useCallback(() => {
+    if (isPlaying) {
+      pauseTrack();
+    } else {
+      playTrack();
+    }
+  }, [isPlaying, playTrack, pauseTrack]);
+  const nextTrack = reactExports.useCallback(() => {
+    if (tracks.length === 0) return;
+    markSwitchingTrack();
+    if (tracks.length === 1) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch((e2) => console.error("Playback failed", e2));
+      }
+      setCurrentTime(0);
+      setIsPlaying(true);
       return;
     }
     if (shuffle) {
-      const nextIndex = Math.floor(Math.random() * tracks.length);
+      let nextIndex = Math.floor(Math.random() * tracks.length);
+      if (nextIndex === currentTrackIndex) {
+        nextIndex = (currentTrackIndex + 1) % tracks.length;
+      }
       setCurrentTrackIndex(nextIndex);
     } else {
       setCurrentTrackIndex((p2) => (p2 + 1) % tracks.length);
     }
-  };
-  const prevTrack = () => {
+    setCurrentTime(0);
+    setIsPlaying(true);
+  }, [tracks.length, shuffle, currentTrackIndex, markSwitchingTrack]);
+  const prevTrack = reactExports.useCallback(() => {
+    if (tracks.length === 0) return;
+    markSwitchingTrack();
+    if (tracks.length === 1) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch((e2) => console.error("Playback failed", e2));
+      }
+      setCurrentTime(0);
+      setIsPlaying(true);
+      return;
+    }
     if (shuffle) {
-      const nextIndex = Math.floor(Math.random() * tracks.length);
+      let nextIndex = Math.floor(Math.random() * tracks.length);
+      if (nextIndex === currentTrackIndex) {
+        nextIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+      }
       setCurrentTrackIndex(nextIndex);
     } else {
       setCurrentTrackIndex((p2) => (p2 - 1 + tracks.length) % tracks.length);
     }
-  };
+    setCurrentTime(0);
+    setIsPlaying(true);
+  }, [tracks.length, shuffle, currentTrackIndex, markSwitchingTrack]);
+  const handleTrackEnded = reactExports.useCallback(() => {
+    if (tracks.length === 0) return;
+    markSwitchingTrack();
+    if (repeatMode === "one") {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch((e2) => console.error("Repeat playback failed", e2));
+      }
+      setCurrentTime(0);
+      setIsPlaying(true);
+      return;
+    }
+    nextTrack();
+  }, [tracks.length, repeatMode, nextTrack, markSwitchingTrack]);
   const toggleShuffle = () => setShuffle(!shuffle);
   const toggleRepeat = () => {
     const modes = ["off", "all", "one"];
     const nextIndex = (modes.indexOf(repeatMode) + 1) % modes.length;
     setRepeatMode(modes[nextIndex]);
   };
-  const seek = (time2) => {
+  const seek = reactExports.useCallback((time2) => {
     if (audioRef.current) {
-      audioRef.current.currentTime = time2;
-      setCurrentTime(time2);
-      syncPlaybackStateToSystemMedia(isPlaying, time2, duration, true);
+      const clamped = Math.max(0, Number.isFinite(time2) ? time2 : 0);
+      audioRef.current.currentTime = clamped;
+      setCurrentTime(clamped);
+      syncPlaybackStateToSystemMedia(isPlaying, clamped, duration, true);
     }
-  };
+  }, [isPlaying, duration]);
   const onTimeUpdate = () => {
     if (audioRef.current) {
       setCurrentTime(audioRef.current.currentTime);
@@ -85428,9 +85516,12 @@ function useMusicPlayer(tracks) {
     setCurrentTrackIndex,
     isPlaying,
     setIsPlaying,
+    playTrack,
+    pauseTrack,
     togglePlay,
     nextTrack,
     prevTrack,
+    handleTrackEnded,
     currentTime,
     duration,
     volume,
@@ -85438,6 +85529,7 @@ function useMusicPlayer(tracks) {
     seek,
     onTimeUpdate,
     audioRef,
+    isSwitchingTrackRef,
     shuffle,
     repeatMode,
     toggleShuffle,
@@ -86259,9 +86351,14 @@ function App() {
       }
     };
   }, [player.isPlaying]);
+  const isNativeAndroid = Capacitor.isNativePlatform() && Capacitor.getPlatform() === "android";
+  const lastMediaSessionActionAtRef = reactExports.useRef(0);
   const callbacksRef = reactExports.useRef({
     isPlaying: player.isPlaying,
     setIsPlaying: player.setIsPlaying,
+    playTrack: player.playTrack,
+    pauseTrack: player.pauseTrack,
+    togglePlay: player.togglePlay,
     prevTrack: player.prevTrack,
     nextTrack: player.nextTrack,
     seek: player.seek,
@@ -86272,6 +86369,9 @@ function App() {
     callbacksRef.current = {
       isPlaying: player.isPlaying,
       setIsPlaying: player.setIsPlaying,
+      playTrack: player.playTrack,
+      pauseTrack: player.pauseTrack,
+      togglePlay: player.togglePlay,
       prevTrack: player.prevTrack,
       nextTrack: player.nextTrack,
       seek: player.seek,
@@ -86281,131 +86381,236 @@ function App() {
   }, [
     player.isPlaying,
     player.setIsPlaying,
+    player.playTrack,
+    player.pauseTrack,
+    player.togglePlay,
     player.prevTrack,
     player.nextTrack,
     player.seek,
     player.currentTime,
     player.duration
   ]);
+  const registerWebMediaSessionHandlers = reactExports.useCallback(() => {
+    if (isNativeAndroid || !("mediaSession" in navigator)) {
+      return;
+    }
+    const safeSetHandler = (action, handler) => {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch {
+      }
+    };
+    safeSetHandler("play", () => {
+      lastMediaSessionActionAtRef.current = Date.now();
+      callbacksRef.current.playTrack();
+    });
+    safeSetHandler("pause", () => {
+      lastMediaSessionActionAtRef.current = Date.now();
+      callbacksRef.current.pauseTrack();
+    });
+    safeSetHandler("stop", () => {
+      lastMediaSessionActionAtRef.current = Date.now();
+      callbacksRef.current.pauseTrack();
+      callbacksRef.current.seek(0);
+    });
+    safeSetHandler("previoustrack", () => {
+      lastMediaSessionActionAtRef.current = Date.now();
+      callbacksRef.current.prevTrack();
+    });
+    safeSetHandler("nexttrack", () => {
+      lastMediaSessionActionAtRef.current = Date.now();
+      callbacksRef.current.nextTrack();
+    });
+    safeSetHandler("seekto", (details) => {
+      if (details.seekTime !== void 0) {
+        callbacksRef.current.seek(details.seekTime);
+      }
+    });
+    safeSetHandler("seekbackward", (details) => {
+      const offset = details.seekOffset || 10;
+      callbacksRef.current.seek(Math.max(0, callbacksRef.current.currentTime - offset));
+    });
+    safeSetHandler("seekforward", (details) => {
+      const offset = details.seekOffset || 10;
+      const maxDur = callbacksRef.current.duration || Infinity;
+      callbacksRef.current.seek(Math.min(maxDur, callbacksRef.current.currentTime + offset));
+    });
+  }, [isNativeAndroid]);
   reactExports.useEffect(() => {
     let removeNativeListener;
-    setupSystemMediaActionListener((event) => {
-      switch (event.action) {
-        case "play":
-          callbacksRef.current.setIsPlaying(true);
-          break;
-        case "pause":
-          callbacksRef.current.setIsPlaying(false);
-          break;
-        case "next":
-          callbacksRef.current.nextTrack();
-          break;
-        case "previous":
-          callbacksRef.current.prevTrack();
-          break;
-        case "seekTo":
-          if (event.position !== void 0) {
-            callbacksRef.current.seek(event.position);
+    if (isNativeAndroid) {
+      setupSystemMediaActionListener((event) => {
+        switch (event.action) {
+          case "play":
+            callbacksRef.current.playTrack();
+            break;
+          case "pause":
+            callbacksRef.current.pauseTrack();
+            break;
+          case "next":
+            callbacksRef.current.nextTrack();
+            break;
+          case "previous":
+            callbacksRef.current.prevTrack();
+            break;
+          case "seekTo":
+            if (event.position !== void 0) {
+              callbacksRef.current.seek(event.position);
+            }
+            break;
+          case "stop":
+            callbacksRef.current.pauseTrack();
+            break;
+        }
+      }).then((cleanup) => {
+        removeNativeListener = cleanup;
+      });
+    } else {
+      registerWebMediaSessionHandlers();
+    }
+    const handleMediaKeyDown = (e2) => {
+      if (isNativeAndroid) return;
+      const key = e2.key;
+      const isMediaKey = key === "MediaPlayPause" || key === "MediaPlay" || key === "MediaPause" || key === "MediaTrackNext" || key === "MediaTrackPrevious" || key === "MediaStop";
+      if (!isMediaKey) return;
+      const recentlyHandledByMediaSession = Date.now() - lastMediaSessionActionAtRef.current < 300;
+      e2.preventDefault();
+      switch (key) {
+        case "MediaPlayPause":
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.togglePlay();
           }
           break;
-        case "stop":
-          callbacksRef.current.setIsPlaying(false);
+        case "MediaPlay":
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.playTrack();
+          }
+          break;
+        case "MediaPause":
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.pauseTrack();
+          }
+          break;
+        case "MediaTrackNext":
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.nextTrack();
+          }
+          break;
+        case "MediaTrackPrevious":
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.prevTrack();
+          }
+          break;
+        case "MediaStop":
+          if (!recentlyHandledByMediaSession) {
+            callbacksRef.current.pauseTrack();
+          }
           break;
       }
-    }).then((cleanup) => {
-      removeNativeListener = cleanup;
-    });
-    if ("mediaSession" in navigator) {
-      try {
-        navigator.mediaSession.setActionHandler("play", () => {
-          callbacksRef.current.setIsPlaying(true);
-        });
-        navigator.mediaSession.setActionHandler("pause", () => {
-          callbacksRef.current.setIsPlaying(false);
-        });
-        navigator.mediaSession.setActionHandler("previoustrack", () => {
-          callbacksRef.current.prevTrack();
-        });
-        navigator.mediaSession.setActionHandler("nexttrack", () => {
-          callbacksRef.current.nextTrack();
-        });
-        navigator.mediaSession.setActionHandler("seekto", (details) => {
-          if (details.seekTime !== void 0) {
-            callbacksRef.current.seek(details.seekTime);
-          }
-        });
-        navigator.mediaSession.setActionHandler("seekbackward", (details) => {
-          const offset = details.seekOffset || 10;
-          callbacksRef.current.seek(Math.max(0, callbacksRef.current.currentTime - offset));
-        });
-        navigator.mediaSession.setActionHandler("seekforward", (details) => {
-          const offset = details.seekOffset || 10;
-          callbacksRef.current.seek(Math.min(callbacksRef.current.duration, callbacksRef.current.currentTime + offset));
-        });
-      } catch (e2) {
-        console.warn("Failed to set advanced MediaSession action handlers:", e2);
-      }
+    };
+    if (!isNativeAndroid) {
+      window.addEventListener("keydown", handleMediaKeyDown);
     }
     return () => {
       if (removeNativeListener) {
         removeNativeListener();
       }
-      if ("mediaSession" in navigator) {
-        navigator.mediaSession.setActionHandler("play", null);
-        navigator.mediaSession.setActionHandler("pause", null);
-        navigator.mediaSession.setActionHandler("previoustrack", null);
-        navigator.mediaSession.setActionHandler("nexttrack", null);
-        navigator.mediaSession.setActionHandler("seekto", null);
-        navigator.mediaSession.setActionHandler("seekbackward", null);
-        navigator.mediaSession.setActionHandler("seekforward", null);
+      if (!isNativeAndroid) {
+        window.removeEventListener("keydown", handleMediaKeyDown);
+      }
+      if (!isNativeAndroid && "mediaSession" in navigator) {
+        const actions = [
+          "play",
+          "pause",
+          "stop",
+          "previoustrack",
+          "nexttrack",
+          "seekto",
+          "seekbackward",
+          "seekforward"
+        ];
+        actions.forEach((act) => {
+          try {
+            navigator.mediaSession.setActionHandler(act, null);
+          } catch {
+          }
+        });
       }
     };
-  }, []);
+  }, [isNativeAndroid, registerWebMediaSessionHandlers]);
   reactExports.useEffect(() => {
     const track = player.currentTrack;
     if (!track) {
       stopSystemMedia();
+      if (!isNativeAndroid && "mediaSession" in navigator) {
+        try {
+          navigator.mediaSession.metadata = null;
+          navigator.mediaSession.playbackState = "none";
+        } catch {
+        }
+      }
       return;
     }
-    const defaultCover = "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=512&h=512&fit=crop";
-    const artworkUrl = track.cover && (track.cover.startsWith("http://") || track.cover.startsWith("https://") || track.cover.startsWith("data:") || track.cover.startsWith("content:")) ? track.cover : defaultCover;
-    if ("mediaSession" in navigator) {
+    if (!isNativeAndroid && "mediaSession" in navigator) {
+      const resolveArtworkUrl = (rawUrl) => {
+        const fallbackPath = "/icon-512.png";
+        if (!rawUrl || !rawUrl.trim()) {
+          try {
+            return new URL(fallbackPath, window.location.href).href;
+          } catch {
+            return fallbackPath;
+          }
+        }
+        if (rawUrl.startsWith("http://") || rawUrl.startsWith("https://") || rawUrl.startsWith("data:") || rawUrl.startsWith("blob:") || rawUrl.startsWith("content:")) {
+          return rawUrl;
+        }
+        try {
+          return new URL(rawUrl, window.location.href).href;
+        } catch {
+          return rawUrl;
+        }
+      };
+      const artworkUrl = resolveArtworkUrl(track.cover);
       try {
         navigator.mediaSession.metadata = new window.MediaMetadata({
-          title: track.title,
-          artist: track.artist,
+          title: track.title || "Unknown Title",
+          artist: track.artist || "Unknown Artist",
           album: track.album || "Muzic",
           artwork: [
-            { src: artworkUrl, sizes: "96x96", type: "image/jpeg" },
-            { src: artworkUrl, sizes: "128x128", type: "image/jpeg" },
-            { src: artworkUrl, sizes: "192x192", type: "image/jpeg" },
-            { src: artworkUrl, sizes: "256x256", type: "image/jpeg" },
-            { src: artworkUrl, sizes: "384x384", type: "image/jpeg" },
-            { src: artworkUrl, sizes: "512x512", type: "image/jpeg" }
+            { src: artworkUrl, sizes: "96x96" },
+            { src: artworkUrl, sizes: "128x128" },
+            { src: artworkUrl, sizes: "192x192" },
+            { src: artworkUrl, sizes: "256x256" },
+            { src: artworkUrl, sizes: "384x384" },
+            { src: artworkUrl, sizes: "512x512" }
           ]
         });
+        navigator.mediaSession.playbackState = player.isPlaying ? "playing" : "paused";
+        registerWebMediaSessionHandlers();
       } catch (e2) {
         console.error("Setting MediaSession metadata failed:", e2);
       }
     }
     syncTrackToSystemMedia(track, player.isPlaying, player.currentTime, player.duration);
-  }, [player.currentTrack]);
+  }, [player.currentTrack, isNativeAndroid, registerWebMediaSessionHandlers]);
   reactExports.useEffect(() => {
-    if ("mediaSession" in navigator) {
-      navigator.mediaSession.playbackState = player.isPlaying ? "playing" : "paused";
+    if (!isNativeAndroid && "mediaSession" in navigator) {
+      navigator.mediaSession.playbackState = player.currentTrack ? player.isPlaying ? "playing" : "paused" : "none";
     }
-    syncPlaybackStateToSystemMedia(player.isPlaying, player.currentTime, player.duration, true);
-  }, [player.isPlaying]);
+    if (player.currentTrack) {
+      syncPlaybackStateToSystemMedia(player.isPlaying, player.currentTime, player.duration, true);
+    }
+  }, [player.isPlaying, player.currentTrack, isNativeAndroid]);
   reactExports.useEffect(() => {
     if (!player.currentTrack) return;
     const currentDuration = player.duration;
     const currentPos = player.currentTime;
     if (currentDuration > 0 && currentPos >= 0 && currentPos <= currentDuration) {
-      if ("mediaSession" in navigator && "setPositionState" in navigator.mediaSession) {
+      if (!isNativeAndroid && "mediaSession" in navigator && "setPositionState" in navigator.mediaSession) {
         try {
           navigator.mediaSession.setPositionState({
             duration: currentDuration,
-            playbackRate: 1,
+            playbackRate: player.isPlaying ? 1 : 0,
             position: currentPos
           });
         } catch (e2) {
@@ -86414,7 +86619,7 @@ function App() {
       }
       syncPlaybackStateToSystemMedia(player.isPlaying, currentPos, currentDuration);
     }
-  }, [player.currentTime, player.duration, player.currentTrack, player.isPlaying]);
+  }, [player.currentTime, player.duration, player.currentTrack, player.isPlaying, isNativeAndroid]);
   reactExports.useEffect(() => {
     db$1.tracks.toArray().then(async (saved) => {
       if (saved.length > 0) {
@@ -86871,9 +87076,17 @@ function App() {
         src: (_a2 = player.currentTrack) == null ? void 0 : _a2.url,
         onTimeUpdate: player.onTimeUpdate,
         onLoadedMetadata: player.onTimeUpdate,
-        onEnded: player.nextTrack,
+        onEnded: player.handleTrackEnded,
         onPlay: () => player.setIsPlaying(true),
-        onPause: () => player.setIsPlaying(false)
+        onPlaying: () => {
+          player.isSwitchingTrackRef.current = false;
+        },
+        onPause: (e2) => {
+          const el = e2.currentTarget;
+          if (!el.ended && !player.isSwitchingTrackRef.current) {
+            player.setIsPlaying(false);
+          }
+        }
       }
     ),
     /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -top-12 -left-12 w-64 h-64 rounded-full bg-[#6355FE]/5 blur-[80px] pointer-events-none" }),
