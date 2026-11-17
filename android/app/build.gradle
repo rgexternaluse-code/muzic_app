@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def envRunNumber = System.getenv("GITHUB_RUN_NUMBER")
+def appVersionCode = (envRunNumber != null && envRunNumber.isInteger()) ? Math.max(2, envRunNumber.toInteger() + 1) : 2
+def appVersionName = (envRunNumber != null && envRunNumber.isInteger()) ? "1.0.${envRunNumber}" : "1.1"
+
 android {
     namespace = "com.example.muzic"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,14 +11,23 @@ android {
         applicationId "com.example.muzic"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode appVersionCode
+        versionName appVersionName
         setProperty("archivesBaseName", "Muzic")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    signingConfigs {
+        muzicSigning {
+            storeFile file('muzic-signing.p12')
+            storePassword 'muzic_signing_key'
+            keyAlias 'muzic'
+            keyPassword 'muzic_signing_key'
+            storeType 'PKCS12'
         }
     }
     compileOptions {
@@ -24,11 +37,11 @@ android {
     buildTypes {
         debug {
             debuggable false
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.muzicSigning
         }
         release {
             debuggable false
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.muzicSigning
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
