@@ -36,6 +36,10 @@ interface SettingsViewProps {
   onBackToLibrary?: () => void;
 }
 
+// Feature visibility toggles for Settings panels (hidden while Studio is Coming Soon)
+const SHOW_VERIFICATION_IN_SETTINGS = false;
+const SHOW_ADMIN_ACCESS_IN_SETTINGS = false;
+
 export const SettingsView: React.FC<SettingsViewProps> = ({
   folderInputRef,
   fileInputRef,
@@ -155,6 +159,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       <main className="flex-1 overflow-y-auto px-6 pb-36 space-y-5">
         
         {/* User Account / Google 1-Tap Verification Panel */}
+        {SHOW_VERIFICATION_IN_SETTINGS && (
         <div className="p-5 rounded-3xl bg-[#14122B]/60 border border-white/10 space-y-4 text-left shadow-lg">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -227,6 +232,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             </button>
           )}
         </div>
+        )}
 
         {/* Appearance / Theme Switch */}
         <div className="p-5 rounded-3xl bg-[#14122B]/60 border border-white/10 space-y-3 text-left shadow-lg">
@@ -326,6 +332,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         {/* =========================================================================
             ADMIN ACCESS & MODE PANEL (Scoped strictly to Settings; isolated for future removal)
             ========================================================================= */}
+        {SHOW_ADMIN_ACCESS_IN_SETTINGS && (
         <div className={`p-5 rounded-3xl border transition-all text-left shadow-lg ${
           isAdminMode 
             ? 'bg-gradient-to-b from-amber-500/10 via-[#14122B]/80 to-[#14122B]/90 border-amber-500/30' 
@@ -425,9 +432,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             </div>
           )}
         </div>
+        )}
 
         {/* Admin Toast Notification */}
-        {adminToast && (
+        {SHOW_ADMIN_ACCESS_IN_SETTINGS && adminToast && (
           <div className="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-amber-500 text-black font-extrabold text-xs rounded-full shadow-2xl shadow-amber-500/50 flex items-center gap-2 animate-[fadeIn_0.15s_ease-out]">
             <Crown size={14} />
             <span>{adminToast}</span>
@@ -436,12 +444,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       </main>
 
       {/* Admin Login Popup Modal */}
-      <AdminLoginModal
-        isOpen={isAdminModalOpen}
-        onClose={() => setIsAdminModalOpen(false)}
-        onSuccess={handleAdminSuccess}
-        currentUserEmail={currentUser?.email}
-      />
+      {SHOW_ADMIN_ACCESS_IN_SETTINGS && (
+        <AdminLoginModal
+          isOpen={isAdminModalOpen}
+          onClose={() => setIsAdminModalOpen(false)}
+          onSuccess={handleAdminSuccess}
+          currentUserEmail={currentUser?.email}
+        />
+      )}
     </div>
   );
 };

@@ -12644,7 +12644,7 @@ const createLucideIcon = (iconName, iconNode) => {
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$X = [
+const __iconNode$M = [
   [
     "path",
     {
@@ -12653,136 +12653,7 @@ const __iconNode$X = [
     }
   ]
 ];
-const Activity = createLucideIcon("activity", __iconNode$X);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$W = [
-  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
-  ["path", { d: "M19 12H5", key: "x3x0zl" }]
-];
-const ArrowLeft = createLucideIcon("arrow-left", __iconNode$W);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$V = [
-  ["path", { d: "M2 10v3", key: "1fnikh" }],
-  ["path", { d: "M6 6v11", key: "11sgs0" }],
-  ["path", { d: "M10 3v18", key: "yhl04a" }],
-  ["path", { d: "M14 8v7", key: "3a1oy3" }],
-  ["path", { d: "M18 5v13", key: "123xd1" }],
-  ["path", { d: "M22 10v3", key: "154ddg" }]
-];
-const AudioLines = createLucideIcon("audio-lines", __iconNode$V);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$U = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
-const Check = createLucideIcon("check", __iconNode$U);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$T = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
-const ChevronDown = createLucideIcon("chevron-down", __iconNode$T);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$S = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
-const ChevronRight = createLucideIcon("chevron-right", __iconNode$S);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$R = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["line", { x1: "12", x2: "12", y1: "8", y2: "12", key: "1pkeuh" }],
-  ["line", { x1: "12", x2: "12.01", y1: "16", y2: "16", key: "4dfq90" }]
-];
-const CircleAlert = createLucideIcon("circle-alert", __iconNode$R);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$Q = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
-];
-const CircleCheck = createLucideIcon("circle-check", __iconNode$Q);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$P = [
-  ["path", { d: "M12 6v6l4 2", key: "mmk7yg" }],
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }]
-];
-const Clock = createLucideIcon("clock", __iconNode$P);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$O = [
-  ["path", { d: "m2 2 20 20", key: "1ooewy" }],
-  ["path", { d: "M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.307-.193", key: "yfwify" }],
-  [
-    "path",
-    { d: "M21.532 16.5A4.5 4.5 0 0 0 17.5 10h-1.79A7.008 7.008 0 0 0 10 5.07", key: "jlfiyv" }
-  ]
-];
-const CloudOff = createLucideIcon("cloud-off", __iconNode$O);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$N = [
-  [
-    "path",
-    {
-      d: "M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z",
-      key: "1vdc57"
-    }
-  ],
-  ["path", { d: "M5 21h14", key: "11awu3" }]
-];
-const Crown = createLucideIcon("crown", __iconNode$N);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$M = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "M6 12c0-1.7.7-3.2 1.8-4.2", key: "oqkarx" }],
-  ["circle", { cx: "12", cy: "12", r: "2", key: "1c9p78" }],
-  ["path", { d: "M18 12c0 1.7-.7 3.2-1.8 4.2", key: "1eah9h" }]
-];
-const Disc3 = createLucideIcon("disc-3", __iconNode$M);
+const Activity = createLucideIcon("activity", __iconNode$M);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -12790,11 +12661,10 @@ const Disc3 = createLucideIcon("disc-3", __iconNode$M);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$L = [
-  ["path", { d: "M12 15V3", key: "m9g1x1" }],
-  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }],
-  ["path", { d: "m7 10 5 5 5-5", key: "brsn70" }]
+  ["path", { d: "m12 19-7-7 7-7", key: "1l729n" }],
+  ["path", { d: "M19 12H5", key: "x3x0zl" }]
 ];
-const Download = createLucideIcon("download", __iconNode$L);
+const ArrowLeft = createLucideIcon("arrow-left", __iconNode$L);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -12802,11 +12672,14 @@ const Download = createLucideIcon("download", __iconNode$L);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$K = [
-  ["circle", { cx: "12", cy: "12", r: "1", key: "41hilf" }],
-  ["circle", { cx: "12", cy: "5", r: "1", key: "gxeob9" }],
-  ["circle", { cx: "12", cy: "19", r: "1", key: "lyex9k" }]
+  ["path", { d: "M2 10v3", key: "1fnikh" }],
+  ["path", { d: "M6 6v11", key: "11sgs0" }],
+  ["path", { d: "M10 3v18", key: "yhl04a" }],
+  ["path", { d: "M14 8v7", key: "3a1oy3" }],
+  ["path", { d: "M18 5v13", key: "123xd1" }],
+  ["path", { d: "M22 10v3", key: "154ddg" }]
 ];
-const EllipsisVertical = createLucideIcon("ellipsis-vertical", __iconNode$K);
+const AudioLines = createLucideIcon("audio-lines", __iconNode$K);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -12814,24 +12687,18 @@ const EllipsisVertical = createLucideIcon("ellipsis-vertical", __iconNode$K);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$J = [
+  ["path", { d: "M10.268 21a2 2 0 0 0 3.464 0", key: "vwvbt9" }],
+  ["path", { d: "M22 8c0-2.3-.8-4.3-2-6", key: "5bb3ad" }],
   [
     "path",
     {
-      d: "M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49",
-      key: "ct8e1f"
+      d: "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326",
+      key: "11g9vi"
     }
   ],
-  ["path", { d: "M14.084 14.158a3 3 0 0 1-4.242-4.242", key: "151rxh" }],
-  [
-    "path",
-    {
-      d: "M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143",
-      key: "13bj9a"
-    }
-  ],
-  ["path", { d: "m2 2 20 20", key: "1ooewy" }]
+  ["path", { d: "M4 2C2.8 3.7 2 5.7 2 8", key: "tap9e0" }]
 ];
-const EyeOff = createLucideIcon("eye-off", __iconNode$J);
+const BellRing = createLucideIcon("bell-ring", __iconNode$J);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -12839,68 +12706,40 @@ const EyeOff = createLucideIcon("eye-off", __iconNode$J);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$I = [
+  ["path", { d: "M10.268 21a2 2 0 0 0 3.464 0", key: "vwvbt9" }],
   [
     "path",
     {
-      d: "M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0",
-      key: "1nclc0"
+      d: "M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326",
+      key: "11g9vi"
     }
-  ],
-  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+  ]
 ];
-const Eye = createLucideIcon("eye", __iconNode$I);
+const Bell = createLucideIcon("bell", __iconNode$I);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$H = [
-  ["path", { d: "M17.5 22h.5a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3", key: "rslqgf" }],
-  ["path", { d: "M14 2v4a2 2 0 0 0 2 2h4", key: "tnqrlb" }],
-  [
-    "path",
-    {
-      d: "M2 19a2 2 0 1 1 4 0v1a2 2 0 1 1-4 0v-4a6 6 0 0 1 12 0v4a2 2 0 1 1-4 0v-1a2 2 0 1 1 4 0",
-      key: "9f7x3i"
-    }
-  ]
-];
-const FileAudio = createLucideIcon("file-audio", __iconNode$H);
+const __iconNode$H = [["path", { d: "M20 6 9 17l-5-5", key: "1gmf2c" }]];
+const Check = createLucideIcon("check", __iconNode$H);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$G = [
-  [
-    "path",
-    {
-      d: "m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2",
-      key: "usdka0"
-    }
-  ]
-];
-const FolderOpen = createLucideIcon("folder-open", __iconNode$G);
+const __iconNode$G = [["path", { d: "m6 9 6 6 6-6", key: "qrunsl" }]];
+const ChevronDown = createLucideIcon("chevron-down", __iconNode$G);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$F = [
-  ["path", { d: "M12 10v6", key: "1bos4e" }],
-  ["path", { d: "M9 13h6", key: "1uhe8q" }],
-  [
-    "path",
-    {
-      d: "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z",
-      key: "1kt360"
-    }
-  ]
-];
-const FolderPlus = createLucideIcon("folder-plus", __iconNode$F);
+const __iconNode$F = [["path", { d: "m9 18 6-6-6-6", key: "mthhwq" }]];
+const ChevronRight = createLucideIcon("chevron-right", __iconNode$F);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -12908,15 +12747,11 @@ const FolderPlus = createLucideIcon("folder-plus", __iconNode$F);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$E = [
-  [
-    "path",
-    {
-      d: "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z",
-      key: "1kt360"
-    }
-  ]
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["line", { x1: "12", x2: "12", y1: "8", y2: "12", key: "1pkeuh" }],
+  ["line", { x1: "12", x2: "12.01", y1: "16", y2: "16", key: "4dfq90" }]
 ];
-const Folder = createLucideIcon("folder", __iconNode$E);
+const CircleAlert = createLucideIcon("circle-alert", __iconNode$E);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -12924,11 +12759,10 @@ const Folder = createLucideIcon("folder", __iconNode$E);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$D = [
-  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
-  ["path", { d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", key: "13o1zl" }],
-  ["path", { d: "M2 12h20", key: "9i4pu4" }]
+  ["path", { d: "M12 6v6l4 2", key: "mmk7yg" }],
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }]
 ];
-const Globe = createLucideIcon("globe", __iconNode$D);
+const Clock = createLucideIcon("clock", __iconNode$D);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -12939,12 +12773,13 @@ const __iconNode$C = [
   [
     "path",
     {
-      d: "M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5",
-      key: "mvr1a0"
+      d: "M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z",
+      key: "1vdc57"
     }
-  ]
+  ],
+  ["path", { d: "M5 21h14", key: "11awu3" }]
 ];
-const Heart = createLucideIcon("heart", __iconNode$C);
+const Crown = createLucideIcon("crown", __iconNode$C);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -12952,16 +12787,12 @@ const Heart = createLucideIcon("heart", __iconNode$C);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$B = [
-  [
-    "path",
-    {
-      d: "M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z",
-      key: "1s6t7t"
-    }
-  ],
-  ["circle", { cx: "16.5", cy: "7.5", r: ".5", fill: "currentColor", key: "w0ekpg" }]
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "M6 12c0-1.7.7-3.2 1.8-4.2", key: "oqkarx" }],
+  ["circle", { cx: "12", cy: "12", r: "2", key: "1c9p78" }],
+  ["path", { d: "M18 12c0 1.7-.7 3.2-1.8 4.2", key: "1eah9h" }]
 ];
-const KeyRound = createLucideIcon("key-round", __iconNode$B);
+const Disc3 = createLucideIcon("disc-3", __iconNode$B);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -12969,6 +12800,130 @@ const KeyRound = createLucideIcon("key-round", __iconNode$B);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$A = [
+  ["circle", { cx: "12", cy: "12", r: "1", key: "41hilf" }],
+  ["circle", { cx: "12", cy: "5", r: "1", key: "gxeob9" }],
+  ["circle", { cx: "12", cy: "19", r: "1", key: "lyex9k" }]
+];
+const EllipsisVertical = createLucideIcon("ellipsis-vertical", __iconNode$A);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$z = [
+  ["path", { d: "M17.5 22h.5a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3", key: "rslqgf" }],
+  ["path", { d: "M14 2v4a2 2 0 0 0 2 2h4", key: "tnqrlb" }],
+  [
+    "path",
+    {
+      d: "M2 19a2 2 0 1 1 4 0v1a2 2 0 1 1-4 0v-4a6 6 0 0 1 12 0v4a2 2 0 1 1-4 0v-1a2 2 0 1 1 4 0",
+      key: "9f7x3i"
+    }
+  ]
+];
+const FileAudio = createLucideIcon("file-audio", __iconNode$z);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$y = [
+  [
+    "path",
+    {
+      d: "m6 14 1.5-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.54 6a2 2 0 0 1-1.95 1.5H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H18a2 2 0 0 1 2 2v2",
+      key: "usdka0"
+    }
+  ]
+];
+const FolderOpen = createLucideIcon("folder-open", __iconNode$y);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$x = [
+  ["path", { d: "M12 10v6", key: "1bos4e" }],
+  ["path", { d: "M9 13h6", key: "1uhe8q" }],
+  [
+    "path",
+    {
+      d: "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z",
+      key: "1kt360"
+    }
+  ]
+];
+const FolderPlus = createLucideIcon("folder-plus", __iconNode$x);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$w = [
+  [
+    "path",
+    {
+      d: "M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z",
+      key: "1kt360"
+    }
+  ]
+];
+const Folder = createLucideIcon("folder", __iconNode$w);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$v = [
+  ["circle", { cx: "12", cy: "12", r: "10", key: "1mglay" }],
+  ["path", { d: "M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20", key: "13o1zl" }],
+  ["path", { d: "M2 12h20", key: "9i4pu4" }]
+];
+const Globe = createLucideIcon("globe", __iconNode$v);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$u = [
+  [
+    "path",
+    {
+      d: "M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3",
+      key: "1xhozi"
+    }
+  ]
+];
+const Headphones = createLucideIcon("headphones", __iconNode$u);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$t = [
+  [
+    "path",
+    {
+      d: "M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5",
+      key: "mvr1a0"
+    }
+  ]
+];
+const Heart = createLucideIcon("heart", __iconNode$t);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$s = [
   [
     "path",
     {
@@ -12991,84 +12946,72 @@ const __iconNode$A = [
     }
   ]
 ];
-const Layers = createLucideIcon("layers", __iconNode$A);
+const Layers = createLucideIcon("layers", __iconNode$s);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$z = [
+const __iconNode$r = [
   ["rect", { width: "7", height: "7", x: "3", y: "3", rx: "1", key: "1g98yp" }],
   ["rect", { width: "7", height: "7", x: "14", y: "3", rx: "1", key: "6d4xhi" }],
   ["rect", { width: "7", height: "7", x: "14", y: "14", rx: "1", key: "nxv5o0" }],
   ["rect", { width: "7", height: "7", x: "3", y: "14", rx: "1", key: "1bb6yr" }]
 ];
-const LayoutGrid = createLucideIcon("layout-grid", __iconNode$z);
+const LayoutGrid = createLucideIcon("layout-grid", __iconNode$r);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$y = [
+const __iconNode$q = [
   ["path", { d: "M16 5H3", key: "m91uny" }],
   ["path", { d: "M11 12H3", key: "51ecnj" }],
   ["path", { d: "M11 19H3", key: "zflm78" }],
   ["path", { d: "M21 16V5", key: "yxg4q8" }],
   ["circle", { cx: "18", cy: "16", r: "3", key: "1hluhg" }]
 ];
-const ListMusic = createLucideIcon("list-music", __iconNode$y);
+const ListMusic = createLucideIcon("list-music", __iconNode$q);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$x = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
-const LoaderCircle = createLucideIcon("loader-circle", __iconNode$x);
+const __iconNode$p = [["path", { d: "M21 12a9 9 0 1 1-6.219-8.56", key: "13zald" }]];
+const LoaderCircle = createLucideIcon("loader-circle", __iconNode$p);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$w = [
-  ["rect", { width: "18", height: "11", x: "3", y: "11", rx: "2", ry: "2", key: "1w4ew1" }],
-  ["path", { d: "M7 11V7a5 5 0 0 1 10 0v4", key: "fwvmzm" }]
+const __iconNode$o = [
+  ["path", { d: "m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7", key: "132q7q" }],
+  ["rect", { x: "2", y: "4", width: "20", height: "16", rx: "2", key: "izxlao" }]
 ];
-const Lock = createLucideIcon("lock", __iconNode$w);
+const Mail = createLucideIcon("mail", __iconNode$o);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$v = [
-  ["path", { d: "m16 17 5-5-5-5", key: "1bji2h" }],
-  ["path", { d: "M21 12H9", key: "dn1m92" }],
-  ["path", { d: "M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4", key: "1uf3rs" }]
-];
-const LogOut = createLucideIcon("log-out", __iconNode$v);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$u = [
+const __iconNode$n = [
   ["path", { d: "M12 19v3", key: "npa21l" }],
   ["path", { d: "M19 10v2a7 7 0 0 1-14 0v-2", key: "1vc78b" }],
   ["rect", { x: "9", y: "2", width: "6", height: "13", rx: "3", key: "s6n7sd" }]
 ];
-const Mic = createLucideIcon("mic", __iconNode$u);
+const Mic = createLucideIcon("mic", __iconNode$n);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$t = [
+const __iconNode$m = [
   [
     "path",
     {
@@ -13077,54 +13020,37 @@ const __iconNode$t = [
     }
   ]
 ];
-const Moon = createLucideIcon("moon", __iconNode$t);
+const Moon = createLucideIcon("moon", __iconNode$m);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$s = [
+const __iconNode$l = [
   ["path", { d: "M9 18V5l12-2v13", key: "1jmyc2" }],
   ["circle", { cx: "6", cy: "18", r: "3", key: "fqmcym" }],
   ["circle", { cx: "18", cy: "16", r: "3", key: "1hluhg" }]
 ];
-const Music = createLucideIcon("music", __iconNode$s);
+const Music = createLucideIcon("music", __iconNode$l);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$r = [
+const __iconNode$k = [
   ["rect", { x: "14", y: "3", width: "5", height: "18", rx: "1", key: "kaeet6" }],
   ["rect", { x: "5", y: "3", width: "5", height: "18", rx: "1", key: "1wsw3u" }]
 ];
-const Pause = createLucideIcon("pause", __iconNode$r);
+const Pause = createLucideIcon("pause", __iconNode$k);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$q = [
-  ["path", { d: "M13 21h8", key: "1jsn5i" }],
-  [
-    "path",
-    {
-      d: "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
-      key: "1a8usu"
-    }
-  ]
-];
-const PenLine = createLucideIcon("pen-line", __iconNode$q);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$p = [
+const __iconNode$j = [
   [
     "path",
     {
@@ -13133,83 +13059,7 @@ const __iconNode$p = [
     }
   ]
 ];
-const Play = createLucideIcon("play", __iconNode$p);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$o = [
-  ["path", { d: "M5 12h14", key: "1ays0h" }],
-  ["path", { d: "M12 5v14", key: "s699le" }]
-];
-const Plus = createLucideIcon("plus", __iconNode$o);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$n = [
-  ["path", { d: "M16.247 7.761a6 6 0 0 1 0 8.478", key: "1fwjs5" }],
-  ["path", { d: "M19.075 4.933a10 10 0 0 1 0 14.134", key: "ehdyv1" }],
-  ["path", { d: "M4.925 19.067a10 10 0 0 1 0-14.134", key: "1q22gi" }],
-  ["path", { d: "M7.753 16.239a6 6 0 0 1 0-8.478", key: "r2q7qm" }],
-  ["circle", { cx: "12", cy: "12", r: "2", key: "1c9p78" }]
-];
-const Radio = createLucideIcon("radio", __iconNode$n);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$m = [
-  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
-  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
-  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
-  ["path", { d: "M8 16H3v5", key: "1cv678" }]
-];
-const RefreshCw = createLucideIcon("refresh-cw", __iconNode$m);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$l = [
-  ["path", { d: "m17 2 4 4-4 4", key: "nntrym" }],
-  ["path", { d: "M3 11v-1a4 4 0 0 1 4-4h14", key: "84bu3i" }],
-  ["path", { d: "m7 22-4-4 4-4", key: "1wqhfi" }],
-  ["path", { d: "M21 13v1a4 4 0 0 1-4 4H3", key: "1rx37r" }],
-  ["path", { d: "M11 10h1v4", key: "70cz1p" }]
-];
-const Repeat1 = createLucideIcon("repeat-1", __iconNode$l);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$k = [
-  ["path", { d: "m17 2 4 4-4 4", key: "nntrym" }],
-  ["path", { d: "M3 11v-1a4 4 0 0 1 4-4h14", key: "84bu3i" }],
-  ["path", { d: "m7 22-4-4 4-4", key: "1wqhfi" }],
-  ["path", { d: "M21 13v1a4 4 0 0 1-4 4H3", key: "1rx37r" }]
-];
-const Repeat = createLucideIcon("repeat", __iconNode$k);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$j = [
-  ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
-  ["path", { d: "M3 3v5h5", key: "1xhq8a" }]
-];
-const RotateCcw = createLucideIcon("rotate-ccw", __iconNode$j);
+const Play = createLucideIcon("play", __iconNode$j);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -13217,10 +13067,10 @@ const RotateCcw = createLucideIcon("rotate-ccw", __iconNode$j);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$i = [
-  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
-  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
+  ["path", { d: "M5 12h14", key: "1ays0h" }],
+  ["path", { d: "M12 5v14", key: "s699le" }]
 ];
-const Search = createLucideIcon("search", __iconNode$i);
+const Plus = createLucideIcon("plus", __iconNode$i);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -13228,12 +13078,12 @@ const Search = createLucideIcon("search", __iconNode$i);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$h = [
-  ["rect", { width: "20", height: "8", x: "2", y: "2", rx: "2", ry: "2", key: "ngkwjq" }],
-  ["rect", { width: "20", height: "8", x: "2", y: "14", rx: "2", ry: "2", key: "iecqi9" }],
-  ["line", { x1: "6", x2: "6.01", y1: "6", y2: "6", key: "16zg32" }],
-  ["line", { x1: "6", x2: "6.01", y1: "18", y2: "18", key: "nzw8ys" }]
+  ["path", { d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8", key: "v9h5vc" }],
+  ["path", { d: "M21 3v5h-5", key: "1q7to0" }],
+  ["path", { d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16", key: "3uifl3" }],
+  ["path", { d: "M8 16H3v5", key: "1cv678" }]
 ];
-const Server = createLucideIcon("server", __iconNode$h);
+const RefreshCw = createLucideIcon("refresh-cw", __iconNode$h);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -13241,16 +13091,13 @@ const Server = createLucideIcon("server", __iconNode$h);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$g = [
-  [
-    "path",
-    {
-      d: "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915",
-      key: "1i5ecw"
-    }
-  ],
-  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
+  ["path", { d: "m17 2 4 4-4 4", key: "nntrym" }],
+  ["path", { d: "M3 11v-1a4 4 0 0 1 4-4h14", key: "84bu3i" }],
+  ["path", { d: "m7 22-4-4 4-4", key: "1wqhfi" }],
+  ["path", { d: "M21 13v1a4 4 0 0 1-4 4H3", key: "1rx37r" }],
+  ["path", { d: "M11 10h1v4", key: "70cz1p" }]
 ];
-const Settings = createLucideIcon("settings", __iconNode$g);
+const Repeat1 = createLucideIcon("repeat-1", __iconNode$g);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -13258,17 +13105,12 @@ const Settings = createLucideIcon("settings", __iconNode$g);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$f = [
-  [
-    "path",
-    {
-      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
-      key: "oel41y"
-    }
-  ],
-  ["path", { d: "M12 8v4", key: "1got3b" }],
-  ["path", { d: "M12 16h.01", key: "1drbdi" }]
+  ["path", { d: "m17 2 4 4-4 4", key: "nntrym" }],
+  ["path", { d: "M3 11v-1a4 4 0 0 1 4-4h14", key: "84bu3i" }],
+  ["path", { d: "m7 22-4-4 4-4", key: "1wqhfi" }],
+  ["path", { d: "M21 13v1a4 4 0 0 1-4 4H3", key: "1rx37r" }]
 ];
-const ShieldAlert = createLucideIcon("shield-alert", __iconNode$f);
+const Repeat = createLucideIcon("repeat", __iconNode$f);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -13276,16 +13118,10 @@ const ShieldAlert = createLucideIcon("shield-alert", __iconNode$f);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$e = [
-  [
-    "path",
-    {
-      d: "M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z",
-      key: "oel41y"
-    }
-  ],
-  ["path", { d: "m9 12 2 2 4-4", key: "dzmm74" }]
+  ["path", { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8", key: "1357e3" }],
+  ["path", { d: "M3 3v5h5", key: "1xhq8a" }]
 ];
-const ShieldCheck = createLucideIcon("shield-check", __iconNode$e);
+const RotateCcw = createLucideIcon("rotate-ccw", __iconNode$e);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -13293,13 +13129,10 @@ const ShieldCheck = createLucideIcon("shield-check", __iconNode$e);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$d = [
-  ["path", { d: "m18 14 4 4-4 4", key: "10pe0f" }],
-  ["path", { d: "m18 2 4 4-4 4", key: "pucp1d" }],
-  ["path", { d: "M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22", key: "1ailkh" }],
-  ["path", { d: "M2 6h1.972a4 4 0 0 1 3.6 2.2", key: "km57vx" }],
-  ["path", { d: "M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45", key: "os18l9" }]
+  ["path", { d: "m21 21-4.34-4.34", key: "14j7rj" }],
+  ["circle", { cx: "11", cy: "11", r: "8", key: "4ej97u" }]
 ];
-const Shuffle = createLucideIcon("shuffle", __iconNode$d);
+const Search = createLucideIcon("search", __iconNode$d);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -13310,13 +13143,13 @@ const __iconNode$c = [
   [
     "path",
     {
-      d: "M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z",
-      key: "15892j"
+      d: "M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915",
+      key: "1i5ecw"
     }
   ],
-  ["path", { d: "M3 20V4", key: "1ptbpl" }]
+  ["circle", { cx: "12", cy: "12", r: "3", key: "1v7zrd" }]
 ];
-const SkipBack = createLucideIcon("skip-back", __iconNode$c);
+const Settings = createLucideIcon("settings", __iconNode$c);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -13324,6 +13157,37 @@ const SkipBack = createLucideIcon("skip-back", __iconNode$c);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$b = [
+  ["path", { d: "m18 14 4 4-4 4", key: "10pe0f" }],
+  ["path", { d: "m18 2 4 4-4 4", key: "pucp1d" }],
+  ["path", { d: "M2 18h1.973a4 4 0 0 0 3.3-1.7l5.454-8.6a4 4 0 0 1 3.3-1.7H22", key: "1ailkh" }],
+  ["path", { d: "M2 6h1.972a4 4 0 0 1 3.6 2.2", key: "km57vx" }],
+  ["path", { d: "M22 18h-6.041a4 4 0 0 1-3.3-1.8l-.359-.45", key: "os18l9" }]
+];
+const Shuffle = createLucideIcon("shuffle", __iconNode$b);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$a = [
+  [
+    "path",
+    {
+      d: "M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z",
+      key: "15892j"
+    }
+  ],
+  ["path", { d: "M3 20V4", key: "1ptbpl" }]
+];
+const SkipBack = createLucideIcon("skip-back", __iconNode$a);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$9 = [
   ["path", { d: "M21 4v16", key: "7j8fe9" }],
   [
     "path",
@@ -13333,14 +13197,14 @@ const __iconNode$b = [
     }
   ]
 ];
-const SkipForward = createLucideIcon("skip-forward", __iconNode$b);
+const SkipForward = createLucideIcon("skip-forward", __iconNode$9);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$a = [
+const __iconNode$8 = [
   ["path", { d: "M10 8h4", key: "1sr2af" }],
   ["path", { d: "M12 21v-9", key: "17s77i" }],
   ["path", { d: "M12 8V3", key: "13r4qs" }],
@@ -13351,14 +13215,14 @@ const __iconNode$a = [
   ["path", { d: "M5 10V3", key: "cb8scm" }],
   ["path", { d: "M5 21v-7", key: "1w1uti" }]
 ];
-const SlidersVertical = createLucideIcon("sliders-vertical", __iconNode$a);
+const SlidersVertical = createLucideIcon("sliders-vertical", __iconNode$8);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$9 = [
+const __iconNode$7 = [
   ["path", { d: "M10 5H3", key: "1qgfaw" }],
   ["path", { d: "M12 19H3", key: "yhmn1j" }],
   ["path", { d: "M14 3v4", key: "1sua03" }],
@@ -13369,25 +13233,25 @@ const __iconNode$9 = [
   ["path", { d: "M8 10v4", key: "tgpxqk" }],
   ["path", { d: "M8 12H3", key: "a7s4jb" }]
 ];
-const SlidersHorizontal = createLucideIcon("sliders-horizontal", __iconNode$9);
+const SlidersHorizontal = createLucideIcon("sliders-horizontal", __iconNode$7);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$8 = [
+const __iconNode$6 = [
   ["rect", { width: "14", height: "20", x: "5", y: "2", rx: "2", ry: "2", key: "1yt0o3" }],
   ["path", { d: "M12 18h.01", key: "mhygvu" }]
 ];
-const Smartphone = createLucideIcon("smartphone", __iconNode$8);
+const Smartphone = createLucideIcon("smartphone", __iconNode$6);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$7 = [
+const __iconNode$5 = [
   [
     "path",
     {
@@ -13399,24 +13263,24 @@ const __iconNode$7 = [
   ["path", { d: "M22 4h-4", key: "gwowj6" }],
   ["circle", { cx: "4", cy: "20", r: "2", key: "6kqj1y" }]
 ];
-const Sparkles = createLucideIcon("sparkles", __iconNode$7);
+const Sparkles = createLucideIcon("sparkles", __iconNode$5);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$6 = [
+const __iconNode$4 = [
   ["rect", { width: "18", height: "18", x: "3", y: "3", rx: "2", key: "afitv7" }]
 ];
-const Square = createLucideIcon("square", __iconNode$6);
+const Square = createLucideIcon("square", __iconNode$4);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
  * This source code is licensed under the ISC license.
  * See the LICENSE file in the root directory of this source tree.
  */
-const __iconNode$5 = [
+const __iconNode$3 = [
   ["circle", { cx: "12", cy: "12", r: "4", key: "4exip2" }],
   ["path", { d: "M12 2v2", key: "tus03m" }],
   ["path", { d: "M12 20v2", key: "1lh1kg" }],
@@ -13427,33 +13291,7 @@ const __iconNode$5 = [
   ["path", { d: "m6.34 17.66-1.41 1.41", key: "1m8zz5" }],
   ["path", { d: "m19.07 4.93-1.41 1.41", key: "1shlcs" }]
 ];
-const Sun = createLucideIcon("sun", __iconNode$5);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$4 = [
-  ["path", { d: "M10 11v6", key: "nco0om" }],
-  ["path", { d: "M14 11v6", key: "outv1u" }],
-  ["path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6", key: "miytrc" }],
-  ["path", { d: "M3 6h18", key: "d0wm0j" }],
-  ["path", { d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2", key: "e791ji" }]
-];
-const Trash2 = createLucideIcon("trash-2", __iconNode$4);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$3 = [
-  ["path", { d: "M12 3v12", key: "1x0j5s" }],
-  ["path", { d: "m17 8-5-5-5 5", key: "7q97r8" }],
-  ["path", { d: "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4", key: "ih7n3h" }]
-];
-const Upload = createLucideIcon("upload", __iconNode$3);
+const Sun = createLucideIcon("sun", __iconNode$3);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -13461,6 +13299,20 @@ const Upload = createLucideIcon("upload", __iconNode$3);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode$2 = [
+  ["path", { d: "M10 11v6", key: "nco0om" }],
+  ["path", { d: "M14 11v6", key: "outv1u" }],
+  ["path", { d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6", key: "miytrc" }],
+  ["path", { d: "M3 6h18", key: "d0wm0j" }],
+  ["path", { d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2", key: "e791ji" }]
+];
+const Trash2 = createLucideIcon("trash-2", __iconNode$2);
+/**
+ * @license lucide-react v0.546.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+const __iconNode$1 = [
   [
     "path",
     {
@@ -13471,18 +13323,7 @@ const __iconNode$2 = [
   ["path", { d: "M16 9a5 5 0 0 1 0 6", key: "1q6k2b" }],
   ["path", { d: "M19.364 18.364a9 9 0 0 0 0-12.728", key: "ijwkga" }]
 ];
-const Volume2 = createLucideIcon("volume-2", __iconNode$2);
-/**
- * @license lucide-react v0.546.0 - ISC
- *
- * This source code is licensed under the ISC license.
- * See the LICENSE file in the root directory of this source tree.
- */
-const __iconNode$1 = [
-  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
-  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
-];
-const X$1 = createLucideIcon("x", __iconNode$1);
+const Volume2 = createLucideIcon("volume-2", __iconNode$1);
 /**
  * @license lucide-react v0.546.0 - ISC
  *
@@ -13490,15 +13331,10 @@ const X$1 = createLucideIcon("x", __iconNode$1);
  * See the LICENSE file in the root directory of this source tree.
  */
 const __iconNode = [
-  [
-    "path",
-    {
-      d: "M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z",
-      key: "1xq2db"
-    }
-  ]
+  ["path", { d: "M18 6 6 18", key: "1bl5f8" }],
+  ["path", { d: "m6 6 12 12", key: "d8bk6v" }]
 ];
-const Zap = createLucideIcon("zap", __iconNode);
+const X$1 = createLucideIcon("x", __iconNode);
 const LayoutGroupContext = reactExports.createContext({});
 function useConstant(init) {
   const ref = reactExports.useRef(null);
@@ -22151,7 +21987,7 @@ const __vitePreload = function preload(baseModule, deps, importerUrl) {
   });
 };
 const App$1 = registerPlugin("App", {
-  web: () => __vitePreload(() => import("./web-C5X3Zg6i.js"), true ? [] : void 0).then((m2) => new m2.AppWeb())
+  web: () => __vitePreload(() => import("./web-CuJZRB8r.js"), true ? [] : void 0).then((m2) => new m2.AppWeb())
 });
 class FilePickerWeb extends WebPlugin {
   constructor() {
@@ -63202,6 +63038,9 @@ function __PRIVATE_validateIsNotUsedTogether(e2, t, n, r) {
 function __PRIVATE_validateDocumentPath(e2) {
   if (!DocumentKey.isDocumentKey(e2)) throw new Q(z.INVALID_ARGUMENT, `Invalid document reference. Document references must have an even number of segments, but ${e2} has ${e2.length}.`);
 }
+function __PRIVATE_validateCollectionPath(e2) {
+  if (DocumentKey.isDocumentKey(e2)) throw new Q(z.INVALID_ARGUMENT, `Invalid collection reference. Collection references must have an odd number of segments, but ${e2} has ${e2.length}.`);
+}
 function L(e2) {
   return "object" == typeof e2 && null !== e2 && (Object.getPrototypeOf(e2) === Object.prototype || null === Object.getPrototypeOf(e2));
 }
@@ -69622,6 +69461,27 @@ class na extends Query {
     return new na(this.firestore, e2, this._path);
   }
 }
+function collection(e2, t, ...n) {
+  if (e2 = getModularInstance(e2), __PRIVATE_validateNonEmptyArgument("collection", "path", t), e2 instanceof _n) {
+    const r = ResourcePath.fromString(t, ...n);
+    return __PRIVATE_validateCollectionPath(r), new na(
+      e2,
+      /* converter= */
+      null,
+      r
+    );
+  }
+  {
+    if (!(e2 instanceof aa || e2 instanceof na)) throw new Q(z.INVALID_ARGUMENT, "Expected first argument to collection() to be a CollectionReference, a DocumentReference or FirebaseFirestore");
+    const r = e2._path.child(ResourcePath.fromString(t, ...n));
+    return __PRIVATE_validateCollectionPath(r), new na(
+      e2.firestore,
+      /* converter= */
+      null,
+      r
+    );
+  }
+}
 function doc(e2, t, ...n) {
   if (e2 = getModularInstance(e2), // We allow omission of 'pathString' but explicitly prohibit passing in both
   // 'undefined' and 'null'.
@@ -69925,16 +69785,12 @@ class __PRIVATE_DeleteFieldValueImpl extends FieldValue {
     return e2 instanceof __PRIVATE_DeleteFieldValueImpl;
   }
 }
-class __PRIVATE_NumericIncrementFieldValueImpl extends FieldValue {
-  constructor(e2, t) {
-    super(e2), this.Vi = t;
-  }
+class __PRIVATE_ServerTimestampFieldValueImpl extends FieldValue {
   _toFieldTransform(e2) {
-    const t = new __PRIVATE_NumericIncrementTransformOperation(e2.serializer, toNumber(e2.serializer, this.Vi));
-    return new FieldTransform(e2.path, t);
+    return new FieldTransform(e2.path, new __PRIVATE_ServerTimestampTransform());
   }
   isEqual(e2) {
-    return e2 instanceof __PRIVATE_NumericIncrementFieldValueImpl && (this.Vi === e2.Vi || Number.isNaN(this.Vi) && Number.isNaN(e2.Vi));
+    return e2 instanceof __PRIVATE_ServerTimestampFieldValueImpl;
   }
 }
 function __PRIVATE_parseUpdateData(e2, t, n, r) {
@@ -70366,8 +70222,8 @@ function __PRIVATE_isFirestoreValue(e2) {
     return "object" == typeof e3 && null !== e3 && !(!("stages" in e3) || null !== e3.stages && !Array.isArray(e3.stages));
   })(e2.pipelineValue)));
 }
-function increment(e2) {
-  return new __PRIVATE_NumericIncrementFieldValueImpl("increment", e2);
+function serverTimestamp() {
+  return new __PRIVATE_ServerTimestampFieldValueImpl("serverTimestamp");
 }
 function vector(e2) {
   return new VectorValue(e2);
@@ -79199,6 +79055,10 @@ function updateDoc(e2, t, n, ...r) {
   (t = getModularInstance(t)) || t instanceof FieldPath ? __PRIVATE_parseUpdateVarargs(a, "updateDoc", e2._key, t, n, r) : __PRIVATE_parseUpdateData(a, "updateDoc", e2._key, t);
   return executeWrite(s, [o.toMutation(e2._key, Precondition.exists(true))]);
 }
+function addDoc(e2, t) {
+  const n = ra(e2.firestore, pa), r = doc(e2), s = __PRIVATE_applyFirestoreDataConverter(e2.converter, t), a = la(e2.firestore);
+  return executeWrite(n, [__PRIVATE_parseSetData(a, "addDoc", r._key, s, null !== e2.converter, {}).toMutation(r._key, Precondition.exists(false))]).then((() => r));
+}
 function executeWrite(e2, t) {
   const n = oa(e2);
   return __PRIVATE_firestoreClientWrite(n, t);
@@ -79365,30 +79225,39 @@ async function fetchCloudStudioQuota(userId, month) {
     return 0;
   }
 }
-async function recordCloudStudioUpload(userId, month) {
-  const quotaRef = doc(db, "users", userId, "quota", month);
-  const path = `users/${userId}/quota/${month}`;
-  const now2 = (/* @__PURE__ */ new Date()).toISOString();
+const STUDIO_EMAIL_MIN_LENGTH = 5;
+const STUDIO_EMAIL_MAX_LENGTH = 254;
+const STUDIO_EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+async function submitStudioBetaSignup({
+  email,
+  preferredFeature,
+  platform
+}) {
+  var _a2;
+  const normalizedEmail = email.trim().toLowerCase();
+  if (normalizedEmail.length < STUDIO_EMAIL_MIN_LENGTH || normalizedEmail.length > STUDIO_EMAIL_MAX_LENGTH || !STUDIO_EMAIL_REGEX.test(normalizedEmail)) {
+    throw new Error("Please enter a valid email address.");
+  }
+  const safePlatform = platform === "android" || platform === "ios" ? platform : "web";
+  const payload = {
+    email: normalizedEmail,
+    platform: safePlatform,
+    status: "pending",
+    createdAt: serverTimestamp()
+  };
+  if (preferredFeature && preferredFeature.trim().length > 0) {
+    payload.preferredFeature = preferredFeature.trim().slice(0, 64);
+  }
+  if ((_a2 = auth.currentUser) == null ? void 0 : _a2.uid) {
+    payload.userId = auth.currentUser.uid.slice(0, 128);
+  }
+  const path = "studioBetaSignups";
   try {
-    const snap = await getDoc(quotaRef);
-    if (!snap.exists()) {
-      await setDoc(quotaRef, {
-        userId,
-        month,
-        usedUploads: 1,
-        updatedAt: now2
-      });
-      return 1;
-    } else {
-      await updateDoc(quotaRef, {
-        usedUploads: increment(1),
-        updatedAt: now2
-      });
-      return (snap.data().usedUploads ?? 0) + 1;
-    }
+    const docRef = await addDoc(collection(db, path), payload);
+    return docRef.id;
   } catch (err) {
-    handleFirestoreError(err, "write", path);
-    return 1;
+    handleFirestoreError(err, "create", path);
+    return "";
   }
 }
 /**
@@ -79400,59 +79269,6 @@ const MONTHLY_LOCAL_UPLOAD_LIMITS = {
   pro: 20,
   studio_pass: 50
 };
-const SUBSCRIPTION_TIERS = [
-  {
-    id: "free",
-    name: "Muzic Free",
-    badge: "Standard",
-    priceDisplay: "₹0 / Forever",
-    billingPeriod: "free",
-    description: "Offline music player with standard singing studio and procedural instrumental catalogue.",
-    features: [
-      "Unlimited local music playback",
-      "Device folder scanning & auto-index",
-      "Singing Studio with 6 built-in categories",
-      "5 phone song uploads / month for studio singing",
-      "Dual volume faders (backing + voice)",
-      "Combined audio preview and export",
-      "5-Band Parametric Audio Equalizer"
-    ]
-  },
-  {
-    id: "pro",
-    name: "Muzic Pro",
-    badge: "Popular",
-    priceDisplay: "₹79 / month (Est.)",
-    billingPeriod: "monthly",
-    isPopular: true,
-    description: "Enhanced vocal acoustics, studio ambience reverb, and ad-free offline playback.",
-    features: [
-      "Everything in Free",
-      "20 phone song uploads / month for studio singing",
-      "Studio Vocal Reverb & Ambience processor",
-      "Mic latency offset compensation fine-tuning",
-      "Uncompressed 24-bit/48kHz WAV export",
-      "Ad-free uninterrupted experience",
-      "Priority offline indexing"
-    ]
-  },
-  {
-    id: "studio_pass",
-    name: "Muzic Studio Pass",
-    badge: "AI Powered",
-    priceDisplay: "₹199 / month (Est.)",
-    billingPeriod: "monthly",
-    description: "Includes cloud AI vocal separation credits once backend compute is deployed.",
-    features: [
-      "Everything in Muzic Pro",
-      "50 phone song uploads / month for studio singing",
-      "30 min/month Cloud AI Vocal Separation (once backend online)",
-      "Acapella & Instrumental stem download",
-      "Early access to new Bollywood & Punjabi stems",
-      "Exclusive Studio Vocal Presets (Sufi Hall, Ghazal Warmth, Pop Clarity)"
-    ]
-  }
-];
 class SubscriptionService {
   constructor() {
     this.currentTier = "free";
@@ -79668,199 +79484,8 @@ const AuthProvider = ({ children }) => {
   }, children });
 };
 const useAuth = () => reactExports.useContext(AuthContext);
-const AdminLoginModal = ({
-  isOpen,
-  onClose,
-  onSuccess,
-  currentUserEmail
-}) => {
-  const [username, setUsername] = reactExports.useState("admin");
-  const [password, setPassword] = reactExports.useState("");
-  const [showPassword, setShowPassword] = reactExports.useState(false);
-  const [loading, setLoading] = reactExports.useState(false);
-  const [error, setError] = reactExports.useState(null);
-  const [success, setSuccess] = reactExports.useState(false);
-  if (!isOpen) return null;
-  const verifyCredentials = (user, pass) => {
-    const cleanUser = user.trim().toLowerCase();
-    const cleanPass = pass.trim();
-    if ((cleanUser === "admin" || cleanUser === "admin@muzic.app") && (cleanPass === "admin" || cleanPass === "admin179" || cleanPass === "muzicadmin" || cleanPass === "admin2026")) {
-      return true;
-    }
-    if (cleanUser === "r.gworkprofile@gmail.com" && (cleanPass === "admin" || cleanPass === "admin179" || cleanPass === "muzicadmin" || cleanPass === "admin2026")) {
-      return true;
-    }
-    return false;
-  };
-  const handleSubmit = (e2) => {
-    e2.preventDefault();
-    setError(null);
-    setLoading(true);
-    setTimeout(() => {
-      const isValid = verifyCredentials(username, password);
-      if (isValid) {
-        setSuccess(true);
-        setTimeout(() => {
-          onSuccess(username.trim());
-          setLoading(false);
-          setSuccess(false);
-          onClose();
-        }, 600);
-      } else {
-        setLoading(false);
-        setError("Invalid admin credentials. Use admin / admin179 or check password.");
-      }
-    }, 400);
-  };
-  const handleOwnerQuickAuth = () => {
-    if (!currentUserEmail) return;
-    setError(null);
-    setLoading(true);
-    setTimeout(() => {
-      setSuccess(true);
-      setTimeout(() => {
-        onSuccess(currentUserEmail);
-        setLoading(false);
-        setSuccess(false);
-        onClose();
-      }, 500);
-    }, 400);
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-[fadeIn_0.15s_ease-out]", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    "div",
-    {
-      className: "relative w-full max-w-md rounded-3xl bg-[#0E0B20] border border-white/15 p-6 shadow-2xl text-left overflow-hidden text-white",
-      onClick: (e2) => e2.stopPropagation(),
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute top-0 left-1/2 -translate-x-1/2 w-48 h-20 bg-amber-500/20 blur-3xl pointer-events-none rounded-full" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between pb-4 border-b border-white/10 relative z-10", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center shadow-lg shadow-amber-500/10", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { size: 20 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-sm font-black uppercase tracking-wider text-white flex items-center gap-1.5", children: [
-                "Admin Verification",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 font-extrabold border border-amber-500/30", children: "DEV" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-white/50 font-medium mt-0.5", children: "Verify credentials to unlock administrative mode" })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: onClose,
-              className: "p-2 rounded-full text-white/60 hover:text-white hover:bg-white/10 active:scale-95 transition-all cursor-pointer",
-              title: "Close",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { size: 18 })
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("form", { onSubmit: handleSubmit, className: "mt-5 space-y-4 relative z-10", children: [
-          error && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-red-500/15 border border-red-500/30 rounded-2xl flex items-center gap-2.5 text-red-300 text-[11px] font-bold animate-[shake_0.2s_ease-in-out]", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: error })
-          ] }),
-          success && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-emerald-500/15 border border-emerald-500/30 rounded-2xl flex items-center gap-2.5 text-emerald-300 text-[11px] font-bold", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 16, className: "shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Admin credentials verified! Unlocking admin mode..." })
-          ] }),
-          currentUserEmail && currentUserEmail.toLowerCase() === "r.gworkprofile@gmail.com" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 pr-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] font-bold text-amber-300 truncate", children: "Owner Google Account Detected" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-white/60 truncate", children: currentUserEmail })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: handleOwnerQuickAuth,
-                disabled: loading || success,
-                className: "px-3 py-1.5 bg-amber-500 hover:bg-amber-400 active:scale-95 text-black font-extrabold text-[10px] rounded-xl transition-all cursor-pointer shadow-md disabled:opacity-50 shrink-0",
-                children: "1-Click Verify"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "text-[11px] font-bold uppercase tracking-wider text-[#8E7CFF] flex items-center gap-1.5", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(KeyRound, { size: 12 }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Admin Username or Email" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: "text",
-                value: username,
-                onChange: (e2) => setUsername(e2.target.value),
-                placeholder: "e.g. admin",
-                required: true,
-                className: "w-full px-4 py-2.5 bg-[#14122B] border border-white/15 focus:border-[#8E7CFF] rounded-2xl text-xs text-white placeholder-white/30 focus:outline-none transition-all shadow-inner"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "text-[11px] font-bold uppercase tracking-wider text-[#8E7CFF] flex items-center gap-1.5", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { size: 12 }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Admin Password" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  type: showPassword ? "text" : "password",
-                  value: password,
-                  onChange: (e2) => setPassword(e2.target.value),
-                  placeholder: "Enter password...",
-                  required: true,
-                  className: "w-full px-4 py-2.5 pr-10 bg-[#14122B] border border-white/15 focus:border-[#8E7CFF] rounded-2xl text-xs text-white placeholder-white/30 focus:outline-none transition-all shadow-inner"
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: () => setShowPassword(!showPassword),
-                  className: "absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/80 p-1 cursor-pointer transition-colors",
-                  title: showPassword ? "Hide password" : "Show password",
-                  children: showPassword ? /* @__PURE__ */ jsxRuntimeExports.jsx(EyeOff, { size: 14 }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { size: 14 })
-                }
-              )
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pt-2 flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: onClose,
-                disabled: loading,
-                className: "flex-1 py-2.5 px-4 bg-white/5 hover:bg-white/10 active:scale-95 text-white/70 hover:text-white rounded-2xl text-xs font-bold transition-all cursor-pointer border border-white/10 disabled:opacity-50",
-                children: "Cancel"
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "submit",
-                disabled: loading || success || !username || !password,
-                className: "flex-1 py-2.5 px-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-black rounded-2xl text-xs font-black tracking-wide transition-all cursor-pointer shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 disabled:opacity-50",
-                children: loading ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-black" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Verifying..." })
-                ] }) : success ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 14, className: "text-black" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Verified!" })
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 14 }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Verify Admin" })
-                ] })
-              }
-            )
-          ] })
-        ] })
-      ]
-    }
-  ) });
-};
+const SHOW_VERIFICATION_IN_SETTINGS = false;
+const SHOW_ADMIN_ACCESS_IN_SETTINGS = false;
 const SettingsView = ({
   folderInputRef,
   fileInputRef,
@@ -79889,58 +79514,6 @@ const SettingsView = ({
   const [isAdminModalOpen, setIsAdminModalOpen] = reactExports.useState(false);
   const [adminToast, setAdminToast] = reactExports.useState(null);
   const [isProSimulated, setIsProSimulated] = reactExports.useState(() => subscriptionService.getCurrentTier() !== "free");
-  const handleAdminSuccess = (identifier) => {
-    setIsAdminMode(true);
-    setAdminIdentifier(identifier);
-    try {
-      localStorage.setItem("muzic_admin_mode", "true");
-      localStorage.setItem("muzic_admin_identifier", identifier);
-    } catch {
-    }
-    setAdminToast(`Admin Mode Activated as ${identifier}`);
-    setTimeout(() => setAdminToast(null), 3e3);
-  };
-  const handleExitAdmin = () => {
-    setIsAdminMode(false);
-    try {
-      localStorage.removeItem("muzic_admin_mode");
-      localStorage.removeItem("muzic_admin_identifier");
-    } catch {
-    }
-    subscriptionService.purchaseProduct("free");
-    setIsProSimulated(false);
-    setAdminToast("Admin Mode Deactivated");
-    setTimeout(() => setAdminToast(null), 2500);
-  };
-  const handleToggleProSimulation = () => {
-    if (isProSimulated) {
-      subscriptionService.purchaseProduct("free");
-      setIsProSimulated(false);
-      setAdminToast("Simulating Free Tier");
-    } else {
-      subscriptionService.purchaseProduct("pro");
-      setIsProSimulated(true);
-      setAdminToast("Simulating Pro Tier (Features Unlocked)");
-    }
-    setTimeout(() => setAdminToast(null), 2500);
-  };
-  const handleResetQuota = () => {
-    subscriptionService.setCloudSyncedQuota(0);
-    setAdminToast("Studio Upload Quota Reset to 0");
-    setTimeout(() => setAdminToast(null), 2500);
-  };
-  const handleSignIn = async () => {
-    setAuthBusy(true);
-    try {
-      await signInWithGoogle();
-    } catch (e2) {
-      if ((e2 == null ? void 0 : e2.code) !== "auth/popup-closed-by-user" && (e2 == null ? void 0 : e2.code) !== "auth/cancelled-popup-request" && !(typeof (e2 == null ? void 0 : e2.message) === "string" && (e2.message.includes("popup-closed-by-user") || e2.message.includes("cancelled-popup-request")))) {
-        console.warn("Google sign-in status:", (e2 == null ? void 0 : e2.message) || e2);
-      }
-    } finally {
-      setAuthBusy(false);
-    }
-  };
   return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden animate-[fadeIn_0.15s_ease-out]", children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx("header", { className: "px-6 pt-10 pb-5 shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3.5", children: [
       onBackToLibrary && /* @__PURE__ */ jsxRuntimeExports.jsx(
@@ -79960,56 +79533,7 @@ const SettingsView = ({
       ] })
     ] }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsxs("main", { className: "flex-1 overflow-y-auto px-6 pb-36 space-y-5", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 rounded-3xl bg-[#14122B]/60 border border-white/10 space-y-4 text-left shadow-lg", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30 shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 18 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xs font-black uppercase tracking-wider text-[#8E7CFF]", children: "Account & Verification" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-white/60 font-medium mt-0.5", children: isVerified ? "Google 1-Tap Verified" : "Free verification unlocks 5 studio imports/month" })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full border ${isVerified ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/30" : "bg-white/10 text-white/60 border-white/10"}`, children: isVerified ? "Verified" : "Free" })
-        ] }),
-        isVerified && currentUser ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-white/5 rounded-2xl border border-white/5 flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 min-w-0", children: [
-            currentUser.photoURL ? /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: currentUser.photoURL, alt: "User", className: "w-9 h-9 rounded-full object-cover border border-emerald-400" }) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 rounded-full bg-[#6355FE] text-white flex items-center justify-center font-bold text-xs", children: currentUser.displayName ? currentUser.displayName[0].toUpperCase() : "U" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-black text-white truncate block", children: currentUser.displayName || "Music Creator" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] text-[#8F8E9C] truncate block", children: currentUser.email })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: signOut2,
-              className: "px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer",
-              children: "Sign Out"
-            }
-          )
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
-          {
-            type: "button",
-            onClick: handleSignIn,
-            disabled: authBusy,
-            className: "w-full py-3 px-4 bg-white hover:bg-neutral-100 active:scale-95 text-neutral-900 rounded-2xl font-black text-xs tracking-wider cursor-pointer shadow-md flex items-center justify-center gap-2.5 transition-all disabled:opacity-50",
-            children: authBusy ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 16, className: "animate-spin text-neutral-900" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Connecting Google Account..." })
-            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { className: "w-4 h-4", viewBox: "0 0 24 24", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "#4285F4", d: "M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "#34A853", d: "M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "#FBBC05", d: "M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "#EA4335", d: "M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Verify with Google (1-Tap)" })
-            ] })
-          }
-        )
-      ] }),
+      SHOW_VERIFICATION_IN_SETTINGS,
       /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-5 rounded-3xl bg-[#14122B]/60 border border-white/10 space-y-3 text-left shadow-lg", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
         /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
           /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 rounded-xl bg-[#6355FE]/20 text-[#8E7CFF] flex items-center justify-center border border-[#6355FE]/30 shrink-0", children: theme === "dark" ? /* @__PURE__ */ jsxRuntimeExports.jsx(Moon, { size: 18 }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Sun, { size: 18, className: "text-amber-500" }) }),
@@ -80098,4836 +79622,688 @@ const SettingsView = ({
           }
         )
       ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `p-5 rounded-3xl border transition-all text-left shadow-lg ${isAdminMode ? "bg-gradient-to-b from-amber-500/10 via-[#14122B]/80 to-[#14122B]/90 border-amber-500/30" : "bg-[#14122B]/60 border-white/10"}`, children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `w-9 h-9 rounded-xl flex items-center justify-center border shrink-0 ${isAdminMode ? "bg-amber-500/20 text-amber-400 border-amber-500/40 shadow-lg shadow-amber-500/20" : "bg-white/10 text-white/70 border-white/15"}`, children: isAdminMode ? /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { size: 18 }) : /* @__PURE__ */ jsxRuntimeExports.jsx(KeyRound, { size: 18 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-xs font-black uppercase tracking-wider text-white", children: isAdminMode ? "Admin Mode" : "Admin Access" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full border ${isAdminMode ? "bg-amber-500/20 text-amber-300 border-amber-500/40" : "bg-white/10 text-white/50 border-white/10"}`, children: isAdminMode ? "Unlocked" : "Restricted" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-white/60 font-medium mt-0.5", children: isAdminMode ? `Authenticated as: ${adminIdentifier}` : "Restricted administrative mode for testing and management" })
-            ] })
-          ] }),
-          isAdminMode && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: handleExitAdmin,
-              className: "px-3 py-1.5 bg-red-500/15 hover:bg-red-500/25 active:scale-95 text-red-300 rounded-xl text-[10px] font-bold uppercase tracking-wider border border-red-500/30 transition-all cursor-pointer flex items-center gap-1.5",
-              title: "Exit Admin Mode",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { size: 12 }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Exit" })
-              ]
-            }
-          )
-        ] }),
-        !isAdminMode ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pt-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-white/60 leading-relaxed", children: "Unlock admin privileges to test feature tiers, manage internal configurations, and simulate entitlements." }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => setIsAdminModalOpen(true),
-              className: "w-full mt-3 py-3 px-4 bg-gradient-to-r from-amber-500/90 to-amber-600/90 hover:from-amber-400 hover:to-amber-500 active:scale-95 text-black rounded-2xl font-black text-xs tracking-wider cursor-pointer shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2.5 transition-all",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { size: 15, className: "text-black" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Admin Login" })
-              ]
-            }
-          )
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pt-3 space-y-3", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-black/30 rounded-2xl border border-white/5 text-[11px] space-y-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Privilege Level:" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-amber-300 flex items-center gap-1", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 12 }),
-                " Full Admin & QA Access"
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/60", children: "Simulated Tier:" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-white uppercase", children: subscriptionService.getCurrentTier() })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-2.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: handleToggleProSimulation,
-                className: "p-3 bg-white/5 hover:bg-white/10 active:scale-[0.98] text-[#ECE6FF] rounded-2xl text-[11px] font-bold border border-white/10 transition-all flex items-center justify-center gap-2 cursor-pointer",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(SlidersVertical, { size: 14, className: "text-amber-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isProSimulated ? "Set Free Tier" : "Set Pro Tier" })
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: handleResetQuota,
-                className: "p-3 bg-white/5 hover:bg-white/10 active:scale-[0.98] text-[#ECE6FF] rounded-2xl text-[11px] font-bold border border-white/10 transition-all flex items-center justify-center gap-2 cursor-pointer",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 14, className: "text-emerald-400" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Reset Quota" })
-                ]
-              }
-            )
-          ] })
-        ] })
-      ] }),
-      adminToast && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "fixed bottom-24 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-amber-500 text-black font-extrabold text-xs rounded-full shadow-2xl shadow-amber-500/50 flex items-center gap-2 animate-[fadeIn_0.15s_ease-out]", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { size: 14 }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: adminToast })
-      ] })
+      SHOW_ADMIN_ACCESS_IN_SETTINGS,
+      SHOW_ADMIN_ACCESS_IN_SETTINGS
     ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      AdminLoginModal,
-      {
-        isOpen: isAdminModalOpen,
-        onClose: () => setIsAdminModalOpen(false),
-        onSuccess: handleAdminSuccess,
-        currentUserEmail: currentUser == null ? void 0 : currentUser.email
-      }
-    )
+    SHOW_ADMIN_ACCESS_IN_SETTINGS
   ] });
 };
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-const TUM_HI_HO_LYRICS = `Hum tere bin ab reh nahi sakte
-Tere bina kya wajood mera
-
-Hum tere bin ab reh nahi sakte
-Tere bina kya wajood mera
-Tujh se juda agar ho jaayenge
-To khud se hee ho jaayenge juda
-Kyonki tum hee ho, ab tum hee ho
-Zindagi ab tum hee ho
-O-o-o, chain bhee, mera dard bhee
-Meri aashiqui ab tum hee ho
-
-Tera-meraa rishta hai kaisaa
-Ek pal door gavaara nahin
-Tere liye har roz hain jeete
-Tujh ko diya mera vakt sabhee
-Koyi lamaha mera naa ho tere binaa
-Har saans pe naam tera
-Kyonki tum hee ho, ab tum hee ho
-Zindagi ab tum hee ho
-O-o-o, chain bhee, mera dard bhee
-Meri aashiqui ab tum hee ho
-
-Tum hee ho...
-Tum hee ho...
-Tere liye hi jiya main
-Khud ko jo yoon de diya hai
-Teri vafaa ne mujh ko sanbhaala
-Saare gamon ko dil se nikaala
-Tere saath mera hai naseeb juda
-Tuje paa ke adhoora naa raha, mmm
-Kyonki tum hee ho, ab tum hee ho
-Zindagi ab tum hee ho
-O-o-o, chain bhee, mera dard bhee
-Meri aashiqui ab tum hee ho
-Kyonki tum hee ho, ab tum hee ho
-Zindagi ab tum hee ho
-O-o-o, chain bhee, mera dard bhee
-Meri aashiqui ab tum hee ho`;
-const LUTT_LE_GAYA_LYRICS = `Aaja ve, aaja
-Aaja ve, aaja
-Haaye sajan, haaye sajan, haaye sajan, haaye sajan
-Aaja ve, aaja
-
-Aaja ve, aaja, seene laa jaa
-Haaye, sajan mainu lutt le gaya, haaye
-Haaye, sajan mainu lutt le gaya
-Pyaase labban de rog mukka jaa
-Haaye, sajan mainu lutt le gaya, haaye
-Haaye, sajan mainu lutt le gaya
-Haaye, sajan meri ankhaan tarasdi
-Har imaan mera tutt beh gaya
-
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-
-Aaja ve, aaja
-Ho, mainu lutt le gaya
-Aaja ve, aaja (Haaye, sajan)
-Ho, mainu lutt le gaya
-Aaja ve, aaja
-Aaja ve, aaja
-
-Takdi ankhiyaan aje na thakiyaan
-Naina vich nasha vass gaya
-Rajj ke peevan tainu, sajna
-Raatan vich na rass gaya, haaye
-Vass na jaavan, vich main saahvan
-Mainu oh khich fer ghutt le gaya
-Haaye, sajan meri ankhaan tarasdi
-Har imaan mera tutt beh gaya
-
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-Ho, mainu lutt le gaya
-
-Aaja ve, aaja
-Aaja ve, aaja
-Haaye sajan, haaye sajan, haaye sajan, haaye sajan`;
-const BUILTIN_INSTRUMENTAL_CATALOG = [
+const studioHeroImg = "/assets/studio_preview_hero_1794916045593-DBJdx4C1.jpg";
+const ACOUSTIC_PRESETS = [
   {
-    id: "inst_tum_hi_ho",
-    title: "Tum Hi Ho (Aashiqui 2 Karaoke)",
-    category: "sad-bollywood",
-    categoryLabel: "Bollywood Romantic / Karaoke",
-    styleDescription: "Official studio demo karaoke instrumental with lyrics. Soulful piano, acoustic guitar, and strings from Aashiqui 2.",
-    duration: 262,
-    bpm: 88,
-    key: "Eb Minor",
-    previewUrl: "/assets/aistudio/TUM_HI_HO_-_Aashiqui_2_Karaoke_with_Lyrics_AlgoRhythm_Studio_17e2284d.mp3",
-    rightsStatus: "user-local",
-    tags: ["Aashiqui 2", "Arijit Singh", "Karaoke", "Demo Song", "Lyrics Included"],
-    lyrics: TUM_HI_HO_LYRICS
+    id: "booth",
+    label: "Studio Booth",
+    detail: "Dry vocal intimacy",
+    notes: [261.63, 329.63, 392, 523.25],
+    delayTime: 0.04,
+    feedback: 0.08,
+    filterFreq: 2400,
+    filterQ: 0.7,
+    decaySec: 0.85
   },
   {
-    id: "inst_lutt_le_gaya",
-    title: "Lutt Le Gaya (Dhurandhar)",
-    category: "punjabi-1",
-    categoryLabel: "Punjabi Dance / Dhurandhar",
-    styleDescription: "High energy Punjabi dance anthem by Simran Choudhary & Shashwat Sachdev from Dhurandhar. Studio track with vocal suppression & synchronized lyrics.",
-    duration: 255,
-    bpm: 112,
-    key: "F# Minor",
-    previewUrl: "/assets/aistudio/Lutt_Le_Gaya_Dhurandhar_320_Kbps_0ceffc43.mp3",
-    rightsStatus: "user-local",
-    tags: ["Dhurandhar", "Simran Choudhary", "Punjabi", "Bollywood", "Karaoke Ready"],
-    lyrics: LUTT_LE_GAYA_LYRICS
+    id: "hall",
+    label: "Concert Hall",
+    detail: "Expansive tail reverb",
+    notes: [293.66, 369.99, 440, 587.33],
+    delayTime: 0.24,
+    feedback: 0.48,
+    filterFreq: 3200,
+    filterQ: 0.5,
+    decaySec: 1.65
   },
   {
-    id: "inst_bollywood_1",
-    title: "Mumbai Sunset Groove (Upbeat)",
-    category: "bollywood-1",
-    categoryLabel: "Bollywood Style 1",
-    styleDescription: "Modern Bollywood upbeat groove with warm sitar scales, dholak percussion, and pop synth chords.",
-    duration: 60,
-    bpm: 104,
-    key: "C Major",
-    rightsStatus: "royalty-free-original",
-    tags: ["Bollywood", "Upbeat", "Dholak", "Modern Pop"]
+    id: "echo",
+    label: "Stage Echo",
+    detail: "Timed slapback delay",
+    notes: [220, 277.18, 329.63, 440],
+    delayTime: 0.31,
+    feedback: 0.52,
+    filterFreq: 2100,
+    filterQ: 1.1,
+    decaySec: 1.45
   },
   {
-    id: "inst_bollywood_2",
-    title: "Monsoon Raga Romance (Mid-tempo)",
-    category: "bollywood-2",
-    categoryLabel: "Bollywood Style 2",
-    styleDescription: "Rich acoustic string section, bansuri flute motifs, and gentle rhythmic tabla accompaniment.",
-    duration: 60,
-    bpm: 88,
-    key: "D Minor",
-    rightsStatus: "royalty-free-original",
-    tags: ["Bollywood", "Romantic", "Bansuri", "Acoustic Strings"]
-  },
-  {
-    id: "inst_punjabi_1",
-    title: "Bhangra Dhol Energy (High Energy)",
-    category: "punjabi-1",
-    categoryLabel: "Punjabi Beat 1",
-    styleDescription: "Traditional folk dhol rhythm with high-energy tumbi riffs and driving bass foundation.",
-    duration: 60,
-    bpm: 128,
-    key: "G Major",
-    rightsStatus: "royalty-free-original",
-    tags: ["Punjabi", "Bhangra", "Dhol", "Tumbi", "Dance"]
-  },
-  {
-    id: "inst_punjabi_2",
-    title: "Urban Desi Club Beat (Trap/Bhangra)",
-    category: "punjabi-2",
-    categoryLabel: "Punjabi Beat 2",
-    styleDescription: "Fusion 808 bass, chiming algorithmic chimta, and modern urban Punjabi bounce.",
-    duration: 60,
-    bpm: 96,
-    key: "F# Minor",
-    rightsStatus: "royalty-free-original",
-    tags: ["Punjabi", "Urban Desi", "808 Bass", "Modern Beat"]
-  },
-  {
-    id: "inst_sad_bollywood",
-    title: "Tum Hi Meri Yaad (Soulful & Emotional)",
-    category: "sad-bollywood",
-    categoryLabel: "Sad Bollywood Style",
-    styleDescription: "Emotional cinematic grand piano, melancholy cello harmonies, and soft heart-touching chords.",
-    duration: 60,
-    bpm: 72,
-    key: "A Minor",
-    rightsStatus: "royalty-free-original",
-    tags: ["Bollywood", "Sad", "Melancholy", "Piano", "Cinematic"]
-  },
-  {
-    id: "inst_sad_punjabi",
-    title: "Judai Da Dard (Melancholy Sufi)",
-    category: "sad-punjabi",
-    categoryLabel: "Sad Punjabi Style",
-    styleDescription: "Soulful Sufi-style acoustic sarangi & harmonium texture with slow, mournful dholak cadence.",
-    duration: 60,
-    bpm: 68,
-    key: "E Minor",
-    rightsStatus: "royalty-free-original",
-    tags: ["Punjabi", "Sad", "Sufi", "Sarangi", "Harmonium"]
+    id: "radio",
+    label: "Warm Radio",
+    detail: "Focused broadcast EQ",
+    notes: [246.94, 311.13, 369.99, 493.88],
+    delayTime: 0.08,
+    feedback: 0.16,
+    filterFreq: 1850,
+    filterQ: 1.6,
+    decaySec: 0.95
   }
 ];
-async function generateProceduralBackingTrackAudio(category, durationSeconds = 45) {
-  const sampleRate = 44100;
-  const numFrames = sampleRate * durationSeconds;
-  const ctx = new OfflineAudioContext(2, numFrames, sampleRate);
-  const bpmMap = {
-    "bollywood-1": 104,
-    "bollywood-2": 88,
-    "punjabi-1": 128,
-    "punjabi-2": 96,
-    "sad-bollywood": 72,
-    "sad-punjabi": 68
-  };
-  const bpm = bpmMap[category] || 100;
-  const beatInterval = 60 / bpm;
-  const totalBeats = Math.floor(durationSeconds / beatInterval);
-  const compressor = ctx.createDynamicsCompressor();
-  compressor.threshold.setValueAtTime(-14, 0);
-  compressor.knee.setValueAtTime(30, 0);
-  compressor.ratio.setValueAtTime(4, 0);
-  compressor.attack.setValueAtTime(3e-3, 0);
-  compressor.release.setValueAtTime(0.25, 0);
-  compressor.connect(ctx.destination);
-  let chordProgression;
-  if (category === "sad-bollywood") {
-    chordProgression = [
-      [220, 261.63, 329.63, 440],
-      [174.61, 220, 261.63, 349.23],
-      [261.63, 329.63, 392, 523.25],
-      [196, 246.94, 293.66, 392]
-    ];
-  } else if (category === "sad-punjabi") {
-    chordProgression = [
-      [164.81, 196, 246.94, 329.63],
-      [130.81, 164.81, 196, 261.63],
-      [196, 246.94, 293.66, 392],
-      [146.83, 185, 220, 293.66]
-    ];
-  } else if (category === "punjabi-1") {
-    chordProgression = [
-      [196, 246.94, 293.66, 392],
-      [196, 246.94, 293.66, 392],
-      [220, 261.63, 329.63, 440],
-      [146.83, 185, 220, 293.66]
-    ];
-  } else if (category === "punjabi-2") {
-    chordProgression = [
-      [185, 220, 277.18, 369.99],
-      [185, 220, 277.18, 369.99],
-      [146.83, 185, 220, 293.66],
-      [164.81, 207.65, 246.94, 329.63]
-    ];
-  } else if (category === "bollywood-2") {
-    chordProgression = [
-      [146.83, 174.61, 220, 293.66],
-      [174.61, 220, 261.63, 349.23],
-      [130.81, 164.81, 196, 261.63],
-      [146.83, 174.61, 220, 293.66]
-    ];
-  } else {
-    chordProgression = [
-      [261.63, 329.63, 392, 523.25],
-      [220, 261.63, 329.63, 440],
-      [174.61, 220, 261.63, 349.23],
-      [196, 246.94, 293.66, 392]
-    ];
-  }
-  for (let i2 = 0; i2 < totalBeats; i2 += 4) {
-    const chordTime = i2 * beatInterval;
-    const chordIdx = Math.floor(i2 / 4) % chordProgression.length;
-    const notes = chordProgression[chordIdx];
-    notes.forEach((freq, noteIdx) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = category.startsWith("sad-") || noteIdx === 0 ? "sine" : "triangle";
-      osc.frequency.setValueAtTime(freq, chordTime);
-      const chordDur = beatInterval * 3.8;
-      gain.gain.setValueAtTime(1e-3, chordTime);
-      gain.gain.exponentialRampToValueAtTime(0.08 / notes.length, chordTime + 0.15);
-      gain.gain.exponentialRampToValueAtTime(1e-3, chordTime + chordDur);
-      osc.connect(gain);
-      gain.connect(compressor);
-      osc.start(chordTime);
-      osc.stop(chordTime + chordDur);
-    });
-  }
-  for (let beat = 0; beat < totalBeats; beat++) {
-    const time2 = beat * beatInterval;
-    const isKickBeat = category === "punjabi-1" ? beat % 2 === 0 || beat % 4 === 3 : beat % 2 === 0;
-    if (isKickBeat) {
-      const kickOsc = ctx.createOscillator();
-      const kickGain = ctx.createGain();
-      const baseFreq = category.includes("punjabi") ? 110 : 85;
-      kickOsc.frequency.setValueAtTime(baseFreq, time2);
-      kickOsc.frequency.exponentialRampToValueAtTime(32, time2 + 0.18);
-      kickGain.gain.setValueAtTime(0.35, time2);
-      kickGain.gain.exponentialRampToValueAtTime(1e-3, time2 + 0.22);
-      kickOsc.connect(kickGain);
-      kickGain.connect(compressor);
-      kickOsc.start(time2);
-      kickOsc.stop(time2 + 0.23);
-    }
-    if (beat % 2 === 1) {
-      const noiseBuffer = ctx.createBuffer(1, sampleRate * 0.12, sampleRate);
-      const output = noiseBuffer.getChannelData(0);
-      for (let s = 0; s < noiseBuffer.length; s++) {
-        output[s] = Math.random() * 2 - 1;
-      }
-      const noise = ctx.createBufferSource();
-      noise.buffer = noiseBuffer;
-      const filter2 = ctx.createBiquadFilter();
-      filter2.type = category.includes("sad") ? "lowpass" : "bandpass";
-      filter2.frequency.setValueAtTime(category.includes("sad") ? 800 : 1800, time2);
-      const slapGain = ctx.createGain();
-      slapGain.gain.setValueAtTime(category.includes("sad") ? 0.08 : 0.18, time2);
-      slapGain.gain.exponentialRampToValueAtTime(1e-3, time2 + 0.12);
-      noise.connect(filter2);
-      filter2.connect(slapGain);
-      slapGain.connect(compressor);
-      noise.start(time2);
-      noise.stop(time2 + 0.12);
-    }
-    if (category === "punjabi-1" || category === "bollywood-1") {
-      const arpFreqs = [523.25, 587.33, 659.25, 783.99];
-      const noteFreq = arpFreqs[beat % arpFreqs.length];
-      const arpOsc = ctx.createOscillator();
-      const arpGain = ctx.createGain();
-      arpOsc.type = category === "punjabi-1" ? "sawtooth" : "sine";
-      arpOsc.frequency.setValueAtTime(noteFreq, time2 + beatInterval * 0.5);
-      arpGain.gain.setValueAtTime(1e-3, time2 + beatInterval * 0.5);
-      arpGain.gain.exponentialRampToValueAtTime(0.04, time2 + beatInterval * 0.5 + 0.03);
-      arpGain.gain.exponentialRampToValueAtTime(1e-3, time2 + beatInterval * 0.5 + 0.18);
-      arpOsc.connect(arpGain);
-      arpGain.connect(compressor);
-      arpOsc.start(time2 + beatInterval * 0.5);
-      arpOsc.stop(time2 + beatInterval * 0.5 + 0.2);
-    }
-  }
-  const renderedBuffer = await ctx.startRendering();
-  return audioBufferToWavBlob(renderedBuffer);
-}
-function audioBufferToWavBlob(buffer2) {
-  const numChannels = buffer2.numberOfChannels;
-  const sampleRate = buffer2.sampleRate;
-  const format = 1;
-  const bitDepth = 16;
-  const bytesPerSample = bitDepth / 8;
-  const blockAlign = numChannels * bytesPerSample;
-  const samplesLength = buffer2.length;
-  const dataByteLength = samplesLength * blockAlign;
-  const headerByteLength = 44;
-  const totalLength = headerByteLength + dataByteLength;
-  const arrayBuffer = new ArrayBuffer(totalLength);
-  const view = new DataView(arrayBuffer);
-  const writeString = (offset2, str) => {
-    for (let i2 = 0; i2 < str.length; i2++) {
-      view.setUint8(offset2 + i2, str.charCodeAt(i2));
-    }
-  };
-  writeString(0, "RIFF");
-  view.setUint32(4, 36 + dataByteLength, true);
-  writeString(8, "WAVE");
-  writeString(12, "fmt ");
-  view.setUint32(16, 16, true);
-  view.setUint16(20, format, true);
-  view.setUint16(22, numChannels, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * blockAlign, true);
-  view.setUint16(32, blockAlign, true);
-  view.setUint16(34, bitDepth, true);
-  writeString(36, "data");
-  view.setUint32(40, dataByteLength, true);
-  const channelData = [];
-  for (let ch = 0; ch < numChannels; ch++) {
-    channelData.push(buffer2.getChannelData(ch));
-  }
-  let offset = 44;
-  for (let i2 = 0; i2 < samplesLength; i2++) {
-    for (let ch = 0; ch < numChannels; ch++) {
-      let sample = channelData[ch][i2];
-      sample = Math.max(-1, Math.min(1, sample));
-      const intSample = sample < 0 ? sample * 32768 : sample * 32767;
-      view.setInt16(offset, intSample, true);
-      offset += 2;
-    }
-  }
-  return new Blob([arrayBuffer], { type: "audio/wav" });
-}
-class AudioStudioEngine {
-  constructor() {
-    this.audioCtx = null;
-    this.mediaStream = null;
-    this.mediaRecorder = null;
-    this.recordedChunks = [];
-    this.analyser = null;
-    this.dataArray = null;
-    this.meterAnimationId = null;
-    this.onMeterLevelCallback = null;
-    this.backingAudioEl = null;
-    this.voiceAudioEl = null;
-  }
-  getAudioContext() {
-    if (!this.audioCtx) {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      this.audioCtx = new AudioContextClass();
-    }
-    if (this.audioCtx.state === "suspended") {
-      this.audioCtx.resume();
-    }
-    return this.audioCtx;
-  }
-  /**
-   * Request microphone permission with resilient fallback constraints for Web & APK
-   */
-  async requestMicrophonePermission() {
-    var _a2, _b2;
-    try {
-      if (Capacitor.isNativePlatform()) {
-        try {
-          const plugins = Capacitor.Plugins;
-          if ((_a2 = plugins == null ? void 0 : plugins.NativeAudioScanner) == null ? void 0 : _a2.requestRecordAudioPermission) {
-            const res = await plugins.NativeAudioScanner.requestRecordAudioPermission();
-            if (res && res.granted === false) {
-              console.warn("Native Android microphone permission was not granted by user.");
-              return false;
-            }
-          }
-        } catch (nativeErr) {
-          console.warn("Native permission check non-blocking note:", nativeErr);
-        }
-      }
-      if (!((_b2 = navigator == null ? void 0 : navigator.mediaDevices) == null ? void 0 : _b2.getUserMedia)) {
-        console.warn("Microphone audio recording is not supported in this environment.");
-        return false;
-      }
-      let stream2 = null;
-      try {
-        stream2 = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: false,
-            noiseSuppression: false,
-            autoGainControl: false
-          }
-        });
-      } catch (e1) {
-        try {
-          stream2 = await navigator.mediaDevices.getUserMedia({ audio: true });
-        } catch (e2) {
-          console.warn("Microphone access was not granted by user or system:", (e2 == null ? void 0 : e2.name) || (e2 == null ? void 0 : e2.message) || e2);
-          return false;
-        }
-      }
-      if (stream2 && stream2.active) {
-        this.mediaStream = stream2;
-        return true;
-      }
-      return false;
-    } catch (err) {
-      console.warn("Microphone permission request failed:", (err == null ? void 0 : err.name) || (err == null ? void 0 : err.message) || err);
-      return false;
-    }
-  }
-  /**
-   * Start recording voice while playing backing track in sync
-   */
-  async startRecording(backingAudioUrl, onMeterLevel) {
-    var _a2;
-    const ctx = this.getAudioContext();
-    this.recordedChunks = [];
-    this.onMeterLevelCallback = onMeterLevel || null;
-    if (!this.mediaStream || !this.mediaStream.active || this.mediaStream.getAudioTracks().length === 0 || this.mediaStream.getAudioTracks()[0].readyState === "ended") {
-      if (!((_a2 = navigator == null ? void 0 : navigator.mediaDevices) == null ? void 0 : _a2.getUserMedia)) {
-        throw new Error("Microphone audio recording is not supported in this environment.");
-      }
-      try {
-        this.mediaStream = await navigator.mediaDevices.getUserMedia({
-          audio: {
-            echoCancellation: false,
-            noiseSuppression: false,
-            autoGainControl: false
-          }
-        });
-      } catch (e1) {
-        try {
-          this.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        } catch (e2) {
-          throw new Error("Microphone permission was denied. Please allow microphone access to record.");
-        }
-      }
-    }
-    if (!this.mediaStream) {
-      throw new Error("Microphone stream is unavailable.");
-    }
-    const sourceNode = ctx.createMediaStreamSource(this.mediaStream);
-    this.analyser = ctx.createAnalyser();
-    this.analyser.fftSize = 256;
-    sourceNode.connect(this.analyser);
-    const bufferLength = this.analyser.frequencyBinCount;
-    this.dataArray = new Uint8Array(bufferLength);
-    this.startMeterLoop();
-    const mimeType = this.getSupportedMimeType();
-    this.mediaRecorder = new MediaRecorder(this.mediaStream, mimeType ? { mimeType } : void 0);
-    this.mediaRecorder.ondataavailable = (event) => {
-      if (event.data && event.data.size > 0) {
-        this.recordedChunks.push(event.data);
-      }
-    };
-    this.backingAudioEl = new Audio(backingAudioUrl);
-    this.backingAudioEl.preload = "auto";
-    await new Promise((resolve2, reject2) => {
-      if (!this.backingAudioEl) return resolve2();
-      const onCanPlay = () => {
-        cleanup();
-        resolve2();
-      };
-      const onError = (e2) => {
-        cleanup();
-        reject2(new Error("Failed to load backing track for recording: " + ((e2 == null ? void 0 : e2.message) || "network error")));
-      };
-      const cleanup = () => {
-        var _a3, _b2;
-        (_a3 = this.backingAudioEl) == null ? void 0 : _a3.removeEventListener("canplaythrough", onCanPlay);
-        (_b2 = this.backingAudioEl) == null ? void 0 : _b2.removeEventListener("error", onError);
-      };
-      this.backingAudioEl.addEventListener("canplaythrough", onCanPlay);
-      this.backingAudioEl.addEventListener("error", onError);
-      if (this.backingAudioEl.readyState >= 3) {
-        cleanup();
-        resolve2();
-      }
-    });
-    this.backingAudioEl.currentTime = 0;
-    this.mediaRecorder.start(100);
-    await this.backingAudioEl.play();
-  }
-  getRecordingCurrentTime() {
-    return this.backingAudioEl ? this.backingAudioEl.currentTime : 0;
-  }
-  startMeterLoop() {
-    const update = () => {
-      if (this.analyser && this.dataArray && this.onMeterLevelCallback) {
-        this.analyser.getByteFrequencyData(this.dataArray);
-        let sum = 0;
-        for (let i2 = 0; i2 < this.dataArray.length; i2++) {
-          sum += this.dataArray[i2];
-        }
-        const avg = sum / this.dataArray.length;
-        const normalized = Math.min(1, avg / 128);
-        this.onMeterLevelCallback(normalized);
-      }
-      this.meterAnimationId = requestAnimationFrame(update);
-    };
-    this.meterAnimationId = requestAnimationFrame(update);
-  }
-  stopMeterLoop() {
-    if (this.meterAnimationId !== null) {
-      cancelAnimationFrame(this.meterAnimationId);
-      this.meterAnimationId = null;
-    }
-    if (this.onMeterLevelCallback) {
-      this.onMeterLevelCallback(0);
-    }
-  }
-  /**
-   * Stop recording and return the recorded voice Blob
-   */
-  async stopRecording() {
-    this.stopMeterLoop();
-    if (this.backingAudioEl) {
-      this.backingAudioEl.pause();
-      this.backingAudioEl.currentTime = 0;
-    }
-    return new Promise((resolve2) => {
-      if (!this.mediaRecorder || this.mediaRecorder.state === "inactive") {
-        const fallbackBlob = new Blob(this.recordedChunks, { type: "audio/webm" });
-        this.cleanupMicrophone();
-        return resolve2({ blob: fallbackBlob, duration: 0 });
-      }
-      this.mediaRecorder.onstop = () => {
-        var _a2;
-        const mimeType = ((_a2 = this.mediaRecorder) == null ? void 0 : _a2.mimeType) || "audio/webm";
-        const finalBlob = new Blob(this.recordedChunks, { type: mimeType });
-        this.cleanupMicrophone();
-        resolve2({ blob: finalBlob, duration: 0 });
-      };
-      this.mediaRecorder.stop();
-    });
-  }
-  cleanupMicrophone() {
-    if (this.mediaStream) {
-      this.mediaStream.getTracks().forEach((track) => track.stop());
-      this.mediaStream = null;
-    }
-    this.mediaRecorder = null;
-  }
-  /**
-   * Play combined preview (backing track + recorded voice in sync with mixer gains)
-   */
-  playPreview(backingAudioUrl, voiceBlobUrl, settings, onEnded) {
-    this.stopPreview();
-    this.backingAudioEl = new Audio(backingAudioUrl);
-    this.voiceAudioEl = new Audio(voiceBlobUrl);
-    this.backingAudioEl.volume = Math.max(0, Math.min(1, settings.backingVolume));
-    this.voiceAudioEl.volume = Math.max(0, Math.min(1, settings.voiceVolume));
-    this.backingAudioEl.onended = () => {
-      this.stopPreview();
-      if (onEnded) onEnded();
-    };
-    this.backingAudioEl.currentTime = 0;
-    this.voiceAudioEl.currentTime = 0;
-    this.backingAudioEl.play().catch(console.warn);
-    this.voiceAudioEl.play().catch(console.warn);
-  }
-  /**
-   * Stop combined preview
-   */
-  stopPreview() {
-    if (this.backingAudioEl) {
-      this.backingAudioEl.pause();
-      this.backingAudioEl.currentTime = 0;
-      this.backingAudioEl = null;
-    }
-    if (this.voiceAudioEl) {
-      this.voiceAudioEl.pause();
-      this.voiceAudioEl.currentTime = 0;
-      this.voiceAudioEl = null;
-    }
-  }
-  isPreviewPlaying() {
-    return !!(this.backingAudioEl && !this.backingAudioEl.paused);
-  }
-  /**
-   * Mix backing track and vocal recording into a single, combined 16-bit stereo WAV file
-   * Uses OfflineAudioContext for deterministic non-real-time audio rendering.
-   */
-  async mixAndExport(backingAudioBlobOrUrl, voiceBlob, settings, songTitle) {
-    const ctx = this.getAudioContext();
-    let backingBuffer;
-    if (typeof backingAudioBlobOrUrl === "string") {
-      const resp = await fetch(backingAudioBlobOrUrl);
-      const arrayBuf = await resp.arrayBuffer();
-      backingBuffer = await ctx.decodeAudioData(arrayBuf);
-    } else {
-      const arrayBuf = await backingAudioBlobOrUrl.arrayBuffer();
-      backingBuffer = await ctx.decodeAudioData(arrayBuf);
-    }
-    const voiceArrayBuf = await voiceBlob.arrayBuffer();
-    const voiceBuffer = await ctx.decodeAudioData(voiceArrayBuf);
-    const sampleRate = 44100;
-    const duration = Math.max(backingBuffer.duration, voiceBuffer.duration);
-    const totalFrames = Math.ceil(sampleRate * duration);
-    const offlineCtx = new OfflineAudioContext(2, totalFrames, sampleRate);
-    const backingSource = offlineCtx.createBufferSource();
-    backingSource.buffer = backingBuffer;
-    const backingGain = offlineCtx.createGain();
-    backingGain.gain.setValueAtTime(settings.backingVolume, 0);
-    backingSource.connect(backingGain);
-    backingGain.connect(offlineCtx.destination);
-    const voiceSource = offlineCtx.createBufferSource();
-    voiceSource.buffer = voiceBuffer;
-    const voiceGain = offlineCtx.createGain();
-    voiceGain.gain.setValueAtTime(settings.voiceVolume, 0);
-    if (settings.reverbAmount > 0.05) {
-      const convolver = offlineCtx.createConvolver();
-      convolver.buffer = this.createSyntheticImpulseResponse(offlineCtx, 1.2, 2);
-      const reverbGain = offlineCtx.createGain();
-      reverbGain.gain.setValueAtTime(settings.reverbAmount * 0.35, 0);
-      voiceSource.connect(convolver);
-      convolver.connect(reverbGain);
-      reverbGain.connect(offlineCtx.destination);
-    }
-    voiceSource.connect(voiceGain);
-    voiceGain.connect(offlineCtx.destination);
-    backingSource.start(0);
-    const voiceStartOffsetSec = Math.max(0, (settings.voiceDelayMs || 0) / 1e3);
-    voiceSource.start(voiceStartOffsetSec);
-    const mixedBuffer = await offlineCtx.startRendering();
-    const mixedWavBlob = audioBufferToWavBlob(mixedBuffer);
-    const mixedUrl = URL.createObjectURL(mixedWavBlob);
-    const safeTitle = songTitle.replace(/[^a-zA-Z0-9_-]/g, "_");
-    const fileName = `Muzic_Studio_${safeTitle}_${Date.now()}.wav`;
-    return {
-      blob: mixedWavBlob,
-      url: mixedUrl,
-      duration,
-      fileName,
-      fileSize: mixedWavBlob.size
-    };
-  }
-  /**
-   * Helper to trigger saving / downloading the mixed WAV file
-   */
-  downloadMix(result) {
-    const a = document.createElement("a");
-    a.href = result.url;
-    a.download = result.fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
-  /**
-   * Generates a synthetic studio room impulse response for realistic vocal reverb
-   */
-  createSyntheticImpulseResponse(ctx, duration, decay) {
-    const sampleRate = ctx.sampleRate;
-    const length = sampleRate * duration;
-    const impulse = ctx.createBuffer(2, length, sampleRate);
-    const left = impulse.getChannelData(0);
-    const right = impulse.getChannelData(1);
-    for (let i2 = 0; i2 < length; i2++) {
-      const n = i2;
-      const env = Math.exp(-n / (sampleRate * (duration / decay)));
-      left[i2] = (Math.random() * 2 - 1) * env;
-      right[i2] = (Math.random() * 2 - 1) * env;
-    }
-    return impulse;
-  }
-  getSupportedMimeType() {
-    const candidateTypes = [
-      "audio/webm;codecs=opus",
-      "audio/webm",
-      "audio/mp4",
-      "audio/ogg;codecs=opus",
-      "audio/wav"
-    ];
-    for (const type2 of candidateTypes) {
-      if (typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported(type2)) {
-        return type2;
-      }
-    }
-    return void 0;
-  }
-}
-const studioEngine = new AudioStudioEngine();
-const __vite_import_meta_env__ = {};
-class VocalSeparationService {
-  constructor() {
-    this.apiBaseUrl = (__vite_import_meta_env__ == null ? void 0 : __vite_import_meta_env__.VITE_SEPARATION_API_BASE_URL) || "";
-  }
-  /**
-   * Check if an active cloud backend is configured
-   */
-  isBackendConfigured() {
-    return !!this.apiBaseUrl && this.apiBaseUrl.trim().length > 0;
-  }
-  getBackendUrl() {
-    return this.apiBaseUrl;
-  }
-  setBackendUrl(url) {
-    this.apiBaseUrl = url.trim();
-  }
-  /**
-   * Submit audio file for server-side AI vocal separation
-   * Contract: POST /api/v1/separation-jobs
-   */
-  async submitSeparationJob(req) {
-    if (!req.userConsentGiven) {
-      throw new Error("User consent is required prior to uploading device audio to remote servers.");
-    }
-    if (!this.isBackendConfigured()) {
-      return {
-        jobId: `local_unconfigured_${Date.now()}`,
-        fileName: req.fileName,
-        fileSizeBytes: req.audioFile.size,
-        status: "backend_unconfigured",
-        progressPercent: 0,
-        createdAt: Date.now(),
-        error: "Cloud AI Vocal Separation backend is not yet deployed (Initial budget: ₹0). To enable, deploy a server worker (e.g. FastAPI + Demucs v4) and configure VITE_SEPARATION_API_BASE_URL."
-      };
-    }
-    const formData = new FormData();
-    formData.append("file", req.audioFile, req.fileName);
-    formData.append("model", req.modelTarget || "vocals_instrumental");
-    const res = await fetch(`${this.apiBaseUrl}/api/v1/separation-jobs`, {
-      method: "POST",
-      headers: {
-        "Accept": "application/json"
-      },
-      body: formData
-    });
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Separation job creation failed (${res.status}): ${errorText}`);
-    }
-    const data = await res.json();
-    return {
-      jobId: data.jobId,
-      fileName: req.fileName,
-      fileSizeBytes: req.audioFile.size,
-      status: data.status,
-      progressPercent: 0,
-      createdAt: Date.now()
-    };
-  }
-  /**
-   * Poll status of an active job
-   * Contract: GET /api/v1/separation-jobs/{jobId}
-   */
-  async pollJobStatus(jobId) {
-    if (!this.isBackendConfigured()) {
-      return {
-        jobId,
-        status: "backend_unconfigured",
-        progressPercent: 0,
-        error: "Backend offline or unconfigured."
-      };
-    }
-    const res = await fetch(`${this.apiBaseUrl}/api/v1/separation-jobs/${encodeURIComponent(jobId)}`, {
-      method: "GET",
-      headers: { "Accept": "application/json" }
-    });
-    if (!res.ok) {
-      throw new Error(`Status polling failed (${res.status})`);
-    }
-    return await res.json();
-  }
-  /**
-   * Cancel an active separation job
-   * Contract: DELETE /api/v1/separation-jobs/{jobId}
-   */
-  async cancelJob(jobId) {
-    if (!this.isBackendConfigured()) return true;
-    try {
-      const res = await fetch(`${this.apiBaseUrl}/api/v1/separation-jobs/${encodeURIComponent(jobId)}`, {
-        method: "DELETE"
-      });
-      return res.ok;
-    } catch {
-      return false;
-    }
-  }
-}
-const vocalSeparationService = new VocalSeparationService();
-async function extractClientSideKaraokeAudio(audioInput) {
-  let arrayBuffer;
-  if (typeof audioInput === "string") {
-    const res = await fetch(audioInput);
-    arrayBuffer = await res.arrayBuffer();
-  } else {
-    arrayBuffer = await audioInput.arrayBuffer();
-  }
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  const audioCtx = new AudioContextClass();
-  const decodedBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-  const numChannels = decodedBuffer.numberOfChannels;
-  const sampleRate = decodedBuffer.sampleRate;
-  const length = decodedBuffer.length;
-  const duration = decodedBuffer.duration;
-  if (numChannels < 2) {
-    const offlineCtx2 = new OfflineAudioContext(1, length, sampleRate);
-    const source2 = offlineCtx2.createBufferSource();
-    source2.buffer = decodedBuffer;
-    const notch = offlineCtx2.createBiquadFilter();
-    notch.type = "notch";
-    notch.frequency.value = 1800;
-    notch.Q.value = 1.2;
-    source2.connect(notch);
-    notch.connect(offlineCtx2.destination);
-    source2.start();
-    const rendered2 = await offlineCtx2.startRendering();
-    const blob2 = audioBufferToWavBlob(rendered2);
-    return { blob: blob2, url: URL.createObjectURL(blob2), duration };
-  }
-  const offlineCtx = new OfflineAudioContext(2, length, sampleRate);
-  const source = offlineCtx.createBufferSource();
-  source.buffer = decodedBuffer;
-  const splitter = offlineCtx.createChannelSplitter(2);
-  source.connect(splitter);
-  const diffMerger = offlineCtx.createChannelMerger(2);
-  const gainL = offlineCtx.createGain();
-  gainL.gain.value = 0.9;
-  splitter.connect(gainL, 0);
-  const invGainR = offlineCtx.createGain();
-  invGainR.gain.value = -0.9;
-  splitter.connect(invGainR, 1);
-  gainL.connect(diffMerger, 0, 0);
-  invGainR.connect(diffMerger, 0, 0);
-  const gainR = offlineCtx.createGain();
-  gainR.gain.value = 0.9;
-  splitter.connect(gainR, 1);
-  const invGainL = offlineCtx.createGain();
-  invGainL.gain.value = -0.9;
-  splitter.connect(invGainL, 0);
-  gainR.connect(diffMerger, 0, 1);
-  invGainL.connect(diffMerger, 0, 1);
-  const lowPassL = offlineCtx.createBiquadFilter();
-  lowPassL.type = "lowpass";
-  lowPassL.frequency.value = 140;
-  splitter.connect(lowPassL, 0);
-  const lowPassR = offlineCtx.createBiquadFilter();
-  lowPassR.type = "lowpass";
-  lowPassR.frequency.value = 140;
-  splitter.connect(lowPassR, 1);
-  lowPassL.connect(diffMerger, 0, 0);
-  lowPassR.connect(diffMerger, 0, 1);
-  diffMerger.connect(offlineCtx.destination);
-  source.start();
-  const rendered = await offlineCtx.startRendering();
-  const blob = audioBufferToWavBlob(rendered);
-  return { blob, url: URL.createObjectURL(blob), duration };
-}
-function VocalSeparationModal({
-  isOpen,
-  onClose,
-  tracks,
-  onRequestVerification,
-  onSelectSeparatedTrack,
-  onShowToast
-}) {
-  const { isVerified } = useAuth();
-  const [modalMode, setModalMode] = reactExports.useState("on_device");
-  const [selectedTrack, setSelectedTrack] = reactExports.useState(null);
-  const [isProcessingDsp, setIsProcessingDsp] = reactExports.useState(false);
-  const [uploadedAudioFile, setUploadedAudioFile] = reactExports.useState(null);
-  const modalFileInputRef = reactExports.useRef(null);
-  const [cloudStep, setCloudStep] = reactExports.useState("consent");
-  const [hasConsented, setHasConsented] = reactExports.useState(false);
-  const [selectedCloudFile, setSelectedCloudFile] = reactExports.useState(null);
-  const [isSubmittingCloud, setIsSubmittingCloud] = reactExports.useState(false);
-  if (!isOpen) return null;
-  const isConfigured = vocalSeparationService.isBackendConfigured();
-  const handleExtractKaraokeOnDevice = async () => {
-    if (!isVerified) {
-      if (onRequestVerification) {
-        onRequestVerification();
-      }
-      onShowToast(
-        "Gmail verification required for AI Vocal Remover.",
-        /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 16, className: "text-[#8E7CFF]" }),
-        "Google 1-Tap sign-in unlocks instant karaoke vocal isolation"
-      );
-      return;
-    }
-    let audioTarget = null;
-    let trackTitle = "Karaoke Track";
-    let trackArtist = "Instrumental";
-    if (uploadedAudioFile) {
-      audioTarget = uploadedAudioFile;
-      trackTitle = uploadedAudioFile.name.replace(/\.[^/.]+$/, "") + " (Karaoke)";
-      trackArtist = "Uploaded File";
-    } else if (selectedTrack) {
-      audioTarget = selectedTrack.url;
-      trackTitle = `${selectedTrack.title} (Karaoke)`;
-      trackArtist = selectedTrack.artist;
-    } else {
-      onShowToast("Please select a song or upload an audio file first.");
-      return;
-    }
-    setIsProcessingDsp(true);
-    onShowToast("Isolating karaoke music & cancelling center vocals...", /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 16, className: "text-[#8E7CFF] animate-spin" }));
-    try {
-      const result = await extractClientSideKaraokeAudio(audioTarget);
-      const separatedTrack = {
-        id: `extracted_karaoke_${Date.now()}`,
-        title: trackTitle,
-        artist: trackArtist,
-        album: "Muzic Karaoke Studio",
-        duration: result.duration,
-        url: result.url,
-        format: "WAV",
-        size: result.blob.size
-      };
-      onSelectSeparatedTrack(separatedTrack);
-      onShowToast("Karaoke instrumental isolated successfully!", /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 16, className: "text-emerald-400" }));
-      onClose();
-    } catch (err) {
-      console.error("On-device vocal cancellation error:", err);
-      onShowToast("Karaoke extraction failed: " + err.message, /* @__PURE__ */ jsxRuntimeExports.jsx(CloudOff, { size: 16, className: "text-red-400" }));
-    } finally {
-      setIsProcessingDsp(false);
-    }
-  };
-  const handleModalFileUpload = (e2) => {
-    var _a2;
-    const file = (_a2 = e2.target.files) == null ? void 0 : _a2[0];
-    if (file) {
-      setUploadedAudioFile(file);
-      setSelectedTrack(null);
-      onShowToast(`Uploaded "${file.name}"`, /* @__PURE__ */ jsxRuntimeExports.jsx(FileAudio, { size: 16, className: "text-emerald-400" }));
-    }
-  };
-  const handleStartCloudProcess = async () => {
-    if (!selectedCloudFile) return;
-    setIsSubmittingCloud(true);
-    setCloudStep("status");
-    try {
-      const dummyBlob = new Blob(["sample-audio-data"], { type: "audio/mp3" });
-      const job = await vocalSeparationService.submitSeparationJob({
-        audioFile: dummyBlob,
-        fileName: selectedCloudFile.name,
-        userConsentGiven: hasConsented,
-        modelTarget: "vocals_instrumental"
-      });
-      if (job.status === "backend_unconfigured") {
-        onShowToast(
-          "Cloud AI Backend Offline (₹0 Budget)",
-          /* @__PURE__ */ jsxRuntimeExports.jsx(CloudOff, { size: 16, className: "text-amber-400" }),
-          "API boundary verified"
-        );
-      }
-    } finally {
-      setIsSubmittingCloud(false);
-    }
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[260] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 overflow-y-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    motion.div,
-    {
-      initial: { opacity: 0, scale: 0.95, y: 16 },
-      animate: { opacity: 1, scale: 1, y: 0 },
-      exit: { opacity: 0, scale: 0.95, y: 16 },
-      className: "w-full max-w-lg bg-[#120F24] border border-[#6355FE]/30 rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[92vh] text-left",
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 pb-3 border-b border-white/5 flex items-center justify-between bg-gradient-to-b from-[#1C153E]/80 to-transparent", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-md", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 20 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-base font-black tracking-tight text-white flex items-center gap-2", children: [
-                "AI Karaoke & Vocal Remover",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-black px-2 py-0.5 rounded-full uppercase", children: "Active" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] font-bold text-[#8F8E9C]", children: "Break any song into instrumental karaoke music & lyrics" })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: onClose,
-              className: "p-2 rounded-full hover:bg-white/10 text-white/40 hover:text-white transition-colors cursor-pointer",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { size: 18 })
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "px-5 pt-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex p-1 bg-white/5 rounded-2xl border border-white/5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => setModalMode("on_device"),
-              className: `flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 ${modalMode === "on_device" ? "bg-[#6355FE] text-white shadow-md" : "text-[#8F8E9C] hover:text-white"}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { size: 13, className: "text-amber-300" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Instant Karaoke (On-Device)" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => setModalMode("cloud"),
-              className: `flex-1 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 ${modalMode === "cloud" ? "bg-[#6355FE] text-white shadow-md" : "text-[#8F8E9C] hover:text-white"}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Server, { size: 13 }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Cloud Server" })
-              ]
-            }
-          )
-        ] }) }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-5 space-y-4 overflow-y-auto flex-1", children: modalMode === "on_device" ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3.5 bg-gradient-to-r from-[#1C153E] to-[#120F2B] border border-[#6355FE]/30 rounded-2xl space-y-1.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-emerald-400 font-black text-xs uppercase tracking-wider", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Zap, { size: 14 }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Instant Client-Side Stereo Mid-Side DSP" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-white/80 leading-relaxed font-medium", children: "Cancels center-panned vocals while retaining stereo instruments, bassline, and kick drum (sub-140Hz). Runs 100% locally on your device with 0 cloud cost and zero latency." })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-black uppercase tracking-wider text-[#8E7CFF] block", children: "Option 1: Upload Song Audio File" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
-              {
-                onClick: () => {
-                  var _a2;
-                  return (_a2 = modalFileInputRef.current) == null ? void 0 : _a2.click();
-                },
-                className: "p-4 bg-white/5 border border-dashed border-white/15 rounded-2xl text-center space-y-2 cursor-pointer hover:border-[#6355FE]/50 hover:bg-white/[0.08] transition-all",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 rounded-xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] mx-auto border border-[#6355FE]/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { size: 18 }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-0.5", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs font-bold text-white", children: uploadedAudioFile ? uploadedAudioFile.name : "Choose audio file (MP3, WAV, M4A)" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-[#8F8E9C]", children: uploadedAudioFile ? `${(uploadedAudioFile.size / (1024 * 1024)).toFixed(1)} MB • Click to change file` : "Upload any song to cancel vocals & make karaoke" })
-                  ] })
-                ]
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: "file",
-                ref: modalFileInputRef,
-                accept: "audio/*,.mp3,.wav,.m4a,.flac,.ogg,.aac",
-                onChange: handleModalFileUpload,
-                className: "hidden"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-black uppercase tracking-wider text-[#8E7CFF] block", children: "Option 2: Select from Music Library" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-h-48 overflow-y-auto space-y-1.5 pr-1", children: tracks.length === 0 ? /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 text-center bg-white/5 rounded-2xl border border-white/5", children: /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#8F8E9C]", children: "No songs found in local library. Upload a file above." }) }) : tracks.slice(0, 15).map((track) => {
-              const isSelected = !uploadedAudioFile && (selectedTrack == null ? void 0 : selectedTrack.id) === track.id;
-              return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "div",
-                {
-                  onClick: () => {
-                    setSelectedTrack(track);
-                    setUploadedAudioFile(null);
-                  },
-                  className: `p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${isSelected ? "bg-[#1C153E] border-[#6355FE]" : "bg-white/5 border-white/5 hover:border-white/10"}`,
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 min-w-0", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(FileAudio, { size: 16, className: "text-[#8E7CFF] shrink-0" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-xs font-black text-white truncate", children: track.title }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-[#8F8E9C] truncate", children: track.artist })
-                      ] })
-                    ] }),
-                    isSelected && /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 16, className: "text-emerald-400 shrink-0" })
-                  ]
-                },
-                track.id
-              );
-            }) })
-          ] }),
-          !isVerified && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-amber-500/10 border border-amber-500/25 rounded-2xl flex items-center justify-between gap-3 text-left", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5 min-w-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 16, className: "text-amber-400 shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] font-black text-amber-300 uppercase tracking-wider", children: "Gmail Verification Required" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-amber-200/80 truncate", children: "Sign in with Google (100% free) to unlock AI vocal removal." })
-              ] })
-            ] }),
-            onRequestVerification && /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: onRequestVerification,
-                className: "px-3 py-1.5 bg-white hover:bg-neutral-100 text-neutral-900 rounded-xl text-[10px] font-black uppercase tracking-wider shrink-0 cursor-pointer shadow-sm active:scale-95 transition-all",
-                children: "Verify Free"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              disabled: !uploadedAudioFile && !selectedTrack || isProcessingDsp,
-              onClick: handleExtractKaraokeOnDevice,
-              className: "w-full py-3.5 bg-gradient-to-r from-pink-600 via-[#6355FE] to-[#8E7CFF] disabled:opacity-40 hover:brightness-110 active:scale-[0.99] text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-[#6355FE]/30 flex items-center justify-center gap-2",
-              children: isProcessingDsp ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 15, className: "animate-spin text-white" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Extracting Karaoke Track..." })
-              ] }) : !isVerified ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { size: 15, className: "text-amber-300" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Verify with Gmail to Extract Karaoke" })
-              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 15, className: "text-amber-300" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Extract Karaoke Music (0 Cost)" })
-              ] })
-            }
-          )
-        ] }) : (
-          /* Cloud Server Deep Learning Boundary */
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-            cloudStep === "consent" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-amber-400/10 border border-amber-400/20 rounded-2xl space-y-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-amber-400 font-black text-xs uppercase tracking-wider", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldAlert, { size: 16 }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Privacy & Cloud Processing Disclosure" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-amber-200/90 leading-relaxed font-medium", children: "To protect device battery and keep Muzic fast on all Android phones, AI stem separation models (Demucs / Spleeter) require remote cloud server processing." }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "text-[11px] text-amber-200/80 space-y-1 list-disc list-inside", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "Your audio will be uploaded to a secure processing server over HTTPS." }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "Files are stored temporarily solely during stem separation and auto-deleted within 24 hours." }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("li", { children: "No audio is ever shared or redistributed." })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-white/5 border border-white/5 rounded-2xl space-y-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-[#8E7CFF] font-black text-xs uppercase tracking-wider", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Server, { size: 14 }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Cloud Backend Status (Section 6 Compliance)" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-xs py-1", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#8F8E9C]", children: "Initial AI Hosting Budget:" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-white", children: "₹0 (Zero Cost Constraint)" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-xs py-1 border-t border-white/5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#8F8E9C]", children: "Backend Server State:" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-bold ${isConfigured ? "text-green-400" : "text-amber-400"}`, children: isConfigured ? "Configured & Ready" : "Unconfigured / Offline" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("label", { className: "flex items-start gap-3 p-3 bg-white/5 rounded-2xl border border-white/5 cursor-pointer", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "input",
-                  {
-                    type: "checkbox",
-                    checked: hasConsented,
-                    onChange: (e2) => setHasConsented(e2.target.checked),
-                    className: "mt-0.5 rounded border-white/20 text-[#6355FE] focus:ring-0 w-4 h-4"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs text-white/90 font-medium", children: "I understand and consent to uploading audio to the cloud separation server when a backend is configured." })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  disabled: !hasConsented,
-                  onClick: () => setCloudStep("select"),
-                  className: "w-full py-3.5 bg-[#6355FE] disabled:opacity-40 hover:bg-[#7265FF] text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-[#6355FE]/25",
-                  children: "Proceed to Select Song"
-                }
-              )
-            ] }),
-            cloudStep === "select" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xs font-black uppercase tracking-wider text-[#8E7CFF]", children: "Choose Song for Cloud Separation" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-[#8F8E9C]", children: "Select a song from your local library to test the separation submission pipeline." })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "max-h-60 overflow-y-auto space-y-2", children: tracks.slice(0, 15).map((track) => {
-                const isSelected = (selectedCloudFile == null ? void 0 : selectedCloudFile.name) === track.title;
-                return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "div",
-                  {
-                    onClick: () => setSelectedCloudFile({ name: track.title, size: track.size || 4e6 }),
-                    className: `p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between ${isSelected ? "bg-[#1C153E] border-[#6355FE]" : "bg-white/5 border-white/5 hover:border-white/10"}`,
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 min-w-0", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(FileAudio, { size: 18, className: "text-[#8E7CFF] shrink-0" }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-xs font-black text-white truncate", children: track.title }),
-                          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-[#8F8E9C] truncate", children: track.artist })
-                        ] })
-                      ] }),
-                      isSelected && /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 16, className: "text-[#8E7CFF] shrink-0" })
-                    ]
-                  },
-                  track.id
-                );
-              }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex gap-2 pt-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    onClick: () => setCloudStep("consent"),
-                    className: "px-4 py-3 bg-white/5 hover:bg-white/10 rounded-2xl text-xs font-bold text-[#8F8E9C] cursor-pointer",
-                    children: "Back"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    disabled: !selectedCloudFile || isSubmittingCloud,
-                    onClick: handleStartCloudProcess,
-                    className: "flex-1 py-3.5 bg-[#6355FE] disabled:opacity-40 hover:bg-[#7265FF] text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-[#6355FE]/25 flex items-center justify-center gap-2",
-                    children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 14 }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Request Separation" })
-                    ]
-                  }
-                )
-              ] })
-            ] }),
-            cloudStep === "status" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-amber-400/10 border border-amber-400/20 rounded-2xl space-y-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-amber-400 font-black text-xs uppercase tracking-wider", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(CloudOff, { size: 16 }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Cloud Separation Endpoint Not Configured" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-xs text-amber-200/90 leading-relaxed font-medium", children: 'As planned for the ₹0 initial budget phase, cloud GPU processing is not yet provisioned. Use the "Instant Karaoke (On-Device)" tab for free zero-cost client extraction!' })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  onClick: () => {
-                    setCloudStep("consent");
-                    setModalMode("on_device");
-                  },
-                  className: "w-full py-3.5 bg-[#6355FE] hover:bg-[#7265FF] text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer",
-                  children: "Switch to Instant On-Device Karaoke"
-                }
-              )
-            ] })
-          ] })
-        ) })
-      ]
-    }
-  ) });
-}
-function SubscriptionModal({ isOpen, onClose, onShowToast }) {
-  const [selectedTier, setSelectedTier] = reactExports.useState("pro");
-  const [isProcessing, setIsProcessing] = reactExports.useState(false);
-  const [storeNotice, setStoreNotice] = reactExports.useState(null);
-  if (!isOpen) return null;
-  const currentTier = subscriptionService.getCurrentTier();
-  const handleSubscribe = async (tierId) => {
-    setIsProcessing(true);
-    setStoreNotice(null);
-    try {
-      const res = await subscriptionService.purchaseProduct(tierId);
-      if (res.success) {
-        onShowToast(res.message, /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { size: 16, className: "text-amber-400" }));
-        onClose();
-      } else {
-        setStoreNotice(res.message);
-      }
-    } catch (err) {
-      setStoreNotice(err.message || "Subscription initialization failed.");
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-  const handleRestore = async () => {
-    setIsProcessing(true);
-    setStoreNotice(null);
-    try {
-      const res = await subscriptionService.restorePurchases();
-      setStoreNotice(res.message);
-      onShowToast(res.message, /* @__PURE__ */ jsxRuntimeExports.jsx(RefreshCw, { size: 16, className: "text-[#8E7CFF]" }));
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[250] flex items-center justify-center bg-black/75 backdrop-blur-md p-4 overflow-y-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    motion.div,
-    {
-      initial: { opacity: 0, scale: 0.95, y: 16 },
-      animate: { opacity: 1, scale: 1, y: 0 },
-      exit: { opacity: 0, scale: 0.95, y: 16 },
-      transition: { type: "spring", damping: 25, stiffness: 350 },
-      className: "w-full max-w-md bg-[#120F24] border border-[#6355FE]/30 rounded-3xl shadow-2xl flex flex-col overflow-hidden max-h-[90vh]",
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative p-6 pb-4 border-b border-white/5 flex items-center justify-between bg-gradient-to-b from-[#1C153E]/80 to-transparent", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-2xl bg-amber-400/20 flex items-center justify-center text-amber-400 border border-amber-400/30 shadow-md", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { size: 20 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-lg font-black tracking-tight text-white flex items-center gap-2", children: [
-                "Muzic Premium",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] bg-gradient-to-r from-amber-400 to-amber-500 text-black font-black px-2 py-0.5 rounded-full", children: "PRO" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] font-bold text-[#8F8E9C]", children: "Unlock Studio Reverb, Lossless Audio & Cloud Stems" })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: onClose,
-              className: "p-2 rounded-full hover:bg-white/10 text-white/40 hover:text-white transition-colors cursor-pointer",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { size: 18 })
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 space-y-4 overflow-y-auto flex-1 text-left", children: [
-          storeNotice && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3.5 bg-amber-400/10 border border-amber-400/20 rounded-2xl flex items-start gap-3 text-xs text-amber-200", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 18, className: "shrink-0 text-amber-400 mt-0.5" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-amber-400 uppercase text-[10px] tracking-wider block", children: "Google Play Store Boundary" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "opacity-90 leading-relaxed text-[11px]", children: storeNotice })
-            ] })
-          ] }),
-          (() => {
-            const quota = subscriptionService.getLocalUploadQuota();
-            return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between text-xs", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[#8F8E9C]", children: "Studio Phone Uploads (This Month):" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "font-bold text-white", children: [
-                quota.used,
-                " / ",
-                quota.limit,
-                " used (",
-                quota.remaining,
-                " left)"
-              ] })
-            ] });
-          })(),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-3", children: SUBSCRIPTION_TIERS.map((tier) => {
-            const isSelected = selectedTier === tier.id;
-            const isCurrent = currentTier === tier.id;
-            return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "div",
-              {
-                onClick: () => setSelectedTier(tier.id),
-                className: `p-4 rounded-2xl border transition-all cursor-pointer relative ${isSelected ? "bg-[#1C153E] border-[#6355FE] shadow-[0_0_24px_rgba(99,85,254,0.25)]" : "bg-white/5 border-white/5 hover:border-white/15"}`,
-                children: [
-                  tier.isPopular && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute -top-2.5 right-4 bg-[#6355FE] text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full shadow-md", children: "Best Value" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between mb-2", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-black text-white", children: tier.name }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-[#8F8E9C] font-semibold", children: tier.description })
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-right", children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-black text-[#8E7CFF]", children: tier.priceDisplay }) })
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("ul", { className: "space-y-1.5 mt-3 pt-3 border-t border-white/5", children: tier.features.map((feat, idx) => /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-center gap-2 text-[11px] text-white/80 font-medium", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 12, className: "text-[#8E7CFF] shrink-0" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: feat })
-                  ] }, idx)) }),
-                  isCurrent && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "mt-3 text-center py-1 bg-white/10 rounded-xl text-[10px] font-bold text-white/70", children: "Current Plan" })
-                ]
-              },
-              tier.id
-            );
-          }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-black/20 rounded-2xl border border-white/5 flex items-center gap-2.5 text-[10px] text-[#8F8E9C]", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 14, className: "text-[#8E7CFF] shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Honest architecture: Subscriptions use official Google Play Billing SDK. No fake simulated payments." })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 pt-3 border-t border-white/5 flex flex-col gap-2.5 bg-[#0E0B20]", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              onClick: () => handleSubscribe(selectedTier),
-              disabled: isProcessing,
-              className: "w-full py-3.5 bg-gradient-to-r from-[#6355FE] to-[#8E7CFF] hover:from-[#7265FF] hover:to-[#9E8EFF] active:scale-[0.98] transition-all rounded-2xl font-black text-xs uppercase tracking-widest text-white shadow-lg shadow-[#6355FE]/30 cursor-pointer flex items-center justify-center gap-2",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Crown, { size: 15 }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: selectedTier === "free" ? "Continue with Free" : `Get ${selectedTier === "pro" ? "Muzic Pro" : "Studio Pass"}` })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: handleRestore,
-              disabled: isProcessing,
-              className: "w-full py-2 text-[10px] font-bold uppercase tracking-wider text-[#8F8E9C] hover:text-white transition-colors cursor-pointer",
-              children: "Restore Google Play Purchases"
-            }
-          )
-        ] })
-      ]
-    }
-  ) });
-}
-function GoogleVerificationModal({
-  isOpen,
-  onClose,
-  onShowToast,
-  onSuccess,
-  customTitle,
-  customSubtitle,
-  customReason
-}) {
-  const { currentUser, isVerified, signInWithGoogle, signOut: signOut2 } = useAuth();
-  const [isSigningIn, setIsSigningIn] = reactExports.useState(false);
-  const [errorMsg, setErrorMsg] = reactExports.useState(null);
-  if (!isOpen) return null;
-  const handleGoogleSignIn = async () => {
-    setIsSigningIn(true);
-    setErrorMsg(null);
-    try {
-      const user = await signInWithGoogle();
-      if (!user) {
-        return;
-      }
-      onShowToast(
-        `Welcome, ${user.displayName || "Creator"}!`,
-        /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 16, className: "text-emerald-400" }),
-        "Google 1-Tap Verification Successful"
-      );
-      if (onSuccess) onSuccess();
-      onClose();
-    } catch (err) {
-      if ((err == null ? void 0 : err.code) === "auth/popup-closed-by-user" || (err == null ? void 0 : err.code) === "auth/cancelled-popup-request" || typeof (err == null ? void 0 : err.message) === "string" && (err.message.includes("popup-closed-by-user") || err.message.includes("cancelled-popup-request"))) {
-        return;
-      }
-      if ((err == null ? void 0 : err.code) === "auth/popup-blocked") {
-        setErrorMsg("Sign-in popup was blocked by your browser. Please allow popups and try again.");
-      } else {
-        setErrorMsg((err == null ? void 0 : err.message) || "Google sign-in could not be completed.");
-      }
-    } finally {
-      setIsSigningIn(false);
-    }
-  };
-  const handleSignOut = async () => {
-    try {
-      await signOut2();
-      onShowToast("Signed out of Google account.", /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { size: 16, className: "text-[#8E7CFF]" }));
-      onClose();
-    } catch (err) {
-      setErrorMsg(err.message || "Sign-out failed.");
-    }
-  };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "fixed inset-0 z-[260] flex items-center justify-center bg-black/75 backdrop-blur-md p-4 overflow-y-auto", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-    motion.div,
-    {
-      initial: { opacity: 0, scale: 0.95, y: 16 },
-      animate: { opacity: 1, scale: 1, y: 0 },
-      exit: { opacity: 0, scale: 0.95, y: 16 },
-      transition: { type: "spring", damping: 25, stiffness: 350 },
-      className: "w-full max-w-sm bg-[#120F24] border border-[#6355FE]/30 rounded-3xl shadow-2xl flex flex-col overflow-hidden text-left",
-      children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative p-5 border-b border-white/5 flex items-center justify-between bg-gradient-to-b from-[#1C153E]/80 to-transparent", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] border border-[#6355FE]/30 shadow-md", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 20 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-base font-black tracking-tight text-white flex items-center gap-2", children: [
-                customTitle || "Studio Verification",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] bg-emerald-500/20 text-emerald-300 font-extrabold uppercase px-2 py-0.5 rounded-full border border-emerald-500/30", children: "FREE" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] font-bold text-[#8F8E9C]", children: customSubtitle || "Google 1-Tap Account Verification" })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              onClick: onClose,
-              className: "p-2 rounded-full hover:bg-white/10 text-white/40 hover:text-white transition-colors cursor-pointer",
-              children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { size: 18 })
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 space-y-4", children: [
-          errorMsg && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-start gap-2.5 text-xs text-red-300", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "shrink-0 text-red-400 mt-0.5" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] leading-relaxed", children: errorMsg })
-          ] }),
-          isVerified && currentUser ? (
-            /* Already Verified Card */
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-white/5 border border-white/10 rounded-2xl space-y-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-                currentUser.photoURL ? /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "img",
-                  {
-                    src: currentUser.photoURL,
-                    alt: currentUser.displayName || "User",
-                    className: "w-12 h-12 rounded-full border-2 border-emerald-400 shadow-md object-cover"
-                  }
-                ) : /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-full bg-[#6355FE] text-white flex items-center justify-center font-black text-lg", children: currentUser.displayName ? currentUser.displayName[0].toUpperCase() : "U" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 flex-1", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-black text-white truncate", children: currentUser.displayName || "Music Creator" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 14, className: "text-emerald-400 shrink-0" })
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#8F8E9C] truncate", children: currentUser.email }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "inline-block mt-1 text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30", children: "Account Verified" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pt-2 border-t border-white/5 flex items-center justify-between text-[11px] text-[#8F8E9C]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Singing Studio Uploads:" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-white", children: "Active" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  onClick: handleSignOut,
-                  className: "w-full py-2 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-2",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(LogOut, { size: 14 }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Switch or Sign Out" })
-                  ]
-                }
-              )
-            ] })
-          ) : (
-            /* Unverified / Sign-in Request */
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3.5 bg-[#171330] border border-[#6355FE]/30 rounded-2xl space-y-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-black uppercase tracking-wider text-[#8E7CFF] block", children: customReason ? "Unlock Full Access Free" : "Why verify with Google 1-Tap?" }),
-                customReason ? /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-white/90 font-medium leading-relaxed", children: customReason }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("ul", { className: "space-y-2 text-[11px] text-white/80 font-medium", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 13, className: "text-emerald-400 shrink-0 mt-0.5" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "100% Free Forever:" }),
-                      " No phone OTP limits or SMS delays."
-                    ] })
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 13, className: "text-emerald-400 shrink-0 mt-0.5" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Claim 5 Free Uploads/Month:" }),
-                      " Imports any song from your phone into Singing Studio."
-                    ] })
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("li", { className: "flex items-start gap-2", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 13, className: "text-emerald-400 shrink-0 mt-0.5" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Secure Cloud Persistence:" }),
-                      " Keeps your monthly allowance safe even if you switch devices."
-                    ] })
-                  ] })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: handleGoogleSignIn,
-                  disabled: isSigningIn,
-                  className: "w-full py-3.5 px-4 bg-white hover:bg-neutral-100 active:scale-[0.98] text-neutral-800 rounded-2xl font-black text-xs tracking-wider cursor-pointer shadow-xl flex items-center justify-center gap-3 transition-all disabled:opacity-60",
-                  children: isSigningIn ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 18, className: "animate-spin text-neutral-800" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Verifying with Google..." })
-                  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { className: "w-5 h-5", viewBox: "0 0 24 24", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(
-                        "path",
-                        {
-                          fill: "#4285F4",
-                          d: "M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                        }
-                      ),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(
-                        "path",
-                        {
-                          fill: "#34A853",
-                          d: "M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                        }
-                      ),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(
-                        "path",
-                        {
-                          fill: "#FBBC05",
-                          d: "M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                        }
-                      ),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx(
-                        "path",
-                        {
-                          fill: "#EA4335",
-                          d: "M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                        }
-                      )
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Continue with Google" })
-                  ] })
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-center text-[#8F8E9C]", children: "By signing in, your account email is verified instantly. No spam." })
-            ] })
-          )
-        ] })
-      ]
-    }
-  ) });
-}
-const MicrophonePermissionModal = ({
-  isOpen,
-  onClose,
-  onGrantPermission,
-  isRequesting,
-  permissionError,
-  theme = "dark"
-}) => {
-  const isDark = theme === "dark";
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: isOpen && /* @__PURE__ */ jsxRuntimeExports.jsx(
-    motion.div,
-    {
-      initial: { opacity: 0 },
-      animate: { opacity: 1 },
-      exit: { opacity: 0 },
-      className: "fixed inset-0 z-[200] flex items-center justify-center bg-black/75 backdrop-blur-md p-4 sm:p-6",
-      onClick: onClose,
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        motion.div,
-        {
-          initial: { scale: 0.94, y: 15 },
-          animate: { scale: 1, y: 0 },
-          exit: { scale: 0.94, y: 15 },
-          transition: { type: "spring", damping: 25, stiffness: 350 },
-          className: `w-full max-w-sm rounded-[32px] p-6 sm:p-7 shadow-2xl border text-left relative overflow-hidden transition-colors ${isDark ? "bg-[#120F28] border-white/10 text-white" : "bg-white border-[#6355FE]/20 text-[#120F26] shadow-[0_20px_50px_rgba(99,85,254,0.18)]"}`,
-          onClick: (e2) => e2.stopPropagation(),
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `absolute top-0 left-1/2 -translate-x-1/2 w-48 h-20 blur-3xl pointer-events-none rounded-full ${isDark ? "bg-red-500/20" : "bg-red-500/10"}` }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: onClose,
-                disabled: isRequesting,
-                className: `absolute top-5 right-5 p-2 rounded-full cursor-pointer transition-all active:scale-95 ${isDark ? "text-white/40 hover:text-white hover:bg-white/10" : "text-[#7A7596] hover:text-[#120F26] hover:bg-neutral-100"}`,
-                title: "Close",
-                children: /* @__PURE__ */ jsxRuntimeExports.jsx(X$1, { size: 18 })
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative mb-5 flex items-center", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-14 h-14 rounded-2xl bg-gradient-to-tr from-red-500 to-[#6355FE] text-white flex items-center justify-center shadow-lg shadow-red-500/30 shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 26, strokeWidth: 2.5, className: "animate-pulse" }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "ml-3.5 min-w-0", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-black uppercase tracking-widest text-red-400 block", children: "Singing Studio" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: `text-lg font-black tracking-tight leading-tight ${isDark ? "text-white" : "text-[#120F26]"}`, children: "Allow Microphone Access" })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3.5", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: `text-xs font-semibold leading-relaxed ${isDark ? "text-[#ECE6FF]/80" : "text-[#585474]"}`, children: "To start singing and record your voice in sync with the backing music and live karaoke lyrics, please allow microphone access." }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `p-3.5 rounded-2xl border space-y-2.5 text-[11px] font-medium ${isDark ? "bg-black/30 border-white/5" : "bg-[#F6F4FF] border-[#6355FE]/15"}`, children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-lg bg-red-500/20 text-red-400 flex items-center justify-center shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 12 }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: isDark ? "text-white/90" : "text-[#120F26]", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "High-Definition Studio Mic:" }),
-                    " Captures your real-time singing voice"
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-lg bg-[#6355FE]/20 text-[#8E7CFF] flex items-center justify-center shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { size: 12 }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: isDark ? "text-white/90" : "text-[#120F26]", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Karaoke Sync:" }),
-                    " Synchronizes with backing track & timed lyrics"
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 12 }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: isDark ? "text-white/90" : "text-[#120F26]", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "100% Private:" }),
-                    " Audio processing stays on your device"
-                  ] })
-                ] })
-              ] }),
-              permissionError && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-red-500/15 border border-red-500/30 rounded-2xl text-[11px] font-semibold text-red-300 space-y-1.5 animate-[shake_0.2s_ease-in-out]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 font-black text-red-200", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 15, className: "shrink-0" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Microphone Permission Blocked" })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-red-200/80 leading-relaxed pl-5", children: permissionError }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[10px] text-white/70 pl-5", children: [
-                  "💡 Tip: Click the lock / permissions icon in your browser address bar or device settings, enable microphone access, and tap ",
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("strong", { children: "Try Again" }),
-                  "."
-                ] })
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "pt-5 space-y-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: onGrantPermission,
-                  disabled: isRequesting,
-                  className: "w-full py-3.5 px-4 bg-gradient-to-r from-red-500 to-[#6355FE] hover:brightness-110 active:scale-[0.98] text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-red-500/25 flex items-center justify-center gap-2 disabled:opacity-50",
-                  children: isRequesting ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 16, className: "animate-spin text-white" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Requesting Permission..." })
-                  ] }) : permissionError ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 16 }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Try Again & Allow Mic" })
-                  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 16 }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Allow Mic & Start Singing" })
-                  ] })
-                }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: onClose,
-                  disabled: isRequesting,
-                  className: `w-full py-2.5 text-xs font-bold uppercase tracking-wider transition-all rounded-xl cursor-pointer ${isDark ? "text-white/40 hover:text-white" : "text-[#7A7596] hover:text-[#120F26]"}`,
-                  children: "Not Now"
-                }
-              )
-            ] })
-          ]
-        }
-      )
-    }
-  ) });
-};
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-const BASELINE_TUM_HI_HO_LINES = [
-  // --- Verse 1 ---
+const UPCOMING_CAPABILITIES = [
   {
-    id: "l1",
-    lineIndex: 0,
-    start: 14.8,
-    end: 20,
-    text: "Hum tere bin ab reh nahi sakte",
-    section: "verse",
-    words: [
-      { word: "Hum", start: 14.8, end: 15.5 },
-      { word: "tere", start: 15.5, end: 16.3 },
-      { word: "bin", start: 16.3, end: 17 },
-      { word: "ab", start: 17, end: 17.6 },
-      { word: "reh", start: 17.6, end: 18.3 },
-      { word: "nahi", start: 18.3, end: 19.1 },
-      { word: "sakte", start: 19.1, end: 20 }
-    ]
+    id: "vocal-remover",
+    number: "01.",
+    title: "One-Tap Vocal Isolation",
+    subtitle: "Local library · Instant backing track",
+    description: "Turn any song already in your library into a clean instrumental track ready for your voice.",
+    icon: Headphones
   },
   {
-    id: "l2",
-    lineIndex: 1,
-    start: 20.4,
-    end: 25.5,
-    text: "Tere bina kya wajood mera",
-    section: "verse",
-    words: [
-      { word: "Tere", start: 20.4, end: 21.3 },
-      { word: "bina", start: 21.3, end: 22.2 },
-      { word: "kya", start: 22.2, end: 23 },
-      { word: "wajood", start: 23, end: 24.2 },
-      { word: "mera", start: 24.2, end: 25.5 }
-    ]
+    id: "karaoke-sync",
+    number: "02.",
+    title: "Timed Karaoke Lyrics",
+    subtitle: "Line-by-line cue · Custom LRC import",
+    description: "Follow smooth, synchronized lyrics on screen while recording over your favorite melodies.",
+    icon: Mic
   },
   {
-    id: "l3",
-    lineIndex: 2,
-    start: 25.8,
-    end: 31,
-    text: "Hum tere bin ab reh nahi sakte",
-    section: "verse",
-    words: [
-      { word: "Hum", start: 25.8, end: 26.5 },
-      { word: "tere", start: 26.5, end: 27.3 },
-      { word: "bin", start: 27.3, end: 28 },
-      { word: "ab", start: 28, end: 28.7 },
-      { word: "reh", start: 28.7, end: 29.4 },
-      { word: "nahi", start: 29.4, end: 30.2 },
-      { word: "sakte", start: 30.2, end: 31 }
-    ]
+    id: "vocal-chain",
+    number: "03.",
+    title: "Studio Reverb & Vocal Chain",
+    subtitle: "Room presets · Real-time monitoring",
+    description: "Shape your vocal tone with acoustic booth warmth, concert hall depth, or crisp broadcast clarity.",
+    icon: SlidersVertical
   },
   {
-    id: "l4",
-    lineIndex: 3,
-    start: 31.3,
-    end: 36.3,
-    text: "Tere bina kya wajood mera",
-    section: "verse",
-    words: [
-      { word: "Tere", start: 31.3, end: 32.2 },
-      { word: "bina", start: 32.2, end: 33.1 },
-      { word: "kya", start: 33.1, end: 33.9 },
-      { word: "wajood", start: 33.9, end: 35 },
-      { word: "mera", start: 35, end: 36.3 }
-    ]
-  },
-  {
-    id: "l5",
-    lineIndex: 4,
-    start: 36.6,
-    end: 41.8,
-    text: "Tujh se juda agar ho jaayenge",
-    section: "verse",
-    words: [
-      { word: "Tujh", start: 36.6, end: 37.3 },
-      { word: "se", start: 37.3, end: 38 },
-      { word: "juda", start: 38, end: 39 },
-      { word: "agar", start: 39, end: 40 },
-      { word: "ho", start: 40, end: 40.8 },
-      { word: "jaayenge", start: 40.8, end: 41.8 }
-    ]
-  },
-  {
-    id: "l6",
-    lineIndex: 5,
-    start: 42,
-    end: 47.4,
-    text: "To khud se hee ho jaayenge juda",
-    section: "verse",
-    words: [
-      { word: "To", start: 42, end: 42.7 },
-      { word: "khud", start: 42.7, end: 43.5 },
-      { word: "se", start: 43.5, end: 44.2 },
-      { word: "hee", start: 44.2, end: 45 },
-      { word: "ho", start: 45, end: 45.8 },
-      { word: "jaayenge", start: 45.8, end: 46.6 },
-      { word: "juda", start: 46.6, end: 47.4 }
-    ]
-  },
-  // --- Chorus 1 ---
-  {
-    id: "l7",
-    lineIndex: 6,
-    start: 47.8,
-    end: 53,
-    text: "Kyonki tum hee ho, ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Kyonki", start: 47.8, end: 48.8 },
-      { word: "tum", start: 48.8, end: 49.6 },
-      { word: "hee", start: 49.6, end: 50.4 },
-      { word: "ho,", start: 50.4, end: 51.2 },
-      { word: "ab", start: 51.2, end: 51.7 },
-      { word: "tum", start: 51.7, end: 52.3 },
-      { word: "hee", start: 52.3, end: 52.7 },
-      { word: "ho", start: 52.7, end: 53 }
-    ]
-  },
-  {
-    id: "l8",
-    lineIndex: 7,
-    start: 53.4,
-    end: 58.2,
-    text: "Zindagi ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Zindagi", start: 53.4, end: 54.8 },
-      { word: "ab", start: 54.8, end: 55.6 },
-      { word: "tum", start: 55.6, end: 56.5 },
-      { word: "hee", start: 56.5, end: 57.3 },
-      { word: "ho", start: 57.3, end: 58.2 }
-    ]
-  },
-  {
-    id: "l9",
-    lineIndex: 8,
-    start: 58.4,
-    end: 64,
-    text: "O-o-o, chain bhee, mera dard bhee",
-    section: "chorus",
-    words: [
-      { word: "O-o-o,", start: 58.4, end: 60.2 },
-      { word: "chain", start: 60.2, end: 61.2 },
-      { word: "bhee,", start: 61.2, end: 61.8 },
-      { word: "mera", start: 61.8, end: 62.8 },
-      { word: "dard", start: 62.8, end: 63.4 },
-      { word: "bhee", start: 63.4, end: 64 }
-    ]
-  },
-  {
-    id: "l10",
-    lineIndex: 9,
-    start: 64.2,
-    end: 71,
-    text: "Meri aashiqui ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Meri", start: 64.2, end: 65.2 },
-      { word: "aashiqui", start: 65.2, end: 67 },
-      { word: "ab", start: 67, end: 68 },
-      { word: "tum", start: 68, end: 69.2 },
-      { word: "hee", start: 69.2, end: 70 },
-      { word: "ho", start: 70, end: 71 }
-    ]
-  },
-  // --- Verse 2 ---
-  {
-    id: "l11",
-    lineIndex: 10,
-    start: 88.5,
-    end: 93.5,
-    text: "Tera-meraa rishta hai kaisaa",
-    section: "verse",
-    words: [
-      { word: "Tera-meraa", start: 88.5, end: 90.2 },
-      { word: "rishta", start: 90.2, end: 91.4 },
-      { word: "hai", start: 91.4, end: 92.3 },
-      { word: "kaisaa", start: 92.3, end: 93.5 }
-    ]
-  },
-  {
-    id: "l12",
-    lineIndex: 11,
-    start: 94,
-    end: 99,
-    text: "Ek pal door gavaara nahin",
-    section: "verse",
-    words: [
-      { word: "Ek", start: 94, end: 94.8 },
-      { word: "pal", start: 94.8, end: 95.7 },
-      { word: "door", start: 95.7, end: 96.8 },
-      { word: "gavaara", start: 96.8, end: 98 },
-      { word: "nahin", start: 98, end: 99 }
-    ]
-  },
-  {
-    id: "l13",
-    lineIndex: 12,
-    start: 99.5,
-    end: 104.5,
-    text: "Tere liye har roz hain jeete",
-    section: "verse",
-    words: [
-      { word: "Tere", start: 99.5, end: 100.5 },
-      { word: "liye", start: 100.5, end: 101.5 },
-      { word: "har", start: 101.5, end: 102.3 },
-      { word: "roz", start: 102.3, end: 103.2 },
-      { word: "hain", start: 103.2, end: 103.8 },
-      { word: "jeete", start: 103.8, end: 104.5 }
-    ]
-  },
-  {
-    id: "l14",
-    lineIndex: 13,
-    start: 105,
-    end: 110,
-    text: "Tujh ko diya mera vakt sabhee",
-    section: "verse",
-    words: [
-      { word: "Tujh", start: 105, end: 105.8 },
-      { word: "ko", start: 105.8, end: 106.5 },
-      { word: "diya", start: 106.5, end: 107.6 },
-      { word: "mera", start: 107.6, end: 108.6 },
-      { word: "vakt", start: 108.6, end: 109.3 },
-      { word: "sabhee", start: 109.3, end: 110 }
-    ]
-  },
-  {
-    id: "l15",
-    lineIndex: 14,
-    start: 110.5,
-    end: 116,
-    text: "Koyi lamaha mera naa ho tere binaa",
-    section: "verse",
-    words: [
-      { word: "Koyi", start: 110.5, end: 111.3 },
-      { word: "lamaha", start: 111.3, end: 112.4 },
-      { word: "mera", start: 112.4, end: 113.3 },
-      { word: "naa", start: 113.3, end: 113.9 },
-      { word: "ho", start: 113.9, end: 114.5 },
-      { word: "tere", start: 114.5, end: 115.2 },
-      { word: "binaa", start: 115.2, end: 116 }
-    ]
-  },
-  {
-    id: "l16",
-    lineIndex: 15,
-    start: 116.2,
-    end: 121.5,
-    text: "Har saans pe naam tera",
-    section: "verse",
-    words: [
-      { word: "Har", start: 116.2, end: 117 },
-      { word: "saans", start: 117, end: 118.2 },
-      { word: "pe", start: 118.2, end: 118.9 },
-      { word: "naam", start: 118.9, end: 120.2 },
-      { word: "tera", start: 120.2, end: 121.5 }
-    ]
-  },
-  // --- Chorus 2 ---
-  {
-    id: "l17",
-    lineIndex: 16,
-    start: 122,
-    end: 127.5,
-    text: "Kyonki tum hee ho, ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Kyonki", start: 122, end: 123 },
-      { word: "tum", start: 123, end: 123.8 },
-      { word: "hee", start: 123.8, end: 124.6 },
-      { word: "ho,", start: 124.6, end: 125.4 },
-      { word: "ab", start: 125.4, end: 126 },
-      { word: "tum", start: 126, end: 126.6 },
-      { word: "hee", start: 126.6, end: 127 },
-      { word: "ho", start: 127, end: 127.5 }
-    ]
-  },
-  {
-    id: "l18",
-    lineIndex: 17,
-    start: 128,
-    end: 133,
-    text: "Zindagi ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Zindagi", start: 128, end: 129.4 },
-      { word: "ab", start: 129.4, end: 130.3 },
-      { word: "tum", start: 130.3, end: 131.2 },
-      { word: "hee", start: 131.2, end: 132 },
-      { word: "ho", start: 132, end: 133 }
-    ]
-  },
-  {
-    id: "l19",
-    lineIndex: 18,
-    start: 133.2,
-    end: 139,
-    text: "O-o-o, chain bhee, mera dard bhee",
-    section: "chorus",
-    words: [
-      { word: "O-o-o,", start: 133.2, end: 135 },
-      { word: "chain", start: 135, end: 136 },
-      { word: "bhee,", start: 136, end: 136.6 },
-      { word: "mera", start: 136.6, end: 137.6 },
-      { word: "dard", start: 137.6, end: 138.3 },
-      { word: "bhee", start: 138.3, end: 139 }
-    ]
-  },
-  {
-    id: "l20",
-    lineIndex: 19,
-    start: 139.2,
-    end: 146.5,
-    text: "Meri aashiqui ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Meri", start: 139.2, end: 140.2 },
-      { word: "aashiqui", start: 140.2, end: 142 },
-      { word: "ab", start: 142, end: 143 },
-      { word: "tum", start: 143, end: 144.2 },
-      { word: "hee", start: 144.2, end: 145.2 },
-      { word: "ho", start: 145.2, end: 146.5 }
-    ]
-  },
-  // --- Bridge ---
-  {
-    id: "l21",
-    lineIndex: 20,
-    start: 155.5,
-    end: 160.5,
-    text: "Tum hee ho...",
-    section: "bridge",
-    words: [
-      { word: "Tum", start: 155.5, end: 156.8 },
-      { word: "hee", start: 156.8, end: 158 },
-      { word: "ho...", start: 158, end: 160.5 }
-    ]
-  },
-  {
-    id: "l22",
-    lineIndex: 21,
-    start: 161,
-    end: 166,
-    text: "Tum hee ho...",
-    section: "bridge",
-    words: [
-      { word: "Tum", start: 161, end: 162.3 },
-      { word: "hee", start: 162.3, end: 163.5 },
-      { word: "ho...", start: 163.5, end: 166 }
-    ]
-  },
-  {
-    id: "l23",
-    lineIndex: 22,
-    start: 166.5,
-    end: 171.5,
-    text: "Tere liye hi jiya main",
-    section: "bridge",
-    words: [
-      { word: "Tere", start: 166.5, end: 167.5 },
-      { word: "liye", start: 167.5, end: 168.5 },
-      { word: "hi", start: 168.5, end: 169.3 },
-      { word: "jiya", start: 169.3, end: 170.4 },
-      { word: "main", start: 170.4, end: 171.5 }
-    ]
-  },
-  {
-    id: "l24",
-    lineIndex: 23,
-    start: 172,
-    end: 177,
-    text: "Khud ko jo yoon de diya hai",
-    section: "bridge",
-    words: [
-      { word: "Khud", start: 172, end: 172.9 },
-      { word: "ko", start: 172.9, end: 173.6 },
-      { word: "jo", start: 173.6, end: 174.3 },
-      { word: "yoon", start: 174.3, end: 175.2 },
-      { word: "de", start: 175.2, end: 175.9 },
-      { word: "diya", start: 175.9, end: 176.5 },
-      { word: "hai", start: 176.5, end: 177 }
-    ]
-  },
-  {
-    id: "l25",
-    lineIndex: 24,
-    start: 177.5,
-    end: 182.5,
-    text: "Teri vafaa ne mujh ko sanbhaala",
-    section: "bridge",
-    words: [
-      { word: "Teri", start: 177.5, end: 178.4 },
-      { word: "vafaa", start: 178.4, end: 179.4 },
-      { word: "ne", start: 179.4, end: 180.1 },
-      { word: "mujh", start: 180.1, end: 180.8 },
-      { word: "ko", start: 180.8, end: 181.4 },
-      { word: "sanbhaala", start: 181.4, end: 182.5 }
-    ]
-  },
-  {
-    id: "l26",
-    lineIndex: 25,
-    start: 183,
-    end: 188,
-    text: "Saare gamon ko dil se nikaala",
-    section: "bridge",
-    words: [
-      { word: "Saare", start: 183, end: 184 },
-      { word: "gamon", start: 184, end: 185.1 },
-      { word: "ko", start: 185.1, end: 185.8 },
-      { word: "dil", start: 185.8, end: 186.6 },
-      { word: "se", start: 186.6, end: 187.2 },
-      { word: "nikaala", start: 187.2, end: 188 }
-    ]
-  },
-  {
-    id: "l27",
-    lineIndex: 26,
-    start: 188.5,
-    end: 194,
-    text: "Tere saath mera hai naseeb juda",
-    section: "bridge",
-    words: [
-      { word: "Tere", start: 188.5, end: 189.4 },
-      { word: "saath", start: 189.4, end: 190.4 },
-      { word: "mera", start: 190.4, end: 191.4 },
-      { word: "hai", start: 191.4, end: 192.1 },
-      { word: "naseeb", start: 192.1, end: 193.1 },
-      { word: "juda", start: 193.1, end: 194 }
-    ]
-  },
-  {
-    id: "l28",
-    lineIndex: 27,
-    start: 194.2,
-    end: 200,
-    text: "Tuje paa ke adhoora naa raha, mmm",
-    section: "bridge",
-    words: [
-      { word: "Tuje", start: 194.2, end: 195.1 },
-      { word: "paa", start: 195.1, end: 196 },
-      { word: "ke", start: 196, end: 196.6 },
-      { word: "adhoora", start: 196.6, end: 197.8 },
-      { word: "naa", start: 197.8, end: 198.5 },
-      { word: "raha,", start: 198.5, end: 199.3 },
-      { word: "mmm", start: 199.3, end: 200 }
-    ]
-  },
-  // --- Chorus 3 ---
-  {
-    id: "l29",
-    lineIndex: 28,
-    start: 200.5,
-    end: 206,
-    text: "Kyonki tum hee ho, ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Kyonki", start: 200.5, end: 201.5 },
-      { word: "tum", start: 201.5, end: 202.3 },
-      { word: "hee", start: 202.3, end: 203.1 },
-      { word: "ho,", start: 203.1, end: 203.9 },
-      { word: "ab", start: 203.9, end: 204.5 },
-      { word: "tum", start: 204.5, end: 205.1 },
-      { word: "hee", start: 205.1, end: 205.5 },
-      { word: "ho", start: 205.5, end: 206 }
-    ]
-  },
-  {
-    id: "l30",
-    lineIndex: 29,
-    start: 206.2,
-    end: 211.5,
-    text: "Zindagi ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Zindagi", start: 206.2, end: 207.6 },
-      { word: "ab", start: 207.6, end: 208.5 },
-      { word: "tum", start: 208.5, end: 209.4 },
-      { word: "hee", start: 209.4, end: 210.3 },
-      { word: "ho", start: 210.3, end: 211.5 }
-    ]
-  },
-  {
-    id: "l31",
-    lineIndex: 30,
-    start: 212,
-    end: 217.5,
-    text: "O-o-o, chain bhee, mera dard bhee",
-    section: "chorus",
-    words: [
-      { word: "O-o-o,", start: 212, end: 213.8 },
-      { word: "chain", start: 213.8, end: 214.8 },
-      { word: "bhee,", start: 214.8, end: 215.4 },
-      { word: "mera", start: 215.4, end: 216.4 },
-      { word: "dard", start: 216.4, end: 217 },
-      { word: "bhee", start: 217, end: 217.5 }
-    ]
-  },
-  {
-    id: "l32",
-    lineIndex: 31,
-    start: 217.8,
-    end: 224.5,
-    text: "Meri aashiqui ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Meri", start: 217.8, end: 218.8 },
-      { word: "aashiqui", start: 218.8, end: 220.5 },
-      { word: "ab", start: 220.5, end: 221.4 },
-      { word: "tum", start: 221.4, end: 222.5 },
-      { word: "hee", start: 222.5, end: 223.4 },
-      { word: "ho", start: 223.4, end: 224.5 }
-    ]
-  },
-  // --- Final Grand Chorus ---
-  {
-    id: "l33",
-    lineIndex: 32,
-    start: 225,
-    end: 230.5,
-    text: "Kyonki tum hee ho, ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Kyonki", start: 225, end: 226 },
-      { word: "tum", start: 226, end: 226.8 },
-      { word: "hee", start: 226.8, end: 227.6 },
-      { word: "ho,", start: 227.6, end: 228.4 },
-      { word: "ab", start: 228.4, end: 229 },
-      { word: "tum", start: 229, end: 229.6 },
-      { word: "hee", start: 229.6, end: 230 },
-      { word: "ho", start: 230, end: 230.5 }
-    ]
-  },
-  {
-    id: "l34",
-    lineIndex: 33,
-    start: 231,
-    end: 236,
-    text: "Zindagi ab tum hee ho",
-    section: "chorus",
-    words: [
-      { word: "Zindagi", start: 231, end: 232.4 },
-      { word: "ab", start: 232.4, end: 233.3 },
-      { word: "tum", start: 233.3, end: 234.2 },
-      { word: "hee", start: 234.2, end: 235 },
-      { word: "ho", start: 235, end: 236 }
-    ]
-  },
-  {
-    id: "l35",
-    lineIndex: 34,
-    start: 236.5,
-    end: 242,
-    text: "O-o-o, chain bhee, mera dard bhee",
-    section: "chorus",
-    words: [
-      { word: "O-o-o,", start: 236.5, end: 238.3 },
-      { word: "chain", start: 238.3, end: 239.3 },
-      { word: "bhee,", start: 239.3, end: 239.9 },
-      { word: "mera", start: 239.9, end: 240.9 },
-      { word: "dard", start: 240.9, end: 241.5 },
-      { word: "bhee", start: 241.5, end: 242 }
-    ]
-  },
-  {
-    id: "l36",
-    lineIndex: 35,
-    start: 242.5,
-    end: 250.5,
-    text: "Meri aashiqui ab tum hee ho",
-    section: "outro",
-    words: [
-      { word: "Meri", start: 242.5, end: 243.6 },
-      { word: "aashiqui", start: 243.6, end: 245.5 },
-      { word: "ab", start: 245.5, end: 246.5 },
-      { word: "tum", start: 246.5, end: 247.8 },
-      { word: "hee", start: 247.8, end: 249 },
-      { word: "ho", start: 249, end: 250.5 }
-    ]
+    id: "mix-export",
+    number: "04.",
+    title: "Multi-Track Mix & Export",
+    subtitle: "Voice + music balance · WAV export",
+    description: "Blend your voice level against the backing track and save a finished mix directly to your device.",
+    icon: Layers
   }
 ];
-const CALIBRATION_ADVANCE_SEC = 0;
-const TUM_HI_HO_KARAOKE_DATA = {
-  trackId: "inst_tum_hi_ho",
-  title: "Tum Hi Ho",
-  artist: "Arijit Singh / Mithoon (Aashiqui 2)",
-  duration: 262,
-  lines: BASELINE_TUM_HI_HO_LINES.map((line) => {
-    const shiftedStart = Math.max(0, +(line.start - CALIBRATION_ADVANCE_SEC).toFixed(2));
-    const shiftedEnd = Math.max(shiftedStart + 0.4, +(line.end - CALIBRATION_ADVANCE_SEC).toFixed(2));
-    return {
-      ...line,
-      start: shiftedStart,
-      end: shiftedEnd,
-      words: line.words.map((w2) => {
-        const wStart = Math.max(0, +(w2.start - CALIBRATION_ADVANCE_SEC).toFixed(2));
-        const wEnd = Math.max(wStart + 0.1, +(w2.end - CALIBRATION_ADVANCE_SEC).toFixed(2));
-        return {
-          ...w2,
-          start: wStart,
-          end: wEnd
-        };
-      })
-    };
-  })
-};
-function getActiveKaraokeLine(data, currentTimeSec) {
-  const { lines } = data;
-  if (!lines || lines.length === 0) {
-    return { line: null, lineIndex: -1, nextLine: null, leadInSeconds: null };
-  }
-  if (currentTimeSec < lines[0].start) {
-    return {
-      line: null,
-      lineIndex: -1,
-      nextLine: lines[0],
-      leadInSeconds: Math.max(0, lines[0].start - currentTimeSec)
-    };
-  }
-  for (let i2 = 0; i2 < lines.length; i2++) {
-    const cur = lines[i2];
-    const next = lines[i2 + 1] || null;
-    if (currentTimeSec >= cur.start && currentTimeSec <= cur.end) {
-      return { line: cur, lineIndex: i2, nextLine: next, leadInSeconds: null };
-    }
-    if (next && currentTimeSec > cur.end && currentTimeSec < next.start) {
-      return {
-        line: cur,
-        lineIndex: i2,
-        nextLine: next,
-        leadInSeconds: next.start - currentTimeSec
-      };
-    }
-  }
-  const lastIdx = lines.length - 1;
-  return { line: lines[lastIdx], lineIndex: lastIdx, nextLine: null, leadInSeconds: null };
-}
-function getWordProgress(word, currentTimeSec) {
-  if (currentTimeSec <= word.start) return 0;
-  if (currentTimeSec >= word.end) return 100;
-  const duration = word.end - word.start;
-  if (duration <= 0) return 100;
-  const ratio = (currentTimeSec - word.start) / duration;
-  return Math.min(100, Math.max(0, ratio * 100));
-}
-function parseLrcOrTextToKaraoke(audioDuration, title, artist, rawContent) {
-  const lines = rawContent.split(/\r?\n/).map((l2) => l2.trim()).filter(Boolean);
-  const lrcRegex = /\[(\d{1,2}):(\d{2}(?:\.\d{1,3})?)\](.*)/;
-  const parsedLrcLines = [];
-  for (const line of lines) {
-    const match = line.match(lrcRegex);
-    if (match) {
-      const mins = parseInt(match[1], 10);
-      const secs = parseFloat(match[2]);
-      const text = match[3].trim();
-      if (text) {
-        parsedLrcLines.push({
-          time: mins * 60 + secs,
-          text
-        });
-      }
-    }
-  }
-  if (parsedLrcLines.length > 0) {
-    parsedLrcLines.sort((a, b2) => a.time - b2.time);
-    const timedLines2 = parsedLrcLines.map((item, idx) => {
-      const nextItem = parsedLrcLines[idx + 1];
-      const start = item.time;
-      const end = nextItem ? Math.min(nextItem.time - 0.2, start + 8) : Math.min(audioDuration, start + 5);
-      const wordsArray = item.text.split(/\s+/).filter(Boolean);
-      const lineDuration = Math.max(0.5, end - start);
-      const wordDuration = lineDuration / Math.max(1, wordsArray.length);
-      const words = wordsArray.map((w2, wIdx) => ({
-        word: w2,
-        start: +(start + wIdx * wordDuration).toFixed(2),
-        end: +(start + (wIdx + 1) * wordDuration).toFixed(2)
-      }));
-      return {
-        id: `custom_lrc_${idx}`,
-        lineIndex: idx,
-        start: +start.toFixed(2),
-        end: +end.toFixed(2),
-        text: item.text,
-        words
-      };
-    });
-    return {
-      trackId: `custom_upload_${Date.now()}`,
-      title,
-      artist,
-      duration: audioDuration,
-      lines: timedLines2
-    };
-  }
-  const cleanLyricsLines = lines.filter((l2) => !l2.startsWith("[") && !l2.startsWith("#") && l2.length > 0);
-  if (cleanLyricsLines.length === 0) {
-    cleanLyricsLines.push(title || "Instrumental Track");
-  }
-  const introOffset = 4;
-  const usableDuration = Math.max(10, audioDuration - introOffset - 4);
-  const timePerLine = usableDuration / cleanLyricsLines.length;
-  const timedLines = cleanLyricsLines.map((text, idx) => {
-    const lineStart = introOffset + idx * timePerLine;
-    const lineEnd = lineStart + Math.max(1.5, timePerLine * 0.85);
-    const wordsArray = text.split(/\s+/).filter(Boolean);
-    const wordDuration = (lineEnd - lineStart) / Math.max(1, wordsArray.length);
-    const words = wordsArray.map((w2, wIdx) => ({
-      word: w2,
-      start: +(lineStart + wIdx * wordDuration).toFixed(2),
-      end: +(lineStart + (wIdx + 1) * wordDuration).toFixed(2)
-    }));
-    return {
-      id: `custom_txt_${idx}`,
-      lineIndex: idx,
-      start: +lineStart.toFixed(2),
-      end: +lineEnd.toFixed(2),
-      text,
-      words
-    };
-  });
-  return {
-    trackId: `custom_upload_${Date.now()}`,
-    title,
-    artist,
-    duration: audioDuration,
-    lines: timedLines
-  };
-}
-const LUTT_LE_GAYA_KARAOKE_DATA = parseLrcOrTextToKaraoke(
-  255,
-  "Lutt Le Gaya",
-  "Simran Choudhary • Shashwat Sachdev",
-  `[00:10.12] Aaja ve, aaja
-[00:12.45] Aaja ve, aaja
-[00:14.63] Haaye sajan, haaye sajan, haaye sajan, haaye sajan
-[00:19.30] Aaja ve, aaja
-[00:23.21] Aaja ve, aaja, seene laa jaa
-[00:26.58] Haaye, sajan mainu lutt le gaya, haaye
-[00:30.95] Haaye, sajan mainu lutt le gaya
-[00:34.42] Pyaase labban de rog mukka jaa
-[00:38.25] Haaye, sajan mainu lutt le gaya, haaye
-[00:42.50] Haaye, sajan mainu lutt le gaya
-[00:45.96] Haaye, sajan meri ankhaan tarasdi
-[00:50.08] Har imaan mera tutt beh gaya
-[00:54.12] Ho, mainu lutt le gaya
-[00:57.02] Ho, mainu lutt le gaya
-[00:59.95] Ho, mainu lutt le gaya
-[01:02.82] Ho, mainu lutt le gaya
-[01:06.30] Aaja ve, aaja
-[01:08.82] Ho, mainu lutt le gaya
-[01:11.85] Aaja ve, aaja (Haaye, sajan)
-[01:14.70] Ho, mainu lutt le gaya
-[01:17.65] Aaja ve, aaja
-[01:20.52] Aaja ve, aaja
-[01:23.42] Aaja ve, aaja
-[01:26.30] Aaja ve, aaja
-[01:29.80] Takdi ankhiyaan aje na thakiyaan
-[01:34.20] Naina vich nasha vass gaya
-[01:38.65] Rajj ke peevan tainu, sajna
-[01:42.60] Raatan vich na rass gaya, haaye
-[01:46.42] Vass na jaavan, vich main saahvan
-[01:50.32] Mainu oh khich fer ghutt le gaya
-[01:54.21] Haaye, sajan meri ankhaan tarasdi
-[01:58.21] Har imaan mera tutt beh gaya
-[02:02.10] Ho, mainu lutt le gaya
-[02:05.15] Ho, mainu lutt le gaya
-[02:08.02] Ho, mainu lutt le gaya
-[02:10.95] Ho, mainu lutt le gaya
-[02:14.42] Aaja ve, aaja
-[02:17.30] Aaja ve, aaja
-[02:20.15] Aaja ve, aaja
-[02:23.02] Aaja ve, aaja
-[02:26.40] Haaye sajan, haaye sajan, haaye sajan, haaye sajan
-[02:32.30] Haaye sajan, haaye sajan, haaye sajan, haaye sajan`
-);
-const KaraokeLyricsView = ({
-  currentTimeSec,
-  durationSec = 262,
-  onSeek,
-  karaokeData = TUM_HI_HO_KARAOKE_DATA,
-  fallbackLyrics,
-  className = "",
-  isCompact = false,
-  showControls = true,
-  isDark = typeof document !== "undefined" ? document.documentElement.getAttribute("data-theme") !== "light" : true
-}) => {
-  const [viewMode, setViewMode] = reactExports.useState("karaoke-words");
-  const [syncOffset, setSyncOffset] = reactExports.useState(() => {
-    try {
-      const saved = localStorage.getItem("karaoke_sync_offset");
-      return saved ? parseFloat(saved) : 0;
-    } catch {
-      return 0;
-    }
-  });
-  const [isUserScrolling, setIsUserScrolling] = reactExports.useState(false);
-  const userScrollTimeoutRef = reactExports.useRef(null);
-  const containerRef = reactExports.useRef(null);
-  const activeLineRef = reactExports.useRef(null);
-  const effectiveTime = Math.max(0, currentTimeSec + syncOffset);
-  const { line: activeLine, lineIndex: activeLineIndex, nextLine, leadInSeconds } = reactExports.useMemo(() => {
-    return getActiveKaraokeLine(karaokeData, effectiveTime);
-  }, [karaokeData, effectiveTime]);
-  const handleAdjustSync = (delta) => {
-    setSyncOffset((prev) => {
-      const next = +(prev + delta).toFixed(1);
-      try {
-        localStorage.setItem("karaoke_sync_offset", next.toString());
-      } catch {
-      }
-      return next;
-    });
-  };
-  const handleResetSync = () => {
-    setSyncOffset(0);
-    try {
-      localStorage.removeItem("karaoke_sync_offset");
-    } catch {
-    }
-  };
-  reactExports.useEffect(() => {
-    if (!isUserScrolling && activeLineRef.current && containerRef.current) {
-      activeLineRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
-      });
-    }
-  }, [activeLineIndex, isUserScrolling]);
-  const handleScroll = () => {
-    setIsUserScrolling(true);
-    if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-    userScrollTimeoutRef.current = setTimeout(() => {
-      setIsUserScrolling(false);
-    }, 4e3);
-  };
-  reactExports.useEffect(() => {
-    return () => {
-      if (userScrollTimeoutRef.current) clearTimeout(userScrollTimeoutRef.current);
-    };
-  }, []);
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `flex flex-col relative rounded-3xl overflow-hidden bg-[#0A071A]/90 border border-[#6355FE]/30 shadow-2xl ${className}`, children: [
-    showControls && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3.5 py-2.5 bg-[#120F2B]/90 backdrop-blur-md border-b border-white/10 flex flex-wrap items-center justify-between gap-2 shrink-0 z-20", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-2 h-2 rounded-full bg-amber-400 animate-ping" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] font-black uppercase tracking-wider text-amber-300 flex items-center gap-1", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 11, className: "text-amber-400" }),
-          "Word-By-Word Karaoke"
-        ] })
-      ] }),
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 bg-black/40 px-2 py-0.5 rounded-lg border border-white/10 text-[9px]", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-white/40 font-bold uppercase text-[8px]", children: "Sync:" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: () => handleAdjustSync(-0.2),
-              className: "w-5 h-5 flex items-center justify-center bg-white/10 hover:bg-white/20 active:scale-95 text-white font-black rounded cursor-pointer",
-              title: "Lyrics 0.2s earlier",
-              children: "-"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `font-mono font-bold min-w-[28px] text-center ${syncOffset !== 0 ? "text-amber-300" : "text-white/60"}`, children: syncOffset > 0 ? `+${syncOffset.toFixed(1)}s` : `${syncOffset.toFixed(1)}s` }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: () => handleAdjustSync(0.2),
-              className: "w-5 h-5 flex items-center justify-center bg-white/10 hover:bg-white/20 active:scale-95 text-white font-black rounded cursor-pointer",
-              title: "Lyrics 0.2s later",
-              children: "+"
-            }
-          ),
-          syncOffset !== 0 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "button",
-            {
-              type: "button",
-              onClick: handleResetSync,
-              className: "text-white/40 hover:text-white text-[8px] uppercase font-bold ml-0.5",
-              children: "Reset"
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1 bg-[#1C163D] p-0.5 rounded-xl border border-white/5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => setViewMode("karaoke-words"),
-              className: `px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1 ${viewMode === "karaoke-words" ? "bg-[#6355FE] text-white shadow-sm" : "text-white/50 hover:text-white"}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Radio, { size: 10 }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Sing Layer" })
-              ]
-            }
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => setViewMode("full-lyrics"),
-              className: `px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1 ${viewMode === "full-lyrics" ? "bg-[#6355FE] text-white shadow-sm" : "text-white/50 hover:text-white"}`,
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Eye, { size: 10 }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Full Text" })
-              ]
-            }
-          )
-        ] })
-      ] })
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(AnimatePresence, { children: leadInSeconds !== null && leadInSeconds > 0 && leadInSeconds <= 6 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      motion.div,
-      {
-        initial: { opacity: 0, y: -10, scale: 0.9 },
-        animate: { opacity: 1, y: 0, scale: 1 },
-        exit: { opacity: 0, y: -10, scale: 0.9 },
-        transition: { type: "spring", stiffness: 400, damping: 25 },
-        className: "absolute top-12 left-1/2 -translate-x-1/2 z-30 pointer-events-none",
-        children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/90 to-amber-600/90 text-white border border-amber-300/40 shadow-xl flex items-center gap-2", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 12, className: "text-white animate-bounce" }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-black uppercase tracking-widest text-white whitespace-nowrap", children: leadInSeconds <= 3 ? `Breathe & Sing in ${Math.ceil(leadInSeconds)}...` : `Next Line in ${Math.ceil(leadInSeconds)}s` }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center gap-0.5", children: [1, 2, 3].map((dot) => /* @__PURE__ */ jsxRuntimeExports.jsx(
-            "span",
-            {
-              className: `w-1.5 h-1.5 rounded-full ${Math.ceil(leadInSeconds) <= 4 - dot ? "bg-white shadow-[0_0_6px_#fff] scale-125" : "bg-white/40"}`
-            },
-            dot
-          )) })
-        ] })
-      }
-    ) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs(
-      "div",
-      {
-        ref: containerRef,
-        onScroll: handleScroll,
-        className: "flex-1 overflow-y-auto px-4 py-8 space-y-4 text-center scroll-smooth no-scrollbar relative",
-        style: { minHeight: isCompact ? "200px" : "280px" },
-        children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "sticky top-0 left-0 right-0 h-8 bg-gradient-to-b from-[#0A071A] to-transparent pointer-events-none -mt-8 z-10" }),
-          viewMode === "full-lyrics" ? (
-            /* Full Text Static View */
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "py-2 px-3 text-sm text-[#ECE6FF]/80 leading-loose whitespace-pre-line font-medium select-text", children: fallbackLyrics || karaokeData.lines.map((l2) => l2.text).join("\n") })
-          ) : (
-            /* Real-time Word-by-Word Karaoke Synced Layer */
-            karaokeData.lines.map((line, idx) => {
-              const isCurrent = idx === activeLineIndex;
-              const isPast = activeLineIndex !== -1 && idx < activeLineIndex;
-              const isNext = activeLineIndex !== -1 && idx === activeLineIndex + 1;
-              return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "div",
-                {
-                  ref: isCurrent ? activeLineRef : null,
-                  onClick: () => onSeek && onSeek(line.start),
-                  className: `py-2 px-3 rounded-2xl transition-all duration-300 relative group select-none ${onSeek ? "cursor-pointer hover:bg-white/5 active:scale-[0.99]" : ""} ${isCurrent ? isDark ? "bg-[#1C153E]/90 border border-amber-400/40 shadow-lg shadow-amber-500/10 scale-102" : "bg-[#EFEAFE] border border-amber-500/50 shadow-lg shadow-amber-500/10 scale-102" : isNext ? "opacity-80" : isPast ? "opacity-35 hover:opacity-70" : "opacity-50 hover:opacity-85"}`,
-                  children: [
-                    isCurrent && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "absolute -left-1 top-1/2 -translate-y-1/2 w-1.5 h-6 bg-gradient-to-b from-amber-400 to-[#6355FE] rounded-full shadow-[0_0_8px_rgba(251,191,36,0.9)]" }),
-                    line.section && isCurrent && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mb-1 flex items-center justify-center gap-1.5", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-300 border border-amber-400/30", children: line.section }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[8px] font-bold text-white/40 uppercase", children: "Tap line to rehearse" })
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `flex flex-wrap items-center justify-center gap-x-2 gap-y-1 ${isCurrent ? "text-lg sm:text-xl font-black leading-snug" : "text-sm sm:text-base font-bold"}`, children: line.words.map((wordObj, wIdx) => {
-                      const isWordActive = isCurrent && effectiveTime >= wordObj.start && effectiveTime <= wordObj.end;
-                      const isWordPast = isCurrent && effectiveTime > wordObj.end || isPast;
-                      const wordProgress = isCurrent ? getWordProgress(wordObj, effectiveTime) : isPast ? 100 : 0;
-                      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                        "span",
-                        {
-                          className: `relative inline-block transition-transform duration-100 ${isWordActive ? "scale-105 z-10" : ""}`,
-                          children: [
-                            isWordActive && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "absolute -top-3 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_8px_#FBBF24] animate-bounce pointer-events-none" }),
-                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: `transition-colors duration-200 ${isWordPast ? "text-amber-200/90" : isCurrent ? "text-white/40" : "text-white/60"}`, children: wordObj.word }),
-                            isCurrent && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                              "span",
-                              {
-                                className: "absolute inset-0 overflow-hidden pointer-events-none whitespace-nowrap",
-                                style: { width: `${wordProgress}%` },
-                                children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-amber-300 font-black drop-shadow-[0_0_10px_rgba(251,191,36,0.9)] bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 bg-clip-text text-transparent", children: wordObj.word })
-                              }
-                            )
-                          ]
-                        },
-                        wIdx
-                      );
-                    }) }),
-                    isCurrent && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "mt-1 flex items-center justify-center gap-2 text-[9px] font-bold text-amber-300/70", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                        Math.floor(line.start / 60),
-                        ":",
-                        Math.floor(line.start % 60).toString().padStart(2, "0")
-                      ] }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "•" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                        line.words.length,
-                        " words"
-                      ] })
-                    ] })
-                  ]
-                },
-                line.id
-              );
-            })
-          ),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: `sticky bottom-0 left-0 right-0 h-8 pointer-events-none -mb-8 z-10 ${isDark ? "bg-gradient-to-t from-[#0A071A] to-transparent" : "bg-gradient-to-t from-[#F7F6FC] to-transparent"}` })
-        ]
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: `px-4 py-2 backdrop-blur-md border-t flex items-center justify-between text-[10px] shrink-0 ${isDark ? "bg-[#120F2B]/90 border-white/5 text-white/50" : "bg-white/95 border-[#6355FE]/15 text-[#585474]"}`, children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "flex items-center gap-1", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { size: 11, className: isDark ? "text-[#8E7CFF]" : "text-[#6355FE]" }),
-        "Synchronized to instrumental tempo"
-      ] }),
-      onSeek && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: isDark ? "text-amber-300/70 font-semibold" : "text-amber-600 font-semibold", children: "Tap any line to jump & sing" })
-    ] })
-  ] });
-};
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-function cleanAudioTitle(rawTitle) {
-  let title = rawTitle.replace(/\.[a-zA-Z0-9]{2,5}$/, "").replace(/_[0-9a-fA-F]{8,}$/g, "").replace(/_\d{10,}$/g, "").replace(/[_]/g, " ").replace(/\b(320|128|192|256)\s*kbps\b/gi, "").replace(/\b(PagalNew|Pagalworld|DjPunjab|DjMaza|AlgoRhythm Studio|AlgoRhythm)\b/gi, "").replace(/\b(Official\s+(Audio|Video|Music\s+Video)|Full\s+Song|Karaoke\s+with\s+Lyrics|Lyrical\s+Video|Original\s+Mix)\b/gi, "").replace(/\b(kbps|flac|wav|mp3|aac|m4a|remix|version|hq|clean)\b/gi, "").replace(/[[({][^\])}]*[\])}]/g, "").replace(/\s+/g, " ").trim();
-  const separator = title.includes(" - ") ? " - " : title.includes(" | ") ? " | " : null;
-  if (separator) {
-    const parts = title.split(separator).map((p2) => p2.trim()).filter(Boolean);
-    if (parts.length >= 2) {
-      return {
-        cleanTitle: parts[0],
-        detectedArtist: parts[1],
-        alternateTitle: parts[1],
-        alternateArtist: parts[0]
-      };
-    }
-  }
-  return { cleanTitle: title };
-}
-function matchPresetSong(normalized) {
-  if (normalized.includes("tum hi ho") || normalized.includes("aashiqui") && normalized.includes("tum")) {
-    return "tum_hi_ho";
-  }
-  if (normalized.includes("lutt") && (normalized.includes("gaya") || normalized.includes("dhurandhar"))) {
-    return "lutt_le_gaya";
-  }
-  return null;
-}
-async function fetchLyricsForUploadedAudio(fileNameOrTitle, artist = "", durationSec = 180) {
-  const { cleanTitle, detectedArtist, alternateTitle, alternateArtist } = cleanAudioTitle(fileNameOrTitle);
-  const fullSearchString = `${fileNameOrTitle} ${cleanTitle} ${artist} ${detectedArtist || ""}`.toLowerCase();
-  const presetMatch = matchPresetSong(fullSearchString);
-  if (presetMatch === "tum_hi_ho") {
-    return {
-      lyricsText: TUM_HI_HO_LYRICS,
-      karaokeData: TUM_HI_HO_KARAOKE_DATA,
-      source: "preset",
-      matchedTitle: "Tum Hi Ho",
-      matchedArtist: "Arijit Singh / Mithoon"
-    };
-  }
-  if (presetMatch === "lutt_le_gaya") {
-    return {
-      lyricsText: LUTT_LE_GAYA_LYRICS,
-      karaokeData: LUTT_LE_GAYA_KARAOKE_DATA,
-      source: "preset",
-      matchedTitle: "Lutt Le Gaya",
-      matchedArtist: "Simran Choudhary • Shashwat Sachdev"
-    };
-  }
-  const effectiveArtist = artist && artist !== "Device Audio" && artist !== "Local Backing Track" ? artist : detectedArtist || "";
-  try {
-    if (cleanTitle && effectiveArtist) {
-      const getUrl = `https://lrclib.net/api/get?track_name=${encodeURIComponent(cleanTitle)}&artist_name=${encodeURIComponent(effectiveArtist)}`;
-      const res = await fetch(getUrl);
-      if (res.ok) {
-        const data = await res.json();
-        if (data && (data.syncedLyrics || data.plainLyrics)) {
-          const raw = data.syncedLyrics || data.plainLyrics;
-          const karaoke = parseLrcOrTextToKaraoke(
-            durationSec,
-            data.trackName || cleanTitle,
-            data.artistName || effectiveArtist,
-            raw
-          );
-          return {
-            lyricsText: data.plainLyrics || data.syncedLyrics.replace(/\[\d{2}:\d{2}\.\d{2,3}\]/g, "").trim(),
-            karaokeData: karaoke,
-            source: data.syncedLyrics ? "synced_lrc" : "online_plain",
-            matchedTitle: data.trackName,
-            matchedArtist: data.artistName
-          };
-        }
-      }
-    }
-    if (alternateTitle && alternateArtist && alternateArtist !== effectiveArtist) {
-      const getUrlAlt = `https://lrclib.net/api/get?track_name=${encodeURIComponent(alternateTitle)}&artist_name=${encodeURIComponent(alternateArtist)}`;
-      const resAlt = await fetch(getUrlAlt);
-      if (resAlt.ok) {
-        const data = await resAlt.json();
-        if (data && (data.syncedLyrics || data.plainLyrics)) {
-          const raw = data.syncedLyrics || data.plainLyrics;
-          const karaoke = parseLrcOrTextToKaraoke(
-            durationSec,
-            data.trackName || alternateTitle,
-            data.artistName || alternateArtist,
-            raw
-          );
-          return {
-            lyricsText: data.plainLyrics || data.syncedLyrics.replace(/\[\d{2}:\d{2}\.\d{2,3}\]/g, "").trim(),
-            karaokeData: karaoke,
-            source: data.syncedLyrics ? "synced_lrc" : "online_plain",
-            matchedTitle: data.trackName,
-            matchedArtist: data.artistName
-          };
-        }
-      }
-    }
-    const queriesToTry = [
-      cleanTitle,
-      effectiveArtist ? `${cleanTitle} ${effectiveArtist}` : "",
-      alternateTitle || ""
-    ].filter((q) => q && q.length >= 2);
-    for (const q of queriesToTry) {
-      const searchRes = await fetch(`https://lrclib.net/api/search?q=${encodeURIComponent(q)}`);
-      if (searchRes.ok) {
-        const results = await searchRes.json();
-        if (Array.isArray(results) && results.length > 0) {
-          const cleanLower = cleanTitle.toLowerCase();
-          const syncedMatches = results.filter((r) => r.syncedLyrics);
-          const bestMatch = syncedMatches.find((r) => {
-            var _a2;
-            return (_a2 = r.trackName) == null ? void 0 : _a2.toLowerCase().includes(cleanLower);
-          }) || syncedMatches[0] || results.find((r) => {
-            var _a2;
-            return (_a2 = r.plainLyrics) == null ? void 0 : _a2.toLowerCase().includes(cleanLower);
-          }) || results.find((r) => r.plainLyrics) || results[0];
-          if (bestMatch && (bestMatch.syncedLyrics || bestMatch.plainLyrics)) {
-            const raw = bestMatch.syncedLyrics || bestMatch.plainLyrics;
-            const karaoke = parseLrcOrTextToKaraoke(
-              durationSec,
-              bestMatch.trackName || cleanTitle,
-              bestMatch.artistName || effectiveArtist || "Artist",
-              raw
-            );
-            return {
-              lyricsText: bestMatch.plainLyrics || bestMatch.syncedLyrics.replace(/\[\d{2}:\d{2}\.\d{2,3}\]/g, "").trim(),
-              karaokeData: karaoke,
-              source: bestMatch.syncedLyrics ? "synced_lrc" : "online_plain",
-              matchedTitle: bestMatch.trackName,
-              matchedArtist: bestMatch.artistName
-            };
-          }
-        }
-      }
-    }
-  } catch (err) {
-    console.warn("LRCLIB lyrics fetch error:", err);
-  }
-  const songName = cleanTitle || "Your Song";
-  const fallbackPromptText = `[00:03.00] 🎵 "${songName}" Backing Audio Loaded
-[00:08.00] 🎤 Vocals isolated & ready for singing
-[00:15.00] (Lyrics not found online for this file)
-[00:22.00] Sing your original melody or freestyle along!
-[00:30.00] 💡 Tip: You can paste lyrics in "Edit / Paste Lyrics" below`;
-  const fallbackKaraoke = parseLrcOrTextToKaraoke(
-    durationSec,
-    songName,
-    effectiveArtist || "Studio Vocalist",
-    fallbackPromptText
-  );
-  return {
-    lyricsText: `Lyrics for "${songName}" could not be automatically located online.
-Use the "Edit / Paste Lyrics" button below to paste lyrics or an .lrc file for this song!`,
-    karaokeData: fallbackKaraoke,
-    source: "custom_prompt",
-    matchedTitle: songName,
-    matchedArtist: effectiveArtist || "Studio Vocalist"
-  };
-}
-function SingingStudioView({
-  libraryTracks,
+function StudioComingSoonView({
   onBackToLibrary,
   onPauseMainPlayer,
   onShowToast,
   theme = "dark"
 }) {
-  const [sourceTab, setSourceTab] = reactExports.useState("builtin");
-  const [selectedBuiltinTrack, setSelectedBuiltinTrack] = reactExports.useState(BUILTIN_INSTRUMENTAL_CATALOG[0]);
-  const [customDeviceTrack, setCustomDeviceTrack] = reactExports.useState(null);
-  const [customKaraokeData, setCustomKaraokeData] = reactExports.useState(null);
-  const [customLyricsText, setCustomLyricsText] = reactExports.useState("");
-  const [isLyricsEditorOpen, setIsLyricsEditorOpen] = reactExports.useState(false);
-  const [tempLyricsDraft, setTempLyricsDraft] = reactExports.useState("");
-  const lyricsFileInputRef = reactExports.useRef(null);
-  const [isExtractingKaraoke, setIsExtractingKaraoke] = reactExports.useState(false);
-  const [isKaraokeExtracted, setIsKaraokeExtracted] = reactExports.useState(false);
-  const [synthesizedAudioUrls, setSynthesizedAudioUrls] = reactExports.useState({});
-  const [isSynthesizing, setIsSynthesizing] = reactExports.useState(false);
-  const [isBackingPreviewPlaying, setIsBackingPreviewPlaying] = reactExports.useState(false);
-  const [backingCurrentTime, setBackingCurrentTime] = reactExports.useState(0);
-  const backingAudioRef = reactExports.useRef(null);
-  const [isRecording, setIsRecording] = reactExports.useState(false);
-  const [recordingSeconds, setRecordingSeconds] = reactExports.useState(0);
-  const recordingTimerRef = reactExports.useRef(null);
-  const [vuLevel, setVuLevel] = reactExports.useState(0);
-  const [micPermissionDenied, setMicPermissionDenied] = reactExports.useState(false);
-  const [isMicPermissionModalOpen, setIsMicPermissionModalOpen] = reactExports.useState(false);
-  const [isRequestingMic, setIsRequestingMic] = reactExports.useState(false);
-  const [micModalError, setMicModalError] = reactExports.useState(null);
-  const [hasMicPermissionGranted, setHasMicPermissionGranted] = reactExports.useState(false);
-  const [recordedVoiceBlob, setRecordedVoiceBlob] = reactExports.useState(null);
-  const [recordedVoiceUrl, setRecordedVoiceUrl] = reactExports.useState(null);
-  const [mixerSettings, setMixerSettings] = reactExports.useState({
-    backingVolume: 0.8,
-    voiceVolume: 1,
-    reverbAmount: 0.15,
-    voiceDelayMs: 0
-  });
-  const [isCombinedPreviewPlaying, setIsCombinedPreviewPlaying] = reactExports.useState(false);
-  const [isExporting, setIsExporting] = reactExports.useState(false);
-  const [lastExportResult, setLastExportResult] = reactExports.useState(null);
-  const [isVocalSepModalOpen, setIsVocalSepModalOpen] = reactExports.useState(false);
-  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = reactExports.useState(false);
-  const [isGoogleAuthModalOpen, setIsGoogleAuthModalOpen] = reactExports.useState(false);
-  const { currentUser, isVerified } = useAuth();
-  const [isAdminMode] = reactExports.useState(() => {
+  const isDark = theme === "dark";
+  const { currentUser } = useAuth();
+  const [registeredEmail, setRegisteredEmail] = reactExports.useState(() => {
     try {
-      return typeof window !== "undefined" && localStorage.getItem("muzic_admin_mode") === "true";
+      return localStorage.getItem("muzic_studio_beta_email") || "";
     } catch {
-      return false;
+      return "";
     }
   });
-  const effectiveIsVerified = isVerified || isAdminMode;
-  const [hasCompletedDemo, setHasCompletedDemo] = reactExports.useState(() => {
+  const [emailInput, setEmailInput] = reactExports.useState(() => {
     try {
-      return localStorage.getItem("muzic_studio_demo_completed") === "true";
+      return localStorage.getItem("muzic_studio_beta_email") || "";
     } catch {
-      return false;
+      return "";
     }
   });
-  const [isLyricsOpen, setIsLyricsOpen] = reactExports.useState(true);
-  const [authModalContext, setAuthModalContext] = reactExports.useState({});
-  const [uploadQuota, setUploadQuota] = reactExports.useState(subscriptionService.getLocalUploadQuota());
-  const localFileInputRef = reactExports.useRef(null);
-  reactExports.useEffect(() => {
-    const unsub = subscriptionService.subscribeToEntitlements(() => {
-      setUploadQuota(subscriptionService.getLocalUploadQuota());
-    });
-    return unsub;
-  }, []);
-  reactExports.useEffect(() => {
-    onPauseMainPlayer();
-  }, [onPauseMainPlayer]);
-  reactExports.useEffect(() => {
-    var _a2;
-    if (typeof navigator !== "undefined" && ((_a2 = navigator.permissions) == null ? void 0 : _a2.query)) {
-      navigator.permissions.query({ name: "microphone" }).then((perm) => {
-        if (perm.state === "granted") {
-          setHasMicPermissionGranted(true);
-          setMicPermissionDenied(false);
-        }
-        perm.onchange = () => {
-          if (perm.state === "granted") {
-            setHasMicPermissionGranted(true);
-            setMicPermissionDenied(false);
-          } else if (perm.state === "denied") {
-            setHasMicPermissionGranted(false);
-          }
-        };
-      }).catch(() => {
-      });
+  const [isEditingSignup, setIsEditingSignup] = reactExports.useState(() => {
+    try {
+      return !localStorage.getItem("muzic_studio_beta_email");
+    } catch {
+      return true;
     }
+  });
+  const [isSubmittingSignup, setIsSubmittingSignup] = reactExports.useState(false);
+  const [signupError, setSignupError] = reactExports.useState(null);
+  const [votedFeatureId, setVotedFeatureId] = reactExports.useState(() => {
+    try {
+      return localStorage.getItem("muzic_studio_feature_vote");
+    } catch {
+      return null;
+    }
+  });
+  const [activePresetId, setActivePresetId] = reactExports.useState("hall");
+  const [playingPresetId, setPlayingPresetId] = reactExports.useState(null);
+  const [heroImageError, setHeroImageError] = reactExports.useState(false);
+  const audioCtxRef = reactExports.useRef(null);
+  const stopTimeoutRef = reactExports.useRef(null);
+  const signupSectionRef = reactExports.useRef(null);
+  const emailInputRef = reactExports.useRef(null);
+  reactExports.useEffect(() => {
+    if ((currentUser == null ? void 0 : currentUser.email) && !emailInput && !registeredEmail) {
+      setEmailInput(currentUser.email);
+    }
+  }, [currentUser == null ? void 0 : currentUser.email, emailInput, registeredEmail]);
+  const stopPreviewAudio = reactExports.useCallback(() => {
+    if (stopTimeoutRef.current) {
+      clearTimeout(stopTimeoutRef.current);
+      stopTimeoutRef.current = null;
+    }
+    if (audioCtxRef.current) {
+      try {
+        audioCtxRef.current.close();
+      } catch {
+      }
+      audioCtxRef.current = null;
+    }
+    setPlayingPresetId(null);
   }, []);
   reactExports.useEffect(() => {
     return () => {
-      if (recordingTimerRef.current) clearInterval(recordingTimerRef.current);
-      studioEngine.stopPreview();
-      if (backingAudioRef.current) {
-        backingAudioRef.current.pause();
-        backingAudioRef.current = null;
-      }
-      if (recordedVoiceUrl) {
-        URL.revokeObjectURL(recordedVoiceUrl);
-      }
-      Object.values(synthesizedAudioUrls).forEach((url) => {
-        if (typeof url === "string") URL.revokeObjectURL(url);
-      });
+      stopPreviewAudio();
     };
-  }, [recordedVoiceUrl, synthesizedAudioUrls]);
-  const getActiveBackingUrl = reactExports.useCallback(async () => {
-    if (sourceTab === "device" && customDeviceTrack) {
-      return customDeviceTrack.url;
-    }
-    if (selectedBuiltinTrack.previewUrl) {
-      return selectedBuiltinTrack.previewUrl;
-    }
-    const trackId = selectedBuiltinTrack.id;
-    if (synthesizedAudioUrls[trackId]) {
-      return synthesizedAudioUrls[trackId];
-    }
-    setIsSynthesizing(true);
-    try {
-      const blob = await generateProceduralBackingTrackAudio(selectedBuiltinTrack.category, 60);
-      const url = URL.createObjectURL(blob);
-      setSynthesizedAudioUrls((prev) => ({ ...prev, [trackId]: url }));
-      return url;
-    } finally {
-      setIsSynthesizing(false);
-    }
-  }, [sourceTab, customDeviceTrack, selectedBuiltinTrack, synthesizedAudioUrls]);
-  const toggleBackingPreview = async () => {
+  }, [stopPreviewAudio]);
+  const scrollToSignup = () => {
     var _a2;
-    onPauseMainPlayer();
-    if (isBackingPreviewPlaying) {
-      (_a2 = backingAudioRef.current) == null ? void 0 : _a2.pause();
-      setIsBackingPreviewPlaying(false);
-      return;
-    }
-    try {
-      const url = await getActiveBackingUrl();
-      if (!backingAudioRef.current) {
-        backingAudioRef.current = new Audio(url);
-        backingAudioRef.current.ontimeupdate = () => {
-          if (backingAudioRef.current) {
-            setBackingCurrentTime(backingAudioRef.current.currentTime);
-          }
-        };
-        backingAudioRef.current.onended = () => {
-          setIsBackingPreviewPlaying(false);
-          setBackingCurrentTime(0);
-        };
-      } else {
-        if (backingAudioRef.current.src !== url) {
-          backingAudioRef.current.src = url;
-        }
-      }
-      backingAudioRef.current.volume = mixerSettings.backingVolume;
-      await backingAudioRef.current.play();
-      setIsBackingPreviewPlaying(true);
-    } catch (err) {
-      onShowToast("Could not preview backing track: " + (err.message || "Error"), /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "text-red-400" }));
-    }
-  };
-  const handleBackingSeek = (e2) => {
-    const time2 = parseFloat(e2.target.value);
-    setBackingCurrentTime(time2);
-    if (backingAudioRef.current) {
-      backingAudioRef.current.currentTime = time2;
-    }
-  };
-  const handleBackingSeekTo = (seconds) => {
-    if (isRecording) return;
-    setBackingCurrentTime(seconds);
-    if (backingAudioRef.current) {
-      backingAudioRef.current.currentTime = seconds;
-    }
-  };
-  const handleSelectBuiltin = (track) => {
-    if (backingAudioRef.current) {
-      backingAudioRef.current.pause();
-      setIsBackingPreviewPlaying(false);
-      setBackingCurrentTime(0);
-      backingAudioRef.current = null;
-    }
-    setSelectedBuiltinTrack(track);
-    handleDiscardTake();
-  };
-  const handlePickDeviceAudio = async () => {
-    var _a2;
-    if (!effectiveIsVerified) {
-      onShowToast(
-        "Google 1-Tap verification required to import phone audio into Singing Studio.",
-        /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 16, className: "text-[#8E7CFF]" })
-      );
-      setIsGoogleAuthModalOpen(true);
-      return;
-    }
-    if (!isAdminMode && !subscriptionService.canUploadLocalTrack()) {
-      const quota = subscriptionService.getLocalUploadQuota();
-      onShowToast(
-        `Monthly studio upload limit reached (${quota.used}/${quota.limit}). Upgrade to import more songs.`,
-        /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "text-amber-400" })
-      );
-      setIsSubscriptionModalOpen(true);
-      return;
-    }
-    if (Capacitor.isNativePlatform()) {
-      try {
-        const result = await FilePicker.pickFiles({
-          types: ["audio/*", "public.audio"],
-          readData: false
-        });
-        if (result.files && result.files.length > 0) {
-          const file = result.files[0];
-          let pathOrUrl = "";
-          if (file.path) {
-            pathOrUrl = Capacitor.convertFileSrc(file.path);
-          } else if (file.blob) {
-            pathOrUrl = URL.createObjectURL(file.blob);
-          }
-          const rec = subscriptionService.recordLocalUpload();
-          setUploadQuota({ used: rec.used, limit: rec.limit, remaining: rec.remaining });
-          if (currentUser) {
-            const month = (/* @__PURE__ */ new Date()).toISOString().slice(0, 7);
-            recordCloudStudioUpload(currentUser.uid, month).catch((err) => {
-              console.warn("Background Firestore quota sync deferred:", err);
-            });
-          }
-          setCustomDeviceTrack({
-            title: file.name.replace(/\.[^/.]+$/, ""),
-            artist: "Device Audio",
-            url: pathOrUrl,
-            duration: 180
-          });
-          setSourceTab("device");
-          handleDiscardTake();
-          onShowToast(
-            `Selected "${file.name}" (${rec.remaining} imports left this month)`,
-            /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { size: 16, className: "text-[#8E7CFF]" })
-          );
-        }
-      } catch (err) {
-        if (err.message && !err.message.includes("canceled")) {
-          onShowToast("File picker error: " + err.message, /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "text-red-400" }));
-        }
-      }
-    } else {
-      (_a2 = localFileInputRef.current) == null ? void 0 : _a2.click();
-    }
-  };
-  const handleLocalFileChange = (e2) => {
-    var _a2;
-    const file = (_a2 = e2.target.files) == null ? void 0 : _a2[0];
-    if (file) {
-      if (!effectiveIsVerified) {
-        onShowToast(
-          "Google 1-Tap verification required to import phone audio into Singing Studio.",
-          /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 16, className: "text-[#8E7CFF]" })
-        );
-        if (e2.target) e2.target.value = "";
-        setIsGoogleAuthModalOpen(true);
-        return;
-      }
-      if (!isAdminMode && !subscriptionService.canUploadLocalTrack()) {
-        const quota = subscriptionService.getLocalUploadQuota();
-        onShowToast(
-          `Monthly studio upload limit reached (${quota.used}/${quota.limit}). Upgrade to import more songs.`,
-          /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "text-amber-400" })
-        );
-        if (e2.target) e2.target.value = "";
-        setIsSubscriptionModalOpen(true);
-        return;
-      }
-      const rec = subscriptionService.recordLocalUpload();
-      setUploadQuota({ used: rec.used, limit: rec.limit, remaining: rec.remaining });
-      if (currentUser) {
-        const month = (/* @__PURE__ */ new Date()).toISOString().slice(0, 7);
-        recordCloudStudioUpload(currentUser.uid, month).catch((err) => {
-          console.warn("Background Firestore quota sync deferred:", err);
-        });
-      }
-      const url = URL.createObjectURL(file);
-      const cleanTrackName = file.name.replace(/\.[^/.]+$/, "");
-      setCustomLyricsText("");
-      setCustomKaraokeData(null);
-      setIsKaraokeExtracted(false);
-      const audioProbe = new Audio(url);
-      audioProbe.onloadedmetadata = async () => {
-        const detected = audioProbe.duration && !isNaN(audioProbe.duration) ? Math.round(audioProbe.duration) : 180;
-        setCustomDeviceTrack((prev) => prev ? { ...prev, duration: detected } : null);
-        try {
-          const lyricsRes = await fetchLyricsForUploadedAudio(file.name, "Local Backing Track", detected);
-          setCustomLyricsText(lyricsRes.lyricsText);
-          setCustomKaraokeData(lyricsRes.karaokeData);
-          setIsLyricsOpen(true);
-        } catch (err) {
-          console.warn("Initial lyrics lookup deferred:", err);
-        }
-      };
-      setCustomDeviceTrack({
-        title: cleanTrackName,
-        artist: "Local Backing Track",
-        url,
-        blob: file,
-        duration: 180
-      });
-      setSourceTab("device");
-      handleDiscardTake();
-      onShowToast(
-        `Loaded "${file.name}" (${rec.remaining} imports left this month)`,
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { size: 16, className: "text-[#8E7CFF]" })
-      );
-      fetchLyricsForUploadedAudio(file.name, "Local Backing Track", 180).then((lyricsRes) => {
-        setCustomLyricsText(lyricsRes.lyricsText);
-        setCustomKaraokeData(lyricsRes.karaokeData);
-        setIsLyricsOpen(true);
-      }).catch((err) => {
-        console.warn("Immediate lyrics fetch deferred:", err);
-      });
-      if (e2.target) e2.target.value = "";
-    }
-  };
-  const handleLyricsFileUpload = (e2) => {
-    var _a2;
-    const file = (_a2 = e2.target.files) == null ? void 0 : _a2[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
+    (_a2 = signupSectionRef.current) == null ? void 0 : _a2.scrollIntoView({ behavior: "smooth", block: "center" });
+    setTimeout(() => {
       var _a3;
-      const text = (_a3 = event.target) == null ? void 0 : _a3.result;
-      if (!text) return;
-      setCustomLyricsText(text);
-      setTempLyricsDraft(text);
-      const trackTitle = (customDeviceTrack == null ? void 0 : customDeviceTrack.title) || "Custom Track";
-      const trackArtist = (customDeviceTrack == null ? void 0 : customDeviceTrack.artist) || "Local Backing Track";
-      const duration = (customDeviceTrack == null ? void 0 : customDeviceTrack.duration) || 180;
-      const parsed = parseLrcOrTextToKaraoke(duration, trackTitle, trackArtist, text);
-      setCustomKaraokeData(parsed);
-      onShowToast(
-        `Synchronized ${parsed.lines.length} karaoke lines!`,
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 16, className: "text-amber-400" }),
-        file.name.endsWith(".lrc") ? "LRC timestamps parsed" : "Auto-timed to song duration"
-      );
-    };
-    reader.readAsText(file);
-    if (e2.target) e2.target.value = "";
+      (_a3 = emailInputRef.current) == null ? void 0 : _a3.focus();
+    }, 250);
   };
-  const handleApplyLyricsText = () => {
-    if (!tempLyricsDraft.trim()) {
-      setCustomLyricsText("");
-      setCustomKaraokeData(null);
-      setIsLyricsEditorOpen(false);
-      onShowToast("Cleared lyrics.");
-      return;
-    }
-    setCustomLyricsText(tempLyricsDraft);
-    const trackTitle = (customDeviceTrack == null ? void 0 : customDeviceTrack.title) || "Custom Track";
-    const trackArtist = (customDeviceTrack == null ? void 0 : customDeviceTrack.artist) || "Local Backing Track";
-    const duration = (customDeviceTrack == null ? void 0 : customDeviceTrack.duration) || 180;
-    const parsed = parseLrcOrTextToKaraoke(duration, trackTitle, trackArtist, tempLyricsDraft);
-    setCustomKaraokeData(parsed);
-    setIsLyricsEditorOpen(false);
-    onShowToast(
-      `Synchronized ${parsed.lines.length} karaoke lines!`,
-      /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 16, className: "text-amber-400" })
-    );
-  };
-  const handleExtractKaraokeDsp = async () => {
-    if (!effectiveIsVerified) {
-      setAuthModalContext({
-        title: "Unlock AI Vocal Remover",
-        subtitle: "Verify with Gmail (100% Free)",
-        reason: "Sign up or sign in with your Google / Gmail account (100% free forever) to unlock the AI Vocal Remover, isolate karaoke music, and cancel vocals from any song!"
-      });
-      setIsGoogleAuthModalOpen(true);
-      onShowToast(
-        "Gmail verification required for AI Vocal Remover.",
-        /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 16, className: "text-[#8E7CFF]" }),
-        "Google 1-Tap sign-in unlocks instant vocal cancellation"
-      );
-      return;
-    }
-    setIsExtractingKaraoke(true);
-    onShowToast("Removing vocals & isolating karaoke backing music...", /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 16, className: "text-[#8E7CFF] animate-spin" }));
-    try {
-      const activeUrl = await getActiveBackingUrl();
-      const rawTitle = sourceTab === "device" && customDeviceTrack ? customDeviceTrack.title : selectedBuiltinTrack.title;
-      const cleanSongTitle = rawTitle.replace(/\s*\(Karaoke\)/gi, "").trim();
-      const currentArtist = sourceTab === "device" && customDeviceTrack ? customDeviceTrack.artist : selectedBuiltinTrack.categoryLabel;
-      const originalDuration = sourceTab === "device" && customDeviceTrack ? customDeviceTrack.duration : selectedBuiltinTrack.duration;
-      const result = await extractClientSideKaraokeAudio(activeUrl);
-      const effectiveDuration = result.duration || originalDuration || 180;
-      setCustomDeviceTrack({
-        title: `${cleanSongTitle} (Karaoke)`,
-        artist: currentArtist,
-        url: result.url,
-        blob: result.blob,
-        duration: effectiveDuration
-      });
-      setSourceTab("device");
-      setIsKaraokeExtracted(true);
-      onShowToast("Vocals cancelled! Synchronizing lyrics into teleprompter...", /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 16, className: "text-amber-400 animate-spin" }));
-      const lyricsResult = await fetchLyricsForUploadedAudio(cleanSongTitle, currentArtist, effectiveDuration);
-      setCustomLyricsText(lyricsResult.lyricsText);
-      setCustomKaraokeData(lyricsResult.karaokeData);
-      setIsLyricsOpen(true);
-      const sourceDescription = lyricsResult.source === "synced_lrc" ? "Word-by-word synced teleprompter active" : lyricsResult.source === "preset" ? "Studio karaoke lyrics active" : lyricsResult.source === "online_plain" ? "Song lyrics synchronized to track" : "Custom lyrics prompt active";
-      onShowToast(
-        `Vocals removed & lyrics updated for "${cleanSongTitle}"!`,
-        /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 16, className: "text-emerald-400" }),
-        sourceDescription
-      );
-    } catch (err) {
-      console.error("Karaoke extraction error:", err);
-      onShowToast("Vocal extraction error: " + err.message, /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "text-red-400" }));
-    } finally {
-      setIsExtractingKaraoke(false);
-    }
-  };
-  const activeKaraokeData = reactExports.useMemo(() => {
-    if (sourceTab === "device") {
-      if (customKaraokeData) return customKaraokeData;
-      if (customLyricsText) {
-        return parseLrcOrTextToKaraoke(
-          (customDeviceTrack == null ? void 0 : customDeviceTrack.duration) || 180,
-          (customDeviceTrack == null ? void 0 : customDeviceTrack.title) || "Custom Track",
-          (customDeviceTrack == null ? void 0 : customDeviceTrack.artist) || "Local Backing Track",
-          customLyricsText
-        );
-      }
-      if (customDeviceTrack) {
-        return parseLrcOrTextToKaraoke(
-          customDeviceTrack.duration || 180,
-          customDeviceTrack.title,
-          customDeviceTrack.artist || "Device Audio",
-          `[00:02.00] 🎵 "${customDeviceTrack.title}" Loaded
-[00:06.00] Click "AI Vocal Remover & Load Lyrics" above
-[00:10.00] Vocals will be removed and song lyrics will sync here!
-[00:16.00] 🎤 Get ready to sing your song...`
-        );
-      }
-    }
-    if (selectedBuiltinTrack.id === "inst_tum_hi_ho" || selectedBuiltinTrack.title.toLowerCase().includes("tum hi ho")) {
-      return TUM_HI_HO_KARAOKE_DATA;
-    }
-    if (selectedBuiltinTrack.id === "inst_lutt_le_gaya" || selectedBuiltinTrack.title.toLowerCase().includes("lutt")) {
-      return LUTT_LE_GAYA_KARAOKE_DATA;
-    }
-    return parseLrcOrTextToKaraoke(
-      selectedBuiltinTrack.duration || 60,
-      selectedBuiltinTrack.title,
-      selectedBuiltinTrack.categoryLabel || "Studio Instrumental",
-      `[00:02.00] 🎵 "${selectedBuiltinTrack.title}" Backing Track
-[00:06.00] ${selectedBuiltinTrack.categoryLabel} • ${selectedBuiltinTrack.bpm} BPM
-[00:12.00] 🎤 Sing along with your original vocals or freestyle melody
-[00:20.00] Feel the rhythm and bring your voice to the mix!`
-    );
-  }, [sourceTab, customKaraokeData, customLyricsText, customDeviceTrack, selectedBuiltinTrack]);
-  const activeDuration = sourceTab === "device" && customDeviceTrack ? customDeviceTrack.duration : selectedBuiltinTrack.duration;
-  const activeFallbackLyrics = sourceTab === "device" ? customLyricsText || (customDeviceTrack ? `Sing along to ${customDeviceTrack.title}` : "") : selectedBuiltinTrack.lyrics;
-  const handleStartRecording = async () => {
-    onPauseMainPlayer();
-    setMicPermissionDenied(false);
-    if (!effectiveIsVerified && hasCompletedDemo) {
-      setAuthModalContext({
-        title: "Sign In to Sing More",
-        subtitle: "1 Free Demo Completed • Verify with Gmail",
-        reason: "You have used your 1 free demo take! Sign in with your Google / Gmail account (100% free) to continue recording takes, saving audio, and exporting songs."
-      });
-      setIsGoogleAuthModalOpen(true);
-      onShowToast(
-        "1 free demo completed. Please verify with Google to continue recording.",
-        /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 16, className: "text-[#8E7CFF]" })
-      );
-      return;
-    }
-    if (!hasMicPermissionGranted) {
-      setMicModalError(null);
-      setIsMicPermissionModalOpen(true);
-      return;
-    }
-    await executeStartRecording();
-  };
-  const handleGrantMicPermissionAndStart = async () => {
-    setIsRequestingMic(true);
-    setMicModalError(null);
-    try {
-      const hasMic = await studioEngine.requestMicrophonePermission();
-      if (!hasMic) {
-        setIsRequestingMic(false);
-        setMicPermissionDenied(true);
-        setMicModalError("Microphone permission was denied by your browser or system. Please enable microphone permissions in your browser or device settings.");
+  const handlePlayAcousticPreview = reactExports.useCallback(
+    (preset) => {
+      if (playingPresetId === preset.id) {
+        stopPreviewAudio();
         return;
       }
-      setHasMicPermissionGranted(true);
-      setMicPermissionDenied(false);
-      setIsMicPermissionModalOpen(false);
-      setIsRequestingMic(false);
-      await executeStartRecording();
-    } catch (err) {
-      setIsRequestingMic(false);
-      setMicModalError((err == null ? void 0 : err.message) || "Could not access device microphone. Please try again.");
-    }
-  };
-  const executeStartRecording = async () => {
-    var _a2, _b2;
-    if (isBackingPreviewPlaying) {
-      (_a2 = backingAudioRef.current) == null ? void 0 : _a2.pause();
-      setIsBackingPreviewPlaying(false);
-    }
-    studioEngine.stopPreview();
-    setIsCombinedPreviewPlaying(false);
-    try {
-      const backingUrl = await getActiveBackingUrl();
-      await studioEngine.startRecording(backingUrl, (level) => {
-        setVuLevel(level);
-      });
-      setIsRecording(true);
-      setRecordingSeconds(0);
-      recordingTimerRef.current = setInterval(() => {
-        const exactCurrent = studioEngine.getRecordingCurrentTime();
-        if (exactCurrent > 0) {
-          setRecordingSeconds(exactCurrent);
-        } else {
-          setRecordingSeconds((prev) => +(prev + 0.1).toFixed(2));
+      stopPreviewAudio();
+      setActivePresetId(preset.id);
+      onPauseMainPlayer();
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) {
+          onShowToast("Audio preview unavailable on this browser", /* @__PURE__ */ jsxRuntimeExports.jsx(Volume2, { size: 16, className: "text-[#8E7CFF]" }));
+          return;
         }
-      }, 100);
+        const ctx = new AudioContextClass();
+        audioCtxRef.current = ctx;
+        setPlayingPresetId(preset.id);
+        const masterGain = ctx.createGain();
+        masterGain.gain.value = 0.24;
+        const filter2 = ctx.createBiquadFilter();
+        filter2.type = "lowpass";
+        filter2.frequency.value = preset.filterFreq;
+        filter2.Q.value = preset.filterQ;
+        const delayNode = ctx.createDelay(1);
+        delayNode.delayTime.value = preset.delayTime;
+        const feedbackGain = ctx.createGain();
+        feedbackGain.gain.value = preset.feedback;
+        const wetGain = ctx.createGain();
+        wetGain.gain.value = preset.id === "booth" ? 0.14 : 0.45;
+        filter2.connect(masterGain);
+        filter2.connect(delayNode);
+        delayNode.connect(feedbackGain);
+        feedbackGain.connect(delayNode);
+        delayNode.connect(wetGain);
+        wetGain.connect(masterGain);
+        masterGain.connect(ctx.destination);
+        const baseTime = ctx.currentTime + 0.04;
+        preset.notes.forEach((freq, idx) => {
+          const startAt = baseTime + idx * 0.18;
+          const osc = ctx.createOscillator();
+          const noteGain = ctx.createGain();
+          osc.type = idx % 2 === 0 ? "triangle" : "sine";
+          osc.frequency.setValueAtTime(freq, startAt);
+          noteGain.gain.setValueAtTime(1e-4, startAt);
+          noteGain.gain.exponentialRampToValueAtTime(0.32, startAt + 0.03);
+          noteGain.gain.exponentialRampToValueAtTime(1e-4, startAt + preset.decaySec);
+          osc.connect(noteGain);
+          noteGain.connect(filter2);
+          osc.start(startAt);
+          osc.stop(startAt + preset.decaySec + 0.05);
+        });
+        const totalDurationMs = Math.round((preset.notes.length * 0.18 + preset.decaySec + 0.65) * 1e3);
+        stopTimeoutRef.current = setTimeout(() => {
+          stopPreviewAudio();
+        }, totalDurationMs);
+      } catch {
+        stopPreviewAudio();
+        onShowToast("Could not start audio preview", /* @__PURE__ */ jsxRuntimeExports.jsx(Volume2, { size: 16, className: "text-[#8E7CFF]" }));
+      }
+    },
+    [playingPresetId, stopPreviewAudio, onPauseMainPlayer, onShowToast]
+  );
+  const handleBetaSignupSubmit = async (e2) => {
+    e2.preventDefault();
+    setSignupError(null);
+    const normalized = emailInput.trim().toLowerCase();
+    if (normalized.length < STUDIO_EMAIL_MIN_LENGTH || normalized.length > STUDIO_EMAIL_MAX_LENGTH || !STUDIO_EMAIL_REGEX.test(normalized)) {
+      setSignupError("Please enter a valid email address (for example, name@example.com).");
+      return;
+    }
+    setIsSubmittingSignup(true);
+    const platformRaw = Capacitor.getPlatform();
+    const platform = platformRaw === "android" || platformRaw === "ios" ? platformRaw : "web";
+    try {
+      await submitStudioBetaSignup({
+        email: normalized,
+        preferredFeature: votedFeatureId,
+        platform
+      });
+      setRegisteredEmail(normalized);
+      setEmailInput(normalized);
+      setIsEditingSignup(false);
+      try {
+        localStorage.setItem("muzic_studio_beta_email", normalized);
+        localStorage.setItem("muzic_studio_notify", "true");
+      } catch {
+      }
       onShowToast(
-        !effectiveIsVerified ? "Demo recording started! Sing into microphone." : "Recording started! Sing into microphone.",
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 16, className: "text-red-400 animate-pulse" })
+        "Early access signup confirmed",
+        /* @__PURE__ */ jsxRuntimeExports.jsx(BellRing, { size: 16, className: "text-[#8E7CFF]" }),
+        `We will reach out to ${normalized} when Studio beta opens`
       );
     } catch (err) {
-      setIsRecording(false);
-      if ((err == null ? void 0 : err.name) === "NotAllowedError" || ((_b2 = err == null ? void 0 : err.message) == null ? void 0 : _b2.includes("Permission denied"))) {
-        setHasMicPermissionGranted(false);
-        setMicPermissionDenied(true);
-        setIsMicPermissionModalOpen(true);
-        setMicModalError("Microphone permission is required to sing. Please allow access.");
-      } else {
-        onShowToast("Could not start recording: " + (err.message || "Error"), /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "text-red-400" }));
-      }
-    }
-  };
-  const handleStopRecording = async () => {
-    if (!isRecording) return;
-    if (recordingTimerRef.current) {
-      clearInterval(recordingTimerRef.current);
-      recordingTimerRef.current = null;
-    }
-    setIsRecording(false);
-    setVuLevel(0);
-    try {
-      const result = await studioEngine.stopRecording();
-      setRecordedVoiceBlob(result.blob);
-      if (recordedVoiceUrl) {
-        URL.revokeObjectURL(recordedVoiceUrl);
-      }
-      const newUrl = URL.createObjectURL(result.blob);
-      setRecordedVoiceUrl(newUrl);
-      onShowToast(
-        "Recording complete!",
-        /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 16, className: "text-green-400" }),
-        `${recordingSeconds}s captured • Ready to mix & preview`
-      );
-      if (!effectiveIsVerified && !hasCompletedDemo) {
+      let friendlyMsg = "Could not save your signup right now. Please check your connection and try again.";
+      if (err instanceof Error) {
         try {
-          localStorage.setItem("muzic_studio_demo_completed", "true");
+          const parsed = JSON.parse(err.message);
+          if (parsed == null ? void 0 : parsed.error) {
+            friendlyMsg = "Signup could not be saved to the waitlist right now. Please verify your email and try again.";
+          }
         } catch {
+          if (err.message) {
+            friendlyMsg = err.message;
+          }
         }
-        setHasCompletedDemo(true);
-        setTimeout(() => {
-          setAuthModalContext({
-            title: "Demo Take Finished! 🎉",
-            subtitle: "Sign in with Gmail to save & export",
-            reason: "You just completed your 1 free Singing Studio demo! Sign up & verify your account with Google (1-Tap, 100% free) to save this recording, unlock export mixing, and get 5 free phone audio imports every month."
-          });
-          setIsGoogleAuthModalOpen(true);
-        }, 1200);
       }
-    } catch (err) {
-      onShowToast("Failed to finalize recording: " + err.message, /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "text-red-400" }));
-    }
-  };
-  const handleDiscardTake = () => {
-    studioEngine.stopPreview();
-    setIsCombinedPreviewPlaying(false);
-    if (recordedVoiceUrl) {
-      URL.revokeObjectURL(recordedVoiceUrl);
-      setRecordedVoiceUrl(null);
-    }
-    setRecordedVoiceBlob(null);
-    setRecordingSeconds(0);
-    setLastExportResult(null);
-  };
-  const handleToggleCombinedPreview = async () => {
-    onPauseMainPlayer();
-    if (isCombinedPreviewPlaying) {
-      studioEngine.stopPreview();
-      setIsCombinedPreviewPlaying(false);
-      return;
-    }
-    if (!recordedVoiceUrl) {
-      onShowToast("Record your singing first to hear combined preview.", /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 16, className: "text-[#8E7CFF]" }));
-      return;
-    }
-    try {
-      const backingUrl = await getActiveBackingUrl();
-      studioEngine.playPreview(
-        backingUrl,
-        recordedVoiceUrl,
-        mixerSettings,
-        () => setIsCombinedPreviewPlaying(false)
-      );
-      setIsCombinedPreviewPlaying(true);
-    } catch (err) {
-      onShowToast("Preview playback failed: " + err.message, /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "text-red-400" }));
-    }
-  };
-  const handleExportMix = async () => {
-    if (!recordedVoiceBlob) {
-      onShowToast("No vocal recording to export.", /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "text-amber-400" }));
-      return;
-    }
-    if (!effectiveIsVerified) {
-      setAuthModalContext({
-        title: "Sign In to Export Mix",
-        subtitle: "Google 1-Tap Account Verification",
-        reason: "Sign up or verify with your Google / Gmail account (100% free) to export and download your recorded studio tracks as high-quality WAV files."
-      });
-      setIsGoogleAuthModalOpen(true);
-      onShowToast("Google verification required to export mix.", /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 16, className: "text-[#8E7CFF]" }));
-      return;
-    }
-    setIsExporting(true);
-    studioEngine.stopPreview();
-    setIsCombinedPreviewPlaying(false);
-    try {
-      const backingUrl = await getActiveBackingUrl();
-      const songTitle = sourceTab === "device" && customDeviceTrack ? customDeviceTrack.title : selectedBuiltinTrack.title;
-      const mixResult = await studioEngine.mixAndExport(
-        backingUrl,
-        recordedVoiceBlob,
-        mixerSettings,
-        songTitle
-      );
-      setLastExportResult(mixResult);
-      studioEngine.downloadMix(mixResult);
-      onShowToast(
-        "Combined song exported successfully!",
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Download, { size: 16, className: "text-green-400" }),
-        `Saved as ${mixResult.fileName} (${(mixResult.fileSize / (1024 * 1024)).toFixed(1)} MB WAV)`
-      );
-    } catch (err) {
-      console.error("Export error:", err);
-      onShowToast("Export failed: " + err.message, /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 16, className: "text-red-400" }));
+      setSignupError(friendlyMsg);
     } finally {
-      setIsExporting(false);
+      setIsSubmittingSignup(false);
     }
   };
-  const formatSec = (s) => {
-    const m2 = Math.floor(s / 60);
-    const sec = Math.floor(s % 60);
-    return `${m2}:${sec.toString().padStart(2, "0")}`;
+  const handleVoteFeature = (capability) => {
+    const nextVote = votedFeatureId === capability.id ? null : capability.id;
+    setVotedFeatureId(nextVote);
+    try {
+      if (nextVote) {
+        localStorage.setItem("muzic_studio_feature_vote", nextVote);
+      } else {
+        localStorage.removeItem("muzic_studio_feature_vote");
+      }
+    } catch {
+    }
+    if (nextVote) {
+      onShowToast(
+        `Voted for ${capability.title}`,
+        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 16, className: "text-[#8E7CFF]" }),
+        "Thanks for helping prioritize what ships first"
+      );
+    }
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 flex flex-col overflow-hidden bg-[#0A0818] text-white animate-[fadeIn_0.15s_ease-out]", children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsxs("header", { className: "px-5 pt-8 pb-3 shrink-0 flex items-center justify-between border-b border-white/5 bg-[#0A0818]/90 backdrop-blur-md", children: [
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
+  const selectedPreset = ACOUSTIC_PRESETS.find((p2) => p2.id === activePresetId) || ACOUSTIC_PRESETS[1];
+  const hasRegistered = Boolean(registeredEmail) && !isEditingSignup;
+  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+    "div",
+    {
+      className: `flex-1 flex flex-col overflow-hidden transition-colors ${isDark ? "bg-[#0A0818] text-[#F5F4F9]" : "bg-[#F7F6FC] text-[#120F26]"}`,
+      children: [
         /* @__PURE__ */ jsxRuntimeExports.jsx(
-          "button",
+          "header",
           {
-            type: "button",
-            onClick: onBackToLibrary,
-            className: "p-1.5 -ml-1.5 rounded-full hover:bg-white/5 active:scale-95 transition-all text-[#796BFF] cursor-pointer",
-            title: "Back to Library",
-            children: /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { size: 20 })
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col text-left", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col leading-[1.05]", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl font-black tracking-tight text-white", children: "Singing" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xl font-black tracking-tight text-white", children: "Studio" })
-            ] }),
-            isRecording ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] bg-red-500/20 text-red-400 border border-red-500/30 font-black px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 animate-pulse", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-red-400" }),
-              "Live Rec (",
-              formatSec(recordingSeconds),
-              ")"
-            ] }) : !isVerified ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "bg-[#2D1E10] border border-[#B38734]/80 text-[#FFBE3B] px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider flex items-center gap-1 shadow-sm", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 10, className: "text-[#FFBE3B]" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "DEMO MODE" })
-            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "bg-[#1C1642] border border-[#6355FE]/50 text-[#8E7CFF] px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider flex items-center gap-1", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "w-1.5 h-1.5 rounded-full bg-emerald-400" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "STUDIO READY" })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[9px] font-black text-[#6355FE] uppercase tracking-wider mt-1", children: "DUAL-TRACK VOCAL RECORDING & AUDIO MIXER" })
-        ] })
-      ] }),
-      isVerified ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: () => setIsGoogleAuthModalOpen(true),
-            className: "p-2.5 rounded-2xl border transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95 shadow-sm bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:border-emerald-500",
-            title: `Verified: ${currentUser == null ? void 0 : currentUser.email}`,
-            children: [
-              (currentUser == null ? void 0 : currentUser.photoURL) ? /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: currentUser.photoURL, alt: "Verified", className: "w-3.5 h-3.5 rounded-full object-cover" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 14, className: "text-emerald-400" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline text-[10px] uppercase tracking-wider", children: "Verified" })
-            ]
-          }
-        ),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs(
-          "button",
-          {
-            type: "button",
-            onClick: () => setIsVocalSepModalOpen(true),
-            className: "p-2.5 bg-[#1C153E] text-[#8E7CFF] hover:text-white rounded-2xl border border-[#6355FE]/30 hover:border-[#6355FE] transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer active:scale-95 shadow-sm",
-            title: "AI Stem Separation",
-            children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 14, className: "text-[#8E7CFF]" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "hidden sm:inline text-[10px] uppercase tracking-wider", children: "AI Stems" })
-            ]
-          }
-        )
-      ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
-        "button",
-        {
-          type: "button",
-          onClick: () => {
-            setAuthModalContext({
-              title: "Studio Verification",
-              subtitle: "Google 1-Tap Account Verification",
-              reason: void 0
-            });
-            setIsGoogleAuthModalOpen(true);
-          },
-          className: "bg-white hover:bg-neutral-100 active:scale-95 text-neutral-900 rounded-2xl px-3.5 py-2 shadow-xl flex items-center gap-2 border border-white/20 transition-all cursor-pointer shrink-0",
-          children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 15, className: "text-emerald-500 shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col text-left leading-[1.05]", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-black tracking-wider uppercase text-neutral-900", children: "VERIFY" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[10px] font-black tracking-wider uppercase text-neutral-900", children: "WITH GMAIL" })
-            ] })
-          ]
-        }
-      )
-    ] }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 pb-24 text-left", children: !effectiveIsVerified ? (
-      /* ========================================================== */
-      /* DEMO MODE: Focused on 1 background music & mic to sing      */
-      /* Hides all extra phone uploads, multi-tracks, mixer & export */
-      /* ========================================================== */
-      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4 animate-[fadeIn_0.2s_ease-out]", children: [
-        !hasCompletedDemo ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 rounded-[28px] bg-[#120F2B]/90 border border-[#6355FE]/35 shadow-2xl space-y-3.5", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-11 h-11 rounded-2xl bg-[#1D1642] border border-[#6355FE]/40 flex items-center justify-center text-amber-400 shrink-0 shadow-inner mt-0.5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 20, className: "text-amber-400" }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex-1 min-w-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 flex-wrap", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-black uppercase tracking-wider text-amber-400", children: "FREE SINGING STUDIO DEMO" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-[#48281A] border border-amber-500/40 text-amber-300 text-[8px] font-black px-2 py-0.5 rounded-full uppercase", children: "1 FREE TAKE" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "bg-[#0B3332] border border-emerald-500/30 text-emerald-400 text-[9px] font-bold px-2.5 py-0.5 rounded-full uppercase ml-auto", children: "Demo Ready" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-black text-white leading-snug mt-1", children: "Sing along to backing music with your mic!" })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#A6A2C5] font-medium leading-relaxed", children: "We've cued up the background music below. Tap the red button to record your demo take. Sing directly into your microphone to hear how your voice mixes with the song!" })
-        ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 rounded-3xl bg-[#1C153E]/80 border border-amber-500/30 shadow-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-9 h-9 rounded-2xl bg-amber-500/20 text-amber-300 flex items-center justify-center border border-amber-500/30 shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 18 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h4", { className: "text-xs font-black text-white flex items-center gap-2", children: [
-                "1 Free Demo Completed",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] bg-amber-500/20 text-amber-300 font-extrabold px-2 py-0.5 rounded-full border border-amber-500/30", children: "Sign In Required" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#8F8E9C] mt-0.5", children: "Verify free with your Gmail account (Google 1-Tap) to unlock the full dual-track mixer, unlimited takes, phone audio imports, and song downloads." })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => {
-                setAuthModalContext({
-                  title: "Unlock Full Studio",
-                  subtitle: "Verify with Gmail (Google 1-Tap)",
-                  reason: "Sign in with your Google account (100% free forever) to continue recording, save your music, and unlock 5 phone track imports monthly."
-                });
-                setIsGoogleAuthModalOpen(true);
-              },
-              className: "px-4 py-2.5 bg-white hover:bg-neutral-100 text-neutral-900 rounded-xl text-xs font-black tracking-wider uppercase cursor-pointer shadow-md shrink-0 active:scale-95 transition-all flex items-center gap-2 justify-center",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 14, className: "text-emerald-600" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Verify with Gmail" })
-              ]
-            }
-          )
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "bg-[#120F2B]/90 border border-[#6355FE]/35 rounded-[28px] p-5 space-y-4 shadow-2xl", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1 text-left", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 text-[10px] font-black uppercase tracking-wider text-[#796BFF]", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Disc3, { size: 14, className: "text-[#796BFF]" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: sourceTab === "device" ? "UPLOADED SONG" : "DEMO BACKING MUSIC" }),
-                isKaraokeExtracted && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[8px] bg-emerald-500/20 text-emerald-300 font-extrabold px-1.5 py-0.5 rounded-full border border-emerald-500/30 uppercase flex items-center gap-1", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 9 }),
-                  " Karaoke & Lyrics Synced"
-                ] })
-              ] }),
+            className: `shrink-0 px-5 sm:px-8 pt-8 pb-4 border-b transition-colors ${isDark ? "border-white/10 bg-[#0A0818]/90" : "border-[#6355FE]/15 bg-[#F7F6FC]/95"}`,
+            children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto flex items-center justify-between gap-4", children: [
               /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  onClick: handlePickDeviceAudio,
-                  className: "px-2.5 py-1 bg-white/10 hover:bg-white/15 text-[#ECE6FF] hover:text-white rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all flex items-center gap-1.5 cursor-pointer border border-white/10 shrink-0 active:scale-95",
-                  title: "Upload your own song file to remove vocals and sing along",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { size: 12, className: "text-[#8E7CFF]" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: customDeviceTrack ? "Change Song" : "Upload Song File" })
-                  ]
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-sm font-black text-white leading-tight", children: sourceTab === "device" && customDeviceTrack ? customDeviceTrack.title : selectedBuiltinTrack.title }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] font-bold text-[#8F8E9C]", children: sourceTab === "device" && customDeviceTrack ? `${customDeviceTrack.artist} • ${formatSec(customDeviceTrack.duration)}` : `${selectedBuiltinTrack.categoryLabel || "Bollywood Romantic / Karaoke"} • ${selectedBuiltinTrack.bpm} BPM` })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: handleExtractKaraokeDsp,
-                disabled: isExtractingKaraoke || isRecording,
-                className: "flex-1 py-3 px-3 bg-gradient-to-r from-[#E91E63] to-[#FF4081] hover:brightness-110 active:scale-95 text-white rounded-2xl text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-pink-500/25 cursor-pointer disabled:opacity-50",
-                title: "Run client-side DSP Mid-Side phase cancellation to remove center vocals and load lyrics",
-                children: isExtractingKaraoke ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-white" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "REMOVING VOCALS & LOADING LYRICS..." })
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 14, className: "text-amber-300" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isKaraokeExtracted ? "AI VOCAL REMOVER (ACTIVE)" : "AI VOCAL REMOVER & LOAD LYRICS" }),
-                  !effectiveIsVerified && /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { size: 11, className: "text-white/80 shrink-0 -ml-0.5" })
-                ] })
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: toggleBackingPreview,
-                disabled: isSynthesizing || isRecording,
-                className: "flex-1 py-3 px-3 bg-[#6355FE] hover:bg-[#7265FF] active:scale-95 text-white rounded-2xl text-[11px] font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#6355FE]/30 cursor-pointer disabled:opacity-40",
-                children: isSynthesizing ? /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-white" }) : isBackingPreviewPlaying ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Pause, { size: 14, fill: "currentColor" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Pause Track" })
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 14, fill: "currentColor" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Listen Track" })
-                ] })
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex gap-2 p-1.5 bg-[#0B091D] rounded-2xl border border-white/5", children: BUILTIN_INSTRUMENTAL_CATALOG.slice(0, 2).map((track, idx) => {
-            const isCurrent = sourceTab === "builtin" && selectedBuiltinTrack.id === track.id || sourceTab === "device" && (customDeviceTrack == null ? void 0 : customDeviceTrack.title.includes(track.title.split(" ")[0]));
-            const shortLabel = idx === 0 ? "TUM HI" : "LUTT LE";
-            return /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: () => {
-                  var _a2;
-                  setSelectedBuiltinTrack(track);
-                  setSourceTab("builtin");
-                  setCustomDeviceTrack(null);
-                  setIsKaraokeExtracted(false);
-                  if (track.id === "inst_lutt_le_gaya") {
-                    setCustomKaraokeData(LUTT_LE_GAYA_KARAOKE_DATA);
-                  } else {
-                    setCustomKaraokeData(TUM_HI_HO_KARAOKE_DATA);
-                  }
-                  if (isBackingPreviewPlaying) {
-                    (_a2 = backingAudioRef.current) == null ? void 0 : _a2.pause();
-                    setIsBackingPreviewPlaying(false);
-                  }
-                  onShowToast(`Selected "${track.title}"`, /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { size: 14, className: "text-[#8E7CFF]" }));
-                },
-                className: `flex-1 py-2.5 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 ${isCurrent ? "bg-[#6355FE] text-white shadow-md" : "text-[#706B8F] hover:text-white hover:bg-white/5"}`,
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { size: 13 }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: shortLabel })
-                ]
-              },
-              track.id
-            );
-          }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-[#0B091D]/90 rounded-2xl border border-white/5 space-y-2.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-xs font-bold text-[#8F8E9C]", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isBackingPreviewPlaying ? "Playing" : "Ready" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                formatSec(backingCurrentTime),
-                " / ",
-                formatSec(selectedBuiltinTrack.duration)
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: "range",
-                min: "0",
-                max: selectedBuiltinTrack.duration,
-                step: "0.5",
-                value: backingCurrentTime,
-                onChange: handleBackingSeek,
-                disabled: isRecording,
-                className: "w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer accent-[#6355FE]"
-              }
-            )
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-1", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            KaraokeLyricsView,
-            {
-              currentTimeSec: isRecording ? recordingSeconds : backingCurrentTime,
-              durationSec: activeDuration,
-              onSeek: handleBackingSeekTo,
-              karaokeData: activeKaraokeData,
-              fallbackLyrics: activeFallbackLyrics
-            }
-          ) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "bg-[#14122B]/70 border border-white/10 rounded-3xl p-5 space-y-4 shadow-xl", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-0.5", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xs font-black uppercase tracking-wider text-red-400 flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 15 }),
-                "Microphone Singing Booth"
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#8F8E9C]", children: "Music plays in sync while your microphone captures your live singing." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 shrink-0", children: [
-              hasMicPermissionGranted ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 11 }),
-                " Mic Ready"
-              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
                   type: "button",
                   onClick: () => {
-                    setMicModalError(null);
-                    setIsMicPermissionModalOpen(true);
+                    stopPreviewAudio();
+                    onBackToLibrary();
                   },
-                  className: "text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1 hover:bg-amber-500/30 transition-all cursor-pointer",
-                  title: "Request microphone permission",
+                  className: `min-h-[44px] min-w-[44px] -ml-2 px-2 flex items-center gap-2 rounded-xl text-sm font-semibold transition-colors cursor-pointer whitespace-nowrap shrink-0 ${isDark ? "text-[#B9B6CE] hover:text-white hover:bg-white/5" : "text-[#585474] hover:text-[#120F26] hover:bg-[#6355FE]/10"}`,
                   children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 11 }),
-                    " Permission Required"
+                    /* @__PURE__ */ jsxRuntimeExports.jsx(ArrowLeft, { size: 18 }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Library" })
                   ]
                 }
               ),
-              isRecording && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-black text-red-400 bg-red-400/20 px-3 py-1 rounded-full border border-red-400/30 animate-pulse", children: [
-                formatSec(recordingSeconds),
-                " REC"
-              ] })
-            ] })
-          ] }),
-          micPermissionDenied && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 text-xs text-red-300", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 18, className: "shrink-0 text-red-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Microphone access was denied. Please allow microphone permissions in app settings to record." })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-black/30 rounded-2xl border border-white/5 space-y-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#8F8E9C]", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Microphone Input Level" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: vuLevel > 0.05 ? "text-green-400" : "text-white/30", children: isRecording ? `${Math.round(vuLevel * 100)}%` : "Ready to Sing" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 w-full bg-white/5 rounded-full overflow-hidden flex items-center p-0.5 border border-white/5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              motion.div,
-              {
-                className: `h-full rounded-full transition-all duration-75 ${vuLevel > 0.85 ? "bg-gradient-to-r from-green-500 via-amber-400 to-red-500" : "bg-gradient-to-r from-[#6355FE] to-[#8E7CFF]"}`,
-                style: { width: `${Math.max(2, vuLevel * 100)}%` }
-              }
-            ) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-center gap-3 pt-1", children: [
-            !isRecording ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: handleStartRecording,
-                disabled: isSynthesizing,
-                className: "w-full sm:w-auto px-8 py-4 bg-red-500 hover:bg-red-600 active:scale-95 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-red-500/30 flex items-center justify-center gap-2.5",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-3 h-3 rounded-full bg-white animate-pulse" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: hasCompletedDemo ? "Start Singing Recording" : "Start Demo Sing Now" })
-                ]
-              }
-            ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: handleStopRecording,
-                className: "w-full sm:w-auto px-8 py-4 bg-white text-black hover:bg-white/90 active:scale-95 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-xl flex items-center justify-center gap-2.5",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 16, fill: "currentColor" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Stop & Keep Take" })
-                ]
-              }
-            ),
-            recordedVoiceBlob && !isRecording && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: handleDiscardTake,
-                className: "w-full sm:w-auto px-5 py-3.5 bg-white/10 hover:bg-white/15 text-[#8F8E9C] hover:text-white rounded-2xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(RotateCcw, { size: 14 }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Discard Take" })
-                ]
-              }
-            )
-          ] }),
-          recordedVoiceBlob && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl space-y-3", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 16, className: "text-emerald-400 shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-bold text-emerald-300", children: [
-                "Demo Take Recorded (",
-                recordingSeconds,
-                "s captured)"
-              ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: handleToggleCombinedPreview,
-                className: `px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shadow-md ${isCombinedPreviewPlaying ? "bg-amber-500 text-black shadow-amber-500/25" : "bg-[#6355FE] text-white hover:bg-[#7265FF]"}`,
-                children: isCombinedPreviewPlaying ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Pause, { size: 12, fill: "currentColor" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Pause Mix" })
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 12, fill: "currentColor" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Hear My Song" })
-                ] })
-              }
-            )
-          ] }) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-5 rounded-3xl bg-gradient-to-b from-[#14122B]/90 to-[#120F24] border border-white/10 shadow-2xl space-y-4 text-left relative overflow-hidden", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-center justify-between", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Lock, { size: 15 }) }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-black uppercase tracking-wider text-white flex items-center gap-1.5", children: [
-                "Full Studio Features Locked",
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[8px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.2 rounded-full font-black border border-emerald-500/30", children: "100% FREE" })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-[#8F8E9C]", children: "Complete Gmail verification to unlock all studio tools:" })
-            ] })
-          ] }) }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-2 gap-2 text-[11px] text-white/80 font-medium", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2.5 bg-black/20 rounded-xl border border-white/5 flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(SlidersVertical, { size: 13, className: "text-[#8E7CFF] shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Dual-Track Volume Faders" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2.5 bg-black/20 rounded-xl border border-white/5 flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 13, className: "text-amber-400 shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Ambience Reverb & Latency Sync" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2.5 bg-black/20 rounded-xl border border-white/5 flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(FolderPlus, { size: 13, className: "text-[#8E7CFF] shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "5 Free Phone Song Imports/Mo" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-2.5 bg-black/20 rounded-xl border border-white/5 flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Download, { size: 13, className: "text-emerald-400 shrink-0" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Master WAV Song Export" })
-            ] })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs(
-            "button",
-            {
-              type: "button",
-              onClick: () => {
-                setAuthModalContext({
-                  title: "Unlock Full Studio Free",
-                  subtitle: "Verify with Gmail (Google 1-Tap)",
-                  reason: "Sign up and verify with your Google account (100% free forever) to unlock unlimited recording takes, phone audio imports, dual-track mixer, and WAV downloads."
-                });
-                setIsGoogleAuthModalOpen(true);
-              },
-              className: "w-full py-3.5 px-4 bg-white hover:bg-neutral-100 active:scale-[0.99] text-neutral-900 rounded-2xl font-black text-xs tracking-wider uppercase cursor-pointer shadow-xl flex items-center justify-center gap-2.5 transition-all",
-              children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(ShieldCheck, { size: 16, className: "text-emerald-600" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Verify with Gmail to Unlock" })
-              ]
-            }
-          )
-        ] })
-      ] })
-    ) : (
-      /* ========================================================== */
-      /* VERIFIED CREATOR VIEW: Complete full-featured studio        */
-      /* ========================================================== */
-      /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "bg-[#14122B]/70 border border-white/10 rounded-3xl p-5 space-y-4 shadow-xl", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-0.5", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xs font-black uppercase tracking-wider text-[#8E7CFF] flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Disc3, { size: 15 }),
-                "Step 1: Choose Backing Track"
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#8F8E9C]", children: "Select a royalty-free instrumental or a song from your device." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 flex-wrap justify-end", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs(
+              /* @__PURE__ */ jsxRuntimeExports.jsx("h1", { className: "text-base sm:text-lg font-bold tracking-tight whitespace-nowrap shrink-0", children: "Muzic Studio" }),
+              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "min-w-[44px] flex justify-end shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(
                 "button",
                 {
                   type: "button",
-                  onClick: handlePickDeviceAudio,
-                  className: "px-3 py-1.5 bg-gradient-to-r from-[#6355FE]/30 to-[#8E7CFF]/30 hover:from-[#6355FE]/40 hover:to-[#8E7CFF]/40 text-[#ECE6FF] border border-[#6355FE]/50 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center gap-1.5 active:scale-95 shadow-md",
-                  title: "Upload an audio file to remove vocals and sing along",
+                  onClick: scrollToSignup,
+                  className: `min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap shrink-0 ${hasRegistered ? isDark ? "bg-[#6355FE]/20 text-[#ECE6FF] border border-[#8E7CFF]/40" : "bg-[#6355FE]/15 text-[#5B4AE6] border border-[#6355FE]/30" : isDark ? "bg-white/5 text-white hover:bg-white/10 border border-white/10" : "bg-white text-[#120F26] hover:bg-[#EFEAFE] border border-[#6355FE]/20"}`,
                   children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { size: 12, className: "text-[#8E7CFF]" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Upload Song File" })
+                    hasRegistered ? /* @__PURE__ */ jsxRuntimeExports.jsx(BellRing, { size: 15 }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Bell, { size: 15 }),
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: hasRegistered ? "Beta Joined" : "Join Beta" })
                   ]
                 }
-              ),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex bg-white/5 p-1 rounded-2xl border border-white/5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => setSourceTab("builtin"),
-                    className: `px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${sourceTab === "builtin" ? "bg-[#6355FE] text-white shadow-md" : "text-[#8F8E9C] hover:text-white"}`,
-                    children: "Built-in Tracks"
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => setSourceTab("device"),
-                    className: `px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all cursor-pointer ${sourceTab === "device" ? "bg-[#6355FE] text-white shadow-md" : "text-[#8F8E9C] hover:text-white"}`,
-                    children: "Uploaded Track"
-                  }
-                )
-              ] })
+              ) })
             ] })
-          ] }),
-          sourceTab === "builtin" && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "space-y-2.5", children: /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-2.5", children: BUILTIN_INSTRUMENTAL_CATALOG.map((track) => {
-            const isSelected = selectedBuiltinTrack.id === track.id;
-            return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+          }
+        ),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("main", { className: "flex-1 overflow-y-auto px-5 sm:px-8 pt-6 pb-36", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "max-w-5xl mx-auto space-y-10", children: [
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "lg:col-span-7 relative rounded-3xl overflow-hidden min-h-[260px] sm:min-h-[320px] border border-white/10 shadow-xl", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "div",
+                {
+                  "aria-hidden": "true",
+                  className: "absolute inset-0 bg-gradient-to-br from-[#1C153E] via-[#14122B] to-[#0A0818] flex items-center justify-center",
+                  children: /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 48, className: "text-[#8E7CFF]/30" })
+                }
+              ),
+              !heroImageError && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "img",
+                {
+                  src: studioHeroImg,
+                  alt: "Singer in an acoustic wooden recording booth with a warm condenser microphone and mixing console",
+                  referrerPolicy: "no-referrer",
+                  onError: () => setHeroImageError(true),
+                  className: "absolute inset-0 w-full h-full object-cover"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "div",
+                {
+                  "aria-hidden": "true",
+                  className: "absolute inset-0 bg-gradient-to-t from-[#0A0818]/95 via-[#0A0818]/45 to-transparent"
+                }
+              ),
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative z-10 h-full flex flex-col justify-end p-6 sm:p-8 text-left", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-2 text-xs font-medium text-[#E4DDFF] mb-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Coming Soon" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { "aria-hidden": "true", children: "·" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Vocal Booth" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { "aria-hidden": "true", children: "·" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Live Karaoke" })
+                ] }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h2", { className: "text-2xl sm:text-4xl font-bold tracking-tight text-[#FFFFFF] leading-tight max-w-xl [text-wrap:balance]", children: "Your pocket vocal studio is tuning up" }),
+                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "mt-3 text-sm sm:text-base text-[#E4DDFF] leading-relaxed max-w-lg", children: "Step up to the mic, isolate vocals from tracks you already own, and record studio-warm takes anywhere." })
+              ] })
+            ] }),
+            /* @__PURE__ */ jsxRuntimeExports.jsxs(
               "div",
               {
-                onClick: () => handleSelectBuiltin(track),
-                className: `p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-2 text-left relative ${isSelected ? "bg-[#1C153E] border-[#6355FE] shadow-[0_0_20px_rgba(99,85,254,0.25)]" : "bg-white/5 border-white/5 hover:border-white/10 hover:bg-white/[0.07]"}`,
+                className: `lg:col-span-5 rounded-3xl p-6 flex flex-col justify-between border ${isDark ? "bg-[#14122B] border-white/10" : "bg-white border-[#6355FE]/15 shadow-sm"}`,
                 children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start justify-between gap-2", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-4 text-left", children: [
                     /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-black uppercase tracking-widest text-[#8E7CFF] block", children: track.categoryLabel }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xs font-black text-white leading-tight mt-0.5", children: track.title })
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "p",
+                        {
+                          className: `text-xs font-semibold tracking-wide ${isDark ? "text-[#8E7CFF]" : "text-[#6355FE]"}`,
+                          children: "Interactive Sound Preview"
+                        }
+                      ),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg sm:text-xl font-bold tracking-tight mt-1", children: "Hear our studio room acoustics" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsx(
+                        "p",
+                        {
+                          className: `text-sm mt-1.5 leading-relaxed ${isDark ? "text-[#B9B6CE]" : "text-[#585474]"}`,
+                          children: "Tap any room preset below to audition real-time Web Audio acoustic shaping before launch."
+                        }
+                      )
                     ] }),
-                    isSelected && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-5 h-5 rounded-full bg-[#6355FE] text-white flex items-center justify-center shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 12 }) })
+                    /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "grid grid-cols-2 gap-2.5 pt-1", children: ACOUSTIC_PRESETS.map((preset) => {
+                      const isPlayingThis = playingPresetId === preset.id;
+                      const isSelected = activePresetId === preset.id;
+                      return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                        "button",
+                        {
+                          type: "button",
+                          onClick: () => handlePlayAcousticPreview(preset),
+                          className: `min-h-[56px] p-3 rounded-2xl text-left transition-all cursor-pointer border flex items-center justify-between gap-2 ${isPlayingThis ? "bg-[#6355FE] text-white border-[#6355FE] shadow-lg shadow-[#6355FE]/25" : isSelected ? isDark ? "bg-[#1C153E] text-white border-[#8E7CFF]/50" : "bg-[#EFEAFE] text-[#120F26] border-[#6355FE]/40" : isDark ? "bg-white/5 text-[#ECE6FF] border-white/10 hover:bg-white/10" : "bg-[#F7F6FC] text-[#120F26] border-[#6355FE]/15 hover:bg-[#EFEAFE]"}`,
+                          children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs font-bold truncate", children: preset.label }),
+                              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                                "div",
+                                {
+                                  className: `text-[11px] truncate mt-0.5 ${isPlayingThis ? "text-white/85" : isDark ? "text-[#8F8E9C]" : "text-[#585474]"}`,
+                                  children: preset.detail
+                                }
+                              )
+                            ] }),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "shrink-0", children: isPlayingThis ? /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 14, fill: "currentColor" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 14, fill: "currentColor" }) })
+                          ]
+                        },
+                        preset.id
+                      );
+                    }) })
                   ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-[#8F8E9C] line-clamp-2 leading-relaxed", children: track.styleDescription }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-[9px] font-bold text-white/50 pt-1 border-t border-white/5", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-                      track.bpm,
-                      " BPM • ",
-                      track.key
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-green-400/90 font-extrabold uppercase", children: "Royalty-Free Original" })
-                  ] })
-                ]
-              },
-              track.id
-            );
-          }) }) }),
-          sourceTab === "device" && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-3", children: [
-            !effectiveIsVerified && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-gradient-to-r from-[#6355FE]/20 via-[#8E7CFF]/15 to-transparent border border-[#6355FE]/40 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-md", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("svg", { className: "w-5 h-5", viewBox: "0 0 24 24", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "#4285F4", d: "M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "#34A853", d: "M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "#FBBC05", d: "M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("path", { fill: "#EA4335", d: "M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" })
-                ] }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("h3", { className: "text-xs font-black text-white flex items-center gap-1.5", children: [
-                    "Google 1-Tap Verification",
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-extrabold uppercase border border-emerald-500/30", children: "FREE" })
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#8F8E9C] leading-snug", children: "Verify once with Google to unlock and track your 5 free phone song imports this month." })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: () => setIsGoogleAuthModalOpen(true),
-                  className: "px-4 py-2 bg-white text-neutral-900 hover:bg-neutral-100 active:scale-95 transition-all rounded-xl text-xs font-black tracking-wider shrink-0 cursor-pointer shadow-md flex items-center justify-center gap-2",
-                  children: /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Verify with Google" })
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3.5 bg-[#171330] border border-[#6355FE]/25 rounded-2xl flex items-center justify-between gap-3 shadow-inner", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 min-w-0", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 rounded-xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] shrink-0 border border-[#6355FE]/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { size: 15 }) }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-black text-white", children: "Monthly Studio Imports" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] bg-white/10 text-white/90 font-extrabold uppercase px-1.5 py-0.5 rounded tracking-wider", children: isAdminMode ? "👑 Admin Mode (Unlimited)" : subscriptionService.getCurrentTier() === "free" ? "Muzic Free (5/mo)" : subscriptionService.getCurrentTier() === "pro" ? "Muzic Pro (20/mo)" : "Studio Pass (50/mo)" })
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[10px] text-[#8F8E9C]", children: [
-                    isAdminMode ? "Unlimited phone song imports & takes active" : `${uploadQuota.used} of ${uploadQuota.limit} phone songs imported this month`,
-                    isAdminMode ? /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-amber-400 ml-1.5 font-bold", children: "• Admin Unlocked" }) : isVerified && (currentUser == null ? void 0 : currentUser.email) ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-emerald-400/90 ml-1.5 font-bold", children: [
-                      "• Verified (",
-                      currentUser.email,
-                      ")"
-                    ] }) : null
-                  ] })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 shrink-0", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: `text-[10px] font-black uppercase px-2.5 py-1 rounded-xl tracking-wider ${uploadQuota.remaining > 0 ? "bg-green-500/15 text-green-400 border border-green-500/30" : "bg-red-500/15 text-red-400 border border-red-500/30"}`, children: [
-                  uploadQuota.remaining,
-                  " Left"
-                ] }),
-                uploadQuota.remaining <= 1 && /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: () => setIsSubscriptionModalOpen(true),
-                    className: "px-2.5 py-1 bg-amber-500/20 text-amber-300 hover:bg-amber-500/30 border border-amber-500/40 rounded-xl text-[10px] font-black uppercase tracking-wider cursor-pointer transition-all active:scale-95",
-                    children: uploadQuota.remaining === 0 ? "Upgrade" : "More"
-                  }
-                )
-              ] })
-            ] }),
-            customDeviceTrack ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-[#1C153E] border border-[#6355FE] rounded-2xl space-y-3.5 shadow-lg", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between gap-3", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-3 min-w-0", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-10 h-10 rounded-xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] shrink-0 border border-[#6355FE]/40", children: /* @__PURE__ */ jsxRuntimeExports.jsx(FileAudio, { size: 20 }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 flex-wrap", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-black uppercase tracking-wider text-[#8E7CFF]", children: "Uploaded Song" }),
-                      isKaraokeExtracted && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[8px] bg-emerald-500/20 text-emerald-300 font-extrabold px-1.5 py-0.5 rounded-full border border-emerald-500/30 uppercase flex items-center gap-1", children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 8 }),
-                        " Vocals Removed"
-                      ] }),
-                      customKaraokeData && /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[8px] bg-blue-500/20 text-blue-300 font-extrabold px-1.5 py-0.5 rounded-full border border-blue-500/30 uppercase", children: "Lyrics Synced" })
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xs font-black text-white truncate mt-0.5", children: customDeviceTrack.title }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("p", { className: "text-[10px] text-[#8F8E9C]", children: [
-                      customDeviceTrack.artist,
-                      " • ",
-                      formatSec(customDeviceTrack.duration)
-                    ] })
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handlePickDeviceAudio,
-                    className: "px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-[10px] font-black uppercase tracking-wider cursor-pointer shrink-0 transition-all active:scale-95",
-                    children: "Change Song"
-                  }
-                )
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: handleExtractKaraokeDsp,
-                  disabled: isExtractingKaraoke || isRecording,
-                  className: "w-full py-3.5 px-4 bg-gradient-to-r from-pink-600 via-[#8E7CFF] to-[#6355FE] hover:brightness-110 active:scale-[0.99] text-white rounded-2xl text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2.5 shadow-xl shadow-[#6355FE]/30 cursor-pointer disabled:opacity-50",
-                  children: isExtractingKaraoke ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 16, className: "animate-spin text-white" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Removing Vocals & Fetching Lyrics..." })
-                  ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 16, className: "text-amber-300 animate-pulse" }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isKaraokeExtracted ? "Re-Run Vocal Remover & Sync Lyrics" : "AI Vocal Remover & Load Lyrics" })
-                  ] })
-                }
-              )
-            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-6 bg-white/5 border border-dashed border-white/15 rounded-2xl text-center space-y-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-12 h-12 rounded-2xl bg-[#6355FE]/20 flex items-center justify-center text-[#8E7CFF] mx-auto border border-[#6355FE]/30", children: /* @__PURE__ */ jsxRuntimeExports.jsx(FolderPlus, { size: 24 }) }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xs font-black text-white", children: "Select Any Audio File from Device" }),
-                /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#8F8E9C]", children: "MP3, WAV, M4A, FLAC, OGG supported. Stays strictly local on your phone." })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "button",
-                {
-                  type: "button",
-                  onClick: handlePickDeviceAudio,
-                  className: "px-5 py-2.5 bg-[#6355FE] hover:bg-[#7265FF] text-white rounded-xl text-xs font-black uppercase tracking-widest cursor-pointer shadow-lg shadow-[#6355FE]/25 active:scale-95 transition-all",
-                  children: "Browse Phone Files"
-                }
-              )
-            ] }),
-            customDeviceTrack && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 rounded-2xl bg-gradient-to-r from-[#1C153E] to-[#120F2B] border border-[#6355FE]/40 space-y-3", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-2.5", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2.5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-8 h-8 rounded-xl bg-amber-400/20 text-amber-300 flex items-center justify-center border border-amber-400/30 shrink-0", children: /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 16 }) }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-xs font-black text-white", children: "Karaoke Lyrics Synchronizer" }),
-                      customKaraokeData && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[8px] bg-green-500/20 text-green-300 font-extrabold px-1.5 py-0.5 rounded-full border border-green-500/30 uppercase", children: [
-                        customKaraokeData.lines.length,
-                        " Lines Timed"
-                      ] })
-                    ] }),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[10px] text-[#8F8E9C]", children: customKaraokeData ? "Word-by-word synced teleprompter active for your audio file" : "Upload .lrc or paste lyrics to sing with synchronized karaoke highlight" })
-                  ] })
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-1.5 shrink-0", children: [
                   /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "button",
+                    "div",
                     {
-                      type: "button",
-                      onClick: () => {
-                        var _a2;
-                        return (_a2 = lyricsFileInputRef.current) == null ? void 0 : _a2.click();
-                      },
-                      className: "px-2.5 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-xl text-[10px] font-bold cursor-pointer transition-all flex items-center gap-1 shadow-sm",
-                      title: "Upload timestamped .lrc or plain .txt file",
+                      className: `mt-6 pt-4 border-t flex items-center justify-between gap-4 ${isDark ? "border-white/10" : "border-[#6355FE]/15"}`,
                       children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(Upload, { size: 11 }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Upload .lrc / .txt" })
-                      ]
-                    }
-                  ),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                    "button",
-                    {
-                      type: "button",
-                      onClick: () => {
-                        setTempLyricsDraft(customLyricsText);
-                        setIsLyricsEditorOpen(!isLyricsEditorOpen);
-                      },
-                      className: `px-2.5 py-1.5 rounded-xl text-[10px] font-bold cursor-pointer transition-all flex items-center gap-1 shadow-sm active:scale-95 ${isLyricsEditorOpen ? "bg-[#6355FE] text-white" : "bg-white/10 hover:bg-white/20 text-white"}`,
-                      children: [
-                        /* @__PURE__ */ jsxRuntimeExports.jsx(PenLine, { size: 11 }),
-                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: customLyricsText ? "Edit Lyrics" : "Paste Lyrics" })
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "text-left min-w-0", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "text-xs font-semibold truncate", children: playingPresetId ? `Playing ${selectedPreset.label}` : `${selectedPreset.label} selected` }),
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                            "div",
+                            {
+                              className: `text-xs tabular-nums mt-0.5 ${isDark ? "text-[#8F8E9C]" : "text-[#585474]"}`,
+                              children: [
+                                Math.round(selectedPreset.delayTime * 1e3),
+                                " ms delay · ",
+                                selectedPreset.decaySec.toFixed(2),
+                                " s decay"
+                              ]
+                            }
+                          )
+                        ] }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "flex items-end gap-1 h-7 shrink-0", "aria-hidden": "true", children: [0.45, 0.9, 0.6, 1, 0.7, 0.4].map((heightRatio, index) => /* @__PURE__ */ jsxRuntimeExports.jsx(
+                          motion.span,
+                          {
+                            animate: playingPresetId ? { scaleY: [0.25, heightRatio, 0.35, 0.95, 0.3] } : { scaleY: 0.25 },
+                            transition: playingPresetId ? {
+                              duration: 0.75,
+                              repeat: Infinity,
+                              repeatType: "reverse",
+                              delay: index * 0.09
+                            } : { duration: 0.2 },
+                            style: { originY: 1 },
+                            className: `w-1 h-full rounded-full ${playingPresetId ? "bg-[#8E7CFF]" : isDark ? "bg-white/20" : "bg-[#6355FE]/30"}`
+                          },
+                          index
+                        )) })
                       ]
                     }
                   )
-                ] })
-              ] }),
-              isLyricsEditorOpen && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-2 pt-2 border-t border-white/10 animate-[fadeIn_0.15s_ease-out]", children: [
+                ]
+              }
+            )
+          ] }),
+          /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "space-y-5 text-left", children: [
+            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-end justify-between gap-2", children: [
+              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-xl sm:text-2xl font-bold tracking-tight", children: "What is arriving in Studio" }),
                 /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "textarea",
+                  "p",
                   {
-                    value: tempLyricsDraft,
-                    onChange: (e2) => setTempLyricsDraft(e2.target.value),
-                    placeholder: "Paste lyrics here... Tip: Supports both plain text and timestamped LRC format (e.g. [00:15.20] Lyric line).",
-                    rows: 4,
-                    className: "w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs text-white placeholder-white/30 focus:outline-none focus:border-[#6355FE] resize-none font-sans"
+                    className: `text-sm mt-1 ${isDark ? "text-[#B9B6CE]" : "text-[#585474]"}`,
+                    children: "Tap a capability below to vote for what you want to try first."
                   }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row sm:items-center justify-between gap-2", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] text-white/40", children: [
-                    "LRC timestamps will be parsed automatically; plain text will be evenly timed across ",
-                    customDeviceTrack.duration,
-                    "s."
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-end gap-2 shrink-0", children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "button",
-                      {
-                        type: "button",
-                        onClick: () => setIsLyricsEditorOpen(false),
-                        className: "px-3 py-1 text-[10px] text-white/50 hover:text-white cursor-pointer",
-                        children: "Cancel"
-                      }
-                    ),
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(
-                      "button",
-                      {
-                        type: "button",
-                        onClick: handleApplyLyricsText,
-                        className: "px-3.5 py-1.5 bg-[#6355FE] hover:bg-[#7265FF] text-white rounded-lg text-[10px] font-black uppercase tracking-wider cursor-pointer shadow-md active:scale-95",
-                        children: "Save & Sync"
-                      }
-                    )
-                  ] })
-                ] })
+                )
               ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
+              votedFeatureId && /* @__PURE__ */ jsxRuntimeExports.jsx(
+                "span",
                 {
-                  type: "file",
-                  ref: lyricsFileInputRef,
-                  accept: ".lrc,.txt,text/plain",
-                  onChange: handleLyricsFileUpload,
-                  className: "hidden"
+                  className: `text-xs font-semibold ${isDark ? "text-[#8E7CFF]" : "text-[#6355FE]"}`,
+                  children: "Your vote is saved"
                 }
               )
             ] }),
             /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
+              "div",
               {
-                type: "file",
-                ref: localFileInputRef,
-                accept: "audio/*,.mp3,.wav,.m4a,.flac,.ogg,.aac",
-                onChange: handleLocalFileChange,
-                className: "hidden"
+                className: `divide-y border-y ${isDark ? "divide-white/10 border-white/10" : "divide-[#6355FE]/15 border-[#6355FE]/15"}`,
+                children: UPCOMING_CAPABILITIES.map((item) => {
+                  const Icon2 = item.icon;
+                  const isVoted = votedFeatureId === item.id;
+                  return /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => handleVoteFeature(item),
+                      className: `w-full py-5 px-2 sm:px-3 flex items-start sm:items-center justify-between gap-4 text-left transition-colors cursor-pointer ${isVoted ? isDark ? "bg-[#6355FE]/10" : "bg-[#EFEAFE]/70" : isDark ? "hover:bg-white/[0.03]" : "hover:bg-white/70"}`,
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-start gap-4 min-w-0", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(
+                            "div",
+                            {
+                              className: `w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 border ${isVoted ? "bg-[#6355FE] text-white border-[#6355FE]" : isDark ? "bg-[#14122B] text-[#8E7CFF] border-white/10" : "bg-white text-[#6355FE] border-[#6355FE]/20"}`,
+                              children: /* @__PURE__ */ jsxRuntimeExports.jsx(Icon2, { size: 20 })
+                            }
+                          ),
+                          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0 space-y-1", children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-baseline gap-2", children: [
+                              /* @__PURE__ */ jsxRuntimeExports.jsx(
+                                "span",
+                                {
+                                  className: `text-xs font-mono tabular-nums ${isDark ? "text-[#8E7CFF]" : "text-[#6355FE]"}`,
+                                  children: item.number
+                                }
+                              ),
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("h4", { className: "text-base font-bold tracking-tight", children: item.title })
+                            ] }),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(
+                              "p",
+                              {
+                                className: `text-xs font-medium ${isDark ? "text-[#8F8E9C]" : "text-[#585474]"}`,
+                                children: item.subtitle
+                              }
+                            ),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(
+                              "p",
+                              {
+                                className: `text-sm leading-relaxed max-w-2xl ${isDark ? "text-[#B9B6CE]" : "text-[#4A4666]"}`,
+                                children: item.description
+                              }
+                            )
+                          ] })
+                        ] }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                          "span",
+                          {
+                            className: `min-h-[40px] px-3.5 py-2 rounded-xl text-xs font-semibold shrink-0 flex items-center gap-1.5 border whitespace-nowrap transition-colors ${isVoted ? "bg-[#6355FE] text-white border-[#6355FE]" : isDark ? "bg-[#14122B] text-[#ECE6FF] border-white/10" : "bg-white text-[#120F26] border-[#6355FE]/20"}`,
+                            children: [
+                              isVoted && /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 14 }),
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isVoted ? "Voted" : "Vote" })
+                            ]
+                          }
+                        )
+                      ]
+                    },
+                    item.id
+                  );
+                })
               }
             )
           ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3.5 bg-black/20 rounded-2xl border border-white/5 space-y-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-xs", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(
-                  "button",
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            "section",
+            {
+              ref: signupSectionRef,
+              className: `rounded-3xl p-6 sm:p-8 border text-left ${isDark ? "bg-[#14122B] border-white/10" : "bg-white border-[#6355FE]/15 shadow-sm"}`,
+              children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col lg:flex-row lg:items-center justify-between gap-6", children: [
+                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-1.5 max-w-xl", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "p",
+                    {
+                      className: `text-xs font-semibold tracking-wide ${isDark ? "text-[#8E7CFF]" : "text-[#6355FE]"}`,
+                      children: "Early & Beta Access"
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx("h3", { className: "text-lg sm:text-xl font-bold tracking-tight", children: hasRegistered ? "You are on the Studio beta list" : "Get invited when Studio beta opens" }),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "p",
+                    {
+                      className: `text-sm leading-relaxed ${isDark ? "text-[#B9B6CE]" : "text-[#585474]"}`,
+                      children: hasRegistered ? `We saved your invite request for ${registeredEmail}. You will receive an early access notice once Studio is ready.` : "Enter your email address below to reserve early beta access when recording and karaoke launch."
+                    }
+                  )
+                ] }),
+                hasRegistered ? /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-wrap items-center gap-3 shrink-0", children: [
+                  /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                    "div",
+                    {
+                      className: `min-h-[48px] px-4 py-2.5 rounded-2xl border flex items-center gap-2.5 text-sm font-semibold ${isDark ? "bg-[#1C153E] border-[#8E7CFF]/40 text-[#ECE6FF]" : "bg-[#EFEAFE] border-[#6355FE]/30 text-[#5B4AE6]"}`,
+                      children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(Check, { size: 16 }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "truncate max-w-[220px]", children: registeredEmail })
+                      ]
+                    }
+                  ),
+                  /* @__PURE__ */ jsxRuntimeExports.jsx(
+                    "button",
+                    {
+                      type: "button",
+                      onClick: () => {
+                        setIsEditingSignup(true);
+                        setSignupError(null);
+                        setTimeout(() => {
+                          var _a2;
+                          return (_a2 = emailInputRef.current) == null ? void 0 : _a2.focus();
+                        }, 50);
+                      },
+                      className: `min-h-[48px] px-4 py-2.5 rounded-2xl text-sm font-semibold transition-colors cursor-pointer whitespace-nowrap border ${isDark ? "bg-white/5 hover:bg-white/10 text-white border-white/10" : "bg-[#F7F6FC] hover:bg-[#EFEAFE] text-[#120F26] border-[#6355FE]/20"}`,
+                      children: "Use Another Email"
+                    }
+                  )
+                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                  "form",
                   {
-                    type: "button",
-                    onClick: toggleBackingPreview,
-                    disabled: isSynthesizing || isRecording,
-                    className: "w-8 h-8 rounded-full bg-[#6355FE] text-white flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-all shadow-md disabled:opacity-40",
-                    title: "Preview Backing Track",
-                    children: isSynthesizing ? /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 14, className: "animate-spin text-white" }) : isBackingPreviewPlaying ? /* @__PURE__ */ jsxRuntimeExports.jsx(Pause, { size: 14, fill: "currentColor" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 14, fill: "currentColor", className: "ml-0.5" })
-                  }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[11px] font-black text-white leading-tight", children: [
-                    "Preview: ",
-                    sourceTab === "device" && customDeviceTrack ? customDeviceTrack.title : selectedBuiltinTrack.title
-                  ] }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] text-[#8E7CFF] font-bold", children: isSynthesizing ? "Synthesizing authentic audio..." : isBackingPreviewPlaying ? "Playing Backing Preview" : "Paused" })
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                  "button",
-                  {
-                    type: "button",
-                    onClick: handleExtractKaraokeDsp,
-                    disabled: isExtractingKaraoke || isRecording,
-                    className: "px-2.5 py-1.5 bg-gradient-to-r from-pink-600 to-[#6355FE] hover:brightness-110 text-white rounded-xl text-[10px] font-black uppercase tracking-wider transition-all flex items-center gap-1 cursor-pointer shadow-sm active:scale-95 disabled:opacity-50",
-                    title: "Run client-side DSP Mid-Side phase cancellation to remove center vocals",
+                    onSubmit: handleBetaSignupSubmit,
+                    noValidate: true,
+                    className: "w-full lg:max-w-md space-y-2.5 shrink-0",
                     children: [
-                      isExtractingKaraoke ? /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 12, className: "animate-spin text-white" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 12, className: "text-amber-300" }),
-                      /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: isExtractingKaraoke ? "Extracting..." : "AI Vocal Remover" })
+                      /* @__PURE__ */ jsxRuntimeExports.jsx("label", { htmlFor: "studio-beta-email", className: "sr-only", children: "Email address for Studio early access" }),
+                      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-2.5", children: [
+                        /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "relative flex-1", children: [
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(
+                            Mail,
+                            {
+                              size: 16,
+                              "aria-hidden": "true",
+                              className: `absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none ${isDark ? "text-[#8F8E9C]" : "text-[#585474]"}`
+                            }
+                          ),
+                          /* @__PURE__ */ jsxRuntimeExports.jsx(
+                            "input",
+                            {
+                              ref: emailInputRef,
+                              id: "studio-beta-email",
+                              type: "email",
+                              inputMode: "email",
+                              autoComplete: "email",
+                              maxLength: STUDIO_EMAIL_MAX_LENGTH,
+                              value: emailInput,
+                              onChange: (e2) => {
+                                setEmailInput(e2.target.value);
+                                if (signupError) setSignupError(null);
+                              },
+                              placeholder: "you@example.com",
+                              disabled: isSubmittingSignup,
+                              className: `w-full min-h-[48px] pl-10 pr-4 py-3 rounded-2xl text-sm font-medium border outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#6355FE] ${isDark ? "bg-[#0A0818] border-white/15 text-[#FFFFFF] placeholder:text-[#8F8E9C] focus:border-[#8E7CFF]" : "bg-[#F7F6FC] border-[#6355FE]/25 text-[#120F26] placeholder:text-[#585474] focus:border-[#6355FE]"}`
+                            }
+                          )
+                        ] }),
+                        /* @__PURE__ */ jsxRuntimeExports.jsx(
+                          "button",
+                          {
+                            type: "submit",
+                            disabled: isSubmittingSignup,
+                            className: "min-h-[48px] px-6 py-3 rounded-2xl text-sm font-semibold bg-[#6355FE] hover:bg-[#7265FF] disabled:opacity-60 text-white shadow-lg shadow-[#6355FE]/25 transition-all cursor-pointer flex items-center justify-center gap-2 whitespace-nowrap shrink-0 active:scale-[0.98]",
+                            children: isSubmittingSignup ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                              /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 16, className: "animate-spin" }),
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Saving..." })
+                            ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+                              /* @__PURE__ */ jsxRuntimeExports.jsx(BellRing, { size: 16 }),
+                              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Request Early Access" })
+                            ] })
+                          }
+                        )
+                      ] }),
+                      signupError && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+                        "div",
+                        {
+                          role: "alert",
+                          className: `flex items-start gap-2 text-xs font-medium pt-0.5 ${isDark ? "text-rose-300" : "text-rose-700"}`,
+                          children: [
+                            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 14, className: "shrink-0 mt-0.5" }),
+                            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: signupError })
+                          ]
+                        }
+                      )
                     ]
                   }
-                ),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[10px] font-bold text-white/50", children: [
-                  formatSec(backingCurrentTime),
-                  " / ",
-                  formatSec(sourceTab === "device" && customDeviceTrack ? customDeviceTrack.duration : selectedBuiltinTrack.duration)
-                ] })
+                )
               ] })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "input",
-              {
-                type: "range",
-                min: "0",
-                max: sourceTab === "device" && customDeviceTrack ? customDeviceTrack.duration : selectedBuiltinTrack.duration,
-                step: "0.5",
-                value: backingCurrentTime,
-                onChange: handleBackingSeek,
-                disabled: isRecording,
-                className: "w-full h-1.5 bg-white/10 rounded-full appearance-none cursor-pointer accent-[#6355FE]"
-              }
-            )
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "bg-[#14122B]/70 border border-white/10 rounded-3xl p-5 space-y-4 shadow-xl", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-0.5", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xs font-black uppercase tracking-wider text-red-400 flex items-center gap-2", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 15 }),
-                "Step 2: Vocal Recording Booth"
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#8F8E9C]", children: "Backing track plays in sync while your microphone captures vocals." })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2 shrink-0", children: [
-              hasMicPermissionGranted ? /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 11 }),
-                " Mic Ready"
-              ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
-                "button",
-                {
-                  type: "button",
-                  onClick: () => {
-                    setMicModalError(null);
-                    setIsMicPermissionModalOpen(true);
-                  },
-                  className: "text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center gap-1 hover:bg-amber-500/30 transition-all cursor-pointer",
-                  title: "Request microphone permission",
-                  children: [
-                    /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 11 }),
-                    " Permission Required"
-                  ]
-                }
-              ),
-              isRecording && /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-xs font-black text-red-400 bg-red-400/20 px-3 py-1 rounded-full border border-red-400/30 animate-pulse", children: [
-                formatSec(recordingSeconds),
-                " REC"
-              ] })
-            ] })
-          ] }),
-          micPermissionDenied && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 text-xs text-red-300", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleAlert, { size: 18, className: "shrink-0 text-red-400" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Microphone access was denied. Please allow microphone permissions in app settings to record." })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-black/30 rounded-2xl border border-white/5 space-y-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-[#8F8E9C]", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Microphone Input Level (VU Meter)" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: vuLevel > 0.05 ? "text-green-400" : "text-white/30", children: isRecording ? `${Math.round(vuLevel * 100)}%` : "Standby" })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "h-3 w-full bg-white/5 rounded-full overflow-hidden flex items-center p-0.5 border border-white/5", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-              motion.div,
-              {
-                className: `h-full rounded-full transition-all duration-75 ${vuLevel > 0.85 ? "bg-gradient-to-r from-green-500 via-amber-400 to-red-500" : "bg-gradient-to-r from-[#6355FE] to-[#8E7CFF]"}`,
-                style: { width: `${Math.max(2, vuLevel * 100)}%` }
-              }
-            ) })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row items-center justify-center gap-3 pt-2", children: [
-            !isRecording ? /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: handleStartRecording,
-                disabled: isSynthesizing,
-                className: "w-full sm:w-auto px-8 py-4 bg-red-500 hover:bg-red-600 active:scale-95 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-lg shadow-red-500/30 flex items-center justify-center gap-2.5",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "w-3 h-3 rounded-full bg-white animate-pulse" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Start Singing Recording" })
-                ]
-              }
-            ) : /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: handleStopRecording,
-                className: "w-full sm:w-auto px-8 py-4 bg-white text-black hover:bg-white/90 active:scale-95 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer shadow-xl flex items-center justify-center gap-2.5",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Square, { size: 16, fill: "currentColor" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Stop & Keep Take" })
-                ]
-              }
-            ),
-            recordedVoiceBlob && !isRecording && /* @__PURE__ */ jsxRuntimeExports.jsxs(
-              "button",
-              {
-                type: "button",
-                onClick: handleDiscardTake,
-                className: "w-full sm:w-auto px-5 py-3.5 bg-white/10 hover:bg-white/15 text-[#8F8E9C] hover:text-white rounded-2xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2",
-                children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(RotateCcw, { size: 14 }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Discard Take" })
-                ]
-              }
-            )
-          ] }),
-          (activeFallbackLyrics || activeKaraokeData) && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "pt-2", children: /* @__PURE__ */ jsxRuntimeExports.jsx(
-            KaraokeLyricsView,
-            {
-              currentTimeSec: isRecording ? recordingSeconds : backingCurrentTime,
-              durationSec: activeDuration,
-              onSeek: handleBackingSeekTo,
-              karaokeData: activeKaraokeData,
-              fallbackLyrics: activeFallbackLyrics
             }
-          ) }),
-          recordedVoiceBlob && /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "p-3 bg-green-500/10 border border-green-500/20 rounded-2xl flex items-center justify-between text-xs text-green-300", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center gap-2", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(CircleCheck, { size: 16, className: "text-green-400 shrink-0" }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { children: [
-              "Take Captured (",
-              recordingSeconds,
-              "s). Ready for mixing and preview below."
-            ] })
-          ] }) })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "bg-[#14122B]/70 border border-white/10 rounded-3xl p-5 space-y-4 shadow-xl", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-0.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xs font-black uppercase tracking-wider text-[#8E7CFF] flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(SlidersVertical, { size: 15 }),
-              "Step 3: Studio Volume Mixer & Ambience"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#8F8E9C]", children: "Adjust backing track and voice levels independently (0% to 150%)." })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "grid grid-cols-1 sm:grid-cols-2 gap-4", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-black/20 rounded-2xl border border-white/5 space-y-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-xs font-bold", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-[#8E7CFF] flex items-center gap-1.5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Volume2, { size: 14 }),
-                  "Backing Track Volume"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-white", children: [
-                  Math.round(mixerSettings.backingVolume * 100),
-                  "%"
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  type: "range",
-                  min: "0",
-                  max: "1.5",
-                  step: "0.05",
-                  value: mixerSettings.backingVolume,
-                  onChange: (e2) => setMixerSettings((prev) => ({ ...prev, backingVolume: parseFloat(e2.target.value) })),
-                  className: "w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer accent-[#6355FE]"
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-black/20 rounded-2xl border border-white/5 space-y-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-xs font-bold", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-red-400 flex items-center gap-1.5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Mic, { size: 14 }),
-                  "Vocal Voice Volume"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-white", children: [
-                  Math.round(mixerSettings.voiceVolume * 100),
-                  "%"
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  type: "range",
-                  min: "0",
-                  max: "1.5",
-                  step: "0.05",
-                  value: mixerSettings.voiceVolume,
-                  onChange: (e2) => setMixerSettings((prev) => ({ ...prev, voiceVolume: parseFloat(e2.target.value) })),
-                  className: "w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer accent-red-400"
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-black/20 rounded-2xl border border-white/5 space-y-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-xs font-bold", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-amber-400 flex items-center gap-1.5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Sparkles, { size: 14 }),
-                  "Studio Ambience Reverb"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-white", children: [
-                  Math.round(mixerSettings.reverbAmount * 100),
-                  "%"
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  type: "range",
-                  min: "0",
-                  max: "0.8",
-                  step: "0.05",
-                  value: mixerSettings.reverbAmount,
-                  onChange: (e2) => setMixerSettings((prev) => ({ ...prev, reverbAmount: parseFloat(e2.target.value) })),
-                  className: "w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer accent-amber-400"
-                }
-              )
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-4 bg-black/20 rounded-2xl border border-white/5 space-y-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex items-center justify-between text-xs font-bold", children: [
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-sky-400 flex items-center gap-1.5", children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Radio, { size: 14 }),
-                  "Mic Latency Offset"
-                ] }),
-                /* @__PURE__ */ jsxRuntimeExports.jsxs("span", { className: "text-white", children: [
-                  mixerSettings.voiceDelayMs,
-                  " ms"
-                ] })
-              ] }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx(
-                "input",
-                {
-                  type: "range",
-                  min: "-60",
-                  max: "60",
-                  step: "5",
-                  value: mixerSettings.voiceDelayMs,
-                  onChange: (e2) => setMixerSettings((prev) => ({ ...prev, voiceDelayMs: parseInt(e2.target.value) })),
-                  className: "w-full h-2 bg-white/10 rounded-full appearance-none cursor-pointer accent-sky-400"
-                }
-              )
-            ] })
-          ] })
-        ] }),
-        /* @__PURE__ */ jsxRuntimeExports.jsxs("section", { className: "bg-[#14122B]/70 border border-white/10 rounded-3xl p-5 space-y-4 shadow-xl", children: [
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "space-y-0.5", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("h2", { className: "text-xs font-black uppercase tracking-wider text-green-400 flex items-center gap-2", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx(Layers, { size: 15 }),
-              "Step 4: Combined Preview & Export"
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx("p", { className: "text-[11px] text-[#8F8E9C]", children: "Listen to the synchronized mix and export your high-fidelity song file." })
-          ] }),
-          /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "flex flex-col sm:flex-row gap-3", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: handleToggleCombinedPreview,
-                disabled: !recordedVoiceBlob || isRecording,
-                className: `flex-1 py-4 px-6 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-2.5 shadow-lg ${isCombinedPreviewPlaying ? "bg-amber-500 text-black shadow-amber-500/25" : "bg-[#1C153E] border border-[#6355FE]/40 text-[#8E7CFF] hover:bg-[#6355FE]/20 disabled:opacity-40"}`,
-                children: isCombinedPreviewPlaying ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Pause, { size: 16, fill: "currentColor" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Pause Combined Preview" })
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Play, { size: 16, fill: "currentColor" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Listen to Combined Preview" })
-                ] })
-              }
-            ),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: handleExportMix,
-                disabled: !recordedVoiceBlob || isExporting || isRecording,
-                className: "flex-1 py-4 px-6 bg-gradient-to-r from-[#6355FE] to-[#8E7CFF] hover:from-[#7265FF] hover:to-[#9E8EFF] text-white disabled:opacity-40 rounded-2xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer flex items-center justify-center gap-2.5 shadow-lg shadow-[#6355FE]/30 active:scale-[0.98]",
-                children: isExporting ? /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(LoaderCircle, { size: 16, className: "animate-spin text-white" }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Rendering Mixed Audio..." })
-                ] }) : /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
-                  /* @__PURE__ */ jsxRuntimeExports.jsx(Download, { size: 16 }),
-                  /* @__PURE__ */ jsxRuntimeExports.jsx("span", { children: "Export Combined Song (WAV)" })
-                ] })
-              }
-            )
-          ] }),
-          lastExportResult && /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "p-3 bg-white/5 border border-white/5 rounded-2xl flex items-center justify-between text-xs", children: [
-            /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "min-w-0", children: [
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "text-[9px] font-black uppercase text-green-400 block", children: "Exported File" }),
-              /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "font-bold text-white truncate block", children: lastExportResult.fileName })
-            ] }),
-            /* @__PURE__ */ jsxRuntimeExports.jsx(
-              "button",
-              {
-                type: "button",
-                onClick: () => studioEngine.downloadMix(lastExportResult),
-                className: "px-3 py-1.5 bg-[#6355FE] text-white rounded-xl text-[10px] font-black uppercase tracking-wider cursor-pointer hover:bg-[#7265FF]",
-                children: "Download Again"
-              }
-            )
-          ] })
-        ] })
-      ] })
-    ) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      VocalSeparationModal,
-      {
-        isOpen: isVocalSepModalOpen,
-        onClose: () => setIsVocalSepModalOpen(false),
-        tracks: libraryTracks,
-        onRequestVerification: () => {
-          setAuthModalContext({
-            title: "Unlock AI Vocal Remover",
-            subtitle: "Verify with Gmail (100% Free)",
-            reason: "Sign in with your Google account (100% free) to unlock AI vocal removal and extract karaoke from any song."
-          });
-          setIsGoogleAuthModalOpen(true);
-        },
-        onSelectSeparatedTrack: (track) => {
-          setCustomDeviceTrack({
-            title: track.title,
-            artist: track.artist,
-            url: track.url,
-            duration: track.duration
-          });
-          setSourceTab("device");
-          setIsVocalSepModalOpen(false);
-          onShowToast(`Loaded separated stem "${track.title}"`, /* @__PURE__ */ jsxRuntimeExports.jsx(Music, { size: 16, className: "text-[#8E7CFF]" }));
-        },
-        onShowToast
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      SubscriptionModal,
-      {
-        isOpen: isSubscriptionModalOpen,
-        onClose: () => setIsSubscriptionModalOpen(false),
-        onShowToast
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      GoogleVerificationModal,
-      {
-        isOpen: isGoogleAuthModalOpen,
-        onClose: () => setIsGoogleAuthModalOpen(false),
-        onShowToast,
-        onSuccess: () => {
-          setIsGoogleAuthModalOpen(false);
-        },
-        customTitle: authModalContext.title,
-        customSubtitle: authModalContext.subtitle,
-        customReason: authModalContext.reason
-      }
-    ),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(
-      MicrophonePermissionModal,
-      {
-        isOpen: isMicPermissionModalOpen,
-        onClose: () => setIsMicPermissionModalOpen(false),
-        onGrantPermission: handleGrantMicPermissionAndStart,
-        isRequesting: isRequestingMic,
-        permissionError: micModalError,
-        theme
-      }
-    )
-  ] });
+          )
+        ] }) })
+      ]
+    }
+  );
 }
 const EQ_PRESETS = {
   "bass-boost": {
@@ -85315,6 +80691,92 @@ async function stopSystemMedia() {
     console.warn("SystemMediaPlayer stop error:", err);
   }
 }
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
+const TUM_HI_HO_LYRICS = `Hum tere bin ab reh nahi sakte
+Tere bina kya wajood mera
+
+Hum tere bin ab reh nahi sakte
+Tere bina kya wajood mera
+Tujh se juda agar ho jaayenge
+To khud se hee ho jaayenge juda
+Kyonki tum hee ho, ab tum hee ho
+Zindagi ab tum hee ho
+O-o-o, chain bhee, mera dard bhee
+Meri aashiqui ab tum hee ho
+
+Tera-meraa rishta hai kaisaa
+Ek pal door gavaara nahin
+Tere liye har roz hain jeete
+Tujh ko diya mera vakt sabhee
+Koyi lamaha mera naa ho tere binaa
+Har saans pe naam tera
+Kyonki tum hee ho, ab tum hee ho
+Zindagi ab tum hee ho
+O-o-o, chain bhee, mera dard bhee
+Meri aashiqui ab tum hee ho
+
+Tum hee ho...
+Tum hee ho...
+Tere liye hi jiya main
+Khud ko jo yoon de diya hai
+Teri vafaa ne mujh ko sanbhaala
+Saare gamon ko dil se nikaala
+Tere saath mera hai naseeb juda
+Tuje paa ke adhoora naa raha, mmm
+Kyonki tum hee ho, ab tum hee ho
+Zindagi ab tum hee ho
+O-o-o, chain bhee, mera dard bhee
+Meri aashiqui ab tum hee ho
+Kyonki tum hee ho, ab tum hee ho
+Zindagi ab tum hee ho
+O-o-o, chain bhee, mera dard bhee
+Meri aashiqui ab tum hee ho`;
+const LUTT_LE_GAYA_LYRICS = `Aaja ve, aaja
+Aaja ve, aaja
+Haaye sajan, haaye sajan, haaye sajan, haaye sajan
+Aaja ve, aaja
+
+Aaja ve, aaja, seene laa jaa
+Haaye, sajan mainu lutt le gaya, haaye
+Haaye, sajan mainu lutt le gaya
+Pyaase labban de rog mukka jaa
+Haaye, sajan mainu lutt le gaya, haaye
+Haaye, sajan mainu lutt le gaya
+Haaye, sajan meri ankhaan tarasdi
+Har imaan mera tutt beh gaya
+
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+
+Aaja ve, aaja
+Ho, mainu lutt le gaya
+Aaja ve, aaja (Haaye, sajan)
+Ho, mainu lutt le gaya
+Aaja ve, aaja
+Aaja ve, aaja
+
+Takdi ankhiyaan aje na thakiyaan
+Naina vich nasha vass gaya
+Rajj ke peevan tainu, sajna
+Raatan vich na rass gaya, haaye
+Vass na jaavan, vich main saahvan
+Mainu oh khich fer ghutt le gaya
+Haaye, sajan meri ankhaan tarasdi
+Har imaan mera tutt beh gaya
+
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+Ho, mainu lutt le gaya
+
+Aaja ve, aaja
+Aaja ve, aaja
+Haaye sajan, haaye sajan, haaye sajan, haaye sajan`;
 const TUM_HI_HO_ONLINE_TRACK = {
   id: "online_tum_hi_ho",
   title: "Tum Hi Ho (Learn & Sing Along)",
@@ -87643,9 +83105,8 @@ function App() {
       }
     ),
     activeNavTab === "studio" && /* @__PURE__ */ jsxRuntimeExports.jsx(
-      SingingStudioView,
+      StudioComingSoonView,
       {
-        libraryTracks: tracks,
         onBackToLibrary: () => setActiveNavTab("library"),
         onPauseMainPlayer: () => player.setIsPlaying(false),
         onShowToast: showToast,
@@ -88116,7 +83577,7 @@ function App() {
                 Crown,
                 {
                   size: 10,
-                  className: "absolute -top-1.5 -right-1.5 text-amber-500 fill-amber-500 drop-shadow-[0_0_5px_rgba(251,191,36,0.9)] animate-pulse"
+                  className: "absolute -top-1.5 -right-1.5 text-amber-500 fill-amber-500"
                 }
               )
             ] }),

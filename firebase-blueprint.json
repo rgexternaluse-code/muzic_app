@@ -56,6 +56,47 @@
         }
       },
       "required": ["userId", "month", "usedUploads"]
+    },
+    "StudioBetaSignup": {
+      "title": "StudioBetaSignup",
+      "description": "Email waitlist registration for Muzic Studio early/beta access",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 5,
+          "maxLength": 254,
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+          "description": "Applicant email address for Studio beta access notifications"
+        },
+        "preferredFeature": {
+          "type": "string",
+          "maxLength": 64,
+          "description": "Optional Studio feature the user voted for"
+        },
+        "platform": {
+          "type": "string",
+          "enum": ["web", "android", "ios"],
+          "description": "Client platform used during signup"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending"],
+          "description": "Initial beta waitlist status"
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Optional authenticated Firebase UID when user is signed in"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp recorded at signup creation"
+        }
+      },
+      "required": ["email", "platform", "status", "createdAt"]
     }
   },
   "firestore": {
@@ -66,6 +107,10 @@
     "/users/{userId}/quota/{month}": {
       "schema": "StudioQuota",
       "description": "Monthly Singing Studio phone upload tracking per user"
+    },
+    "/studioBetaSignups/{signupId}": {
+      "schema": "StudioBetaSignup",
+      "description": "Write-only early/beta access email signup records for Muzic Studio"
     }
   }
 }

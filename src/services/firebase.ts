@@ -14,11 +14,14 @@ import {
 } from 'firebase/auth';
 import { 
   getFirestore, 
+  collection,
   doc, 
+  addDoc,
   getDoc, 
   setDoc, 
   updateDoc, 
   increment, 
+  serverTimestamp,
   getDocFromServer 
 } from 'firebase/firestore';
 import firebaseConfig from '../../firebase-applet-config.json';
@@ -203,6 +206,58 @@ export async function recordCloudStudioUpload(userId: string, month: string): Pr
   } catch (err) {
     handleFirestoreError(err, OperationType.WRITE, path);
     return 1;
+  }
+}
+
+export const STUDIO_EMAIL_MIN_LENGTH = 5;
+export const STUDIO_EMAIL_MAX_LENGTH = 254;
+export const STUDIO_EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+export interface StudioBetaSignupInput {
+  email: string;
+  preferredFeature?: string | null;
+  platform: 'web' | 'android' | 'ios';
+}
+
+export async function submitStudioBetaSignup({
+  email,
+  preferredFeature,
+  platform
+}: StudioBetaSignupInput): Promise<string> {
+  const normalizedEmail = email.trim().toLowerCase();
+  if (
+    normalizedEmail.length < STUDIO_EMAIL_MIN_LENGTH ||
+    normalizedEmail.length > STUDIO_EMAIL_MAX_LENGTH ||
+    !STUDIO_EMAIL_REGEX.test(normalizedEmail)
+  ) {
+    throw new Error('Please enter a valid email address.');
+  }
+
+  const safePlatform: 'web' | 'android' | 'ios' =
+    platform === 'android' || platform === 'ios' ? platform : 'web';
+
+  const payload: Record<string, unknown> = {
+    email: normalizedEmail,
+    platform: safePlatform,
+    status: 'pending',
+    createdAt: serverTimestamp()
+  };
+
+  if (preferredFeature && preferredFeature.trim().length > 0) {
+    payload.preferredFeature = preferredFeature.trim().slice(0, 64);
+  }
+
+  if (auth.currentUser?.uid) {
+    payload.userId = auth.currentUser.uid.slice(0, 128);
+  }
+
+  const path = 'studioBetaSignups';
+  try {
+    const docRef = await addDoc(collection(db, path), payload);
+    return docRef.id;
+  } catch (err) {
+    handleFirestoreError(err, OperationType.CREATE, path);
+    return '';
   }
 }
 

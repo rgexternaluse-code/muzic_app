@@ -47,6 +47,18 @@ service cloud.firestore {
         (!('updatedAt' in data) || (data.updatedAt is string && data.updatedAt.size() <= 64));
     }
 
+    function isValidStudioBetaSignup(data) {
+      return data.keys().hasAll(['email', 'platform', 'status', 'createdAt']) &&
+        data.keys().hasOnly(['email', 'preferredFeature', 'platform', 'status', 'userId', 'createdAt']) &&
+        data.email is string && data.email.size() >= 5 && data.email.size() <= 254 &&
+        data.email.matches('^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$') &&
+        data.platform in ['web', 'android', 'ios'] &&
+        data.status == 'pending' &&
+        data.createdAt == request.time &&
+        (!('preferredFeature' in data) || (data.preferredFeature is string && data.preferredFeature.size() <= 64)) &&
+        (!('userId' in data) || (isSignedIn() && data.userId is string && data.userId.size() <= 128 && data.userId == request.auth.uid));
+    }
+
     // User profile matching
     match /users/{userId} {
       allow get: if isValidId(userId) && isOwner(userId);
@@ -65,6 +77,15 @@ service cloud.firestore {
           incoming().diff(existing()).affectedKeys().hasOnly(['usedUploads', 'updatedAt']);
         allow delete: if false;
       }
+    }
+
+    // Write-only Studio beta waitlist signups (PII strictly protected from public read/list)
+    match /studioBetaSignups/{signupId} {
+      allow get: if isValidId(signupId) && isSignedIn() && resource != null && ('userId' in existing()) && existing().userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isValidId(signupId) && isValidStudioBetaSignup(incoming());
+      allow update: if false;
+      allow delete: if false;
     }
   }
 }

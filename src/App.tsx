@@ -60,7 +60,7 @@ import appLogo from './assets/images/muzic_app_logo_1786456453207.jpg';
 import { TrackContextMenu } from './components/TrackContextMenu';
 import { PlaylistsView } from './components/PlaylistsView';
 import { SettingsView } from './components/SettingsView';
-import { SingingStudioView } from './components/SingingStudioView';
+import { StudioComingSoonView } from './components/StudioComingSoonView';
 import { TrackThumbnail } from './components/TrackThumbnail';
 import { EqualizerModal, EQ_PRESETS, EqPresetKey, FREQ_BANDS } from './components/EqualizerModal';
 import { 
@@ -2897,10 +2897,9 @@ export default function App() {
         />
       )}
 
-      {/* SINGING STUDIO PORTAL VIEW */}
+      {/* STUDIO COMING SOON VIEW */}
       {activeNavTab === 'studio' && (
-        <SingingStudioView 
-          libraryTracks={tracks}
+        <StudioComingSoonView 
           onBackToLibrary={() => setActiveNavTab('library')}
           onPauseMainPlayer={() => player.setIsPlaying(false)}
           onShowToast={showToast}
@@ -3462,7 +3461,7 @@ export default function App() {
                 {isPremium && (
                   <Crown 
                     size={10} 
-                    className="absolute -top-1.5 -right-1.5 text-amber-500 fill-amber-500 drop-shadow-[0_0_5px_rgba(251,191,36,0.9)] animate-pulse" 
+                    className="absolute -top-1.5 -right-1.5 text-amber-500 fill-amber-500" 
                   />
                 )}
               </div>
